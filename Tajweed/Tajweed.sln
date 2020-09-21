@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tajweed", "Tajweed\Tajweed.csproj", "{FE158A3C-3D53-4D21-A1DA-5DBEC7ACFDD9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE158A3C-3D53-4D21-A1DA-5DBEC7ACFDD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE158A3C-3D53-4D21-A1DA-5DBEC7ACFDD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE158A3C-3D53-4D21-A1DA-5DBEC7ACFDD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE158A3C-3D53-4D21-A1DA-5DBEC7ACFDD9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45BCDE0A-E3FC-43A4-BB25-6E49A6ECFDA4}
+	EndGlobalSection
+EndGlobal

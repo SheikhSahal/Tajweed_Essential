@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "login";
+}
+
+<div class="page-content--bge5">
+    <div class="container">
+        <div class="login-wrap">
+            <div class="login-content">
+                <div class="login-logo">
+                    <a href="#">
+                        @*<img src="images/icon/logo.png" alt="CoolAdmin">*@
+                        <h1>Tajweed Essentials</h1>
+                    </a>
+                </div>
+                <div class="login-form">
+                    <form>
+                        <div class="form-group Full_Name">
+                            <label>Full Name</label>
+                            <input class="au-input au-input--full" id="Full_Name" type="text" name="fullname" placeholder="Full Name">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Full Name</span>
+                        </div>
+
+                        <div class="form-group Date_of_Birth">
+                            <label>Date of Birth</label>
+                            <input class="au-input au-input--full" id="Date_of_Birth" type="date" name="date" placeholder="Date of Birth">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Date of Birth</span>
+                        </div>
+
+                        <div class="form-group Marital_Status">
+                            <label>Marital Status</label>
+                            <input class="au-input au-input--full" id="Marital_Status" type="text" name="Marital_Status" placeholder="Marital Status">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Marital Status</span>
+                        </div>
+
+                        <div class="form-group F_H_name">
+                            <label>Father / Husband's name</label>
+                            <input class="au-input au-input--full" id="F_H_name" type="text" name="Father_Husband_name" placeholder="Father / Husband's name">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Father / Husband's name</span>
+                        </div>
+
+                        <div class="form-group ID_Card_No">
+                            <label>ID Card No</label>
+                            <input class="au-input au-input--full" id="ID_Card_No" type="number" name="ID_Card_No" placeholder="ID Card No">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the ID Card No</span>
+                        </div>
+
+                        <div class="form-group M_W_no">
+                            <label>Mobile / Whatsapp no</label>
+                            <input class="au-input au-input--full" id="M_W_no" type="number" name="Mobile_Whatsapp" placeholder="Mobile / Whatsapp no">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Mobile / Whatsapp no</span>
+                        </div>
+
+                        <div class="form-group E_mail_address">
+                            <label>E-mail address</label>
+                            <input class="au-input au-input--full" id="E_mail_address" type="email" name="E_mail_address" placeholder="E-mail">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the E-mail address</span>
+                        </div>
+
+                        <div class="form-group Password">
+                            <label>Password</label>
+                            <input class="au-input au-input--full" id="Password" type="password" name="Password" placeholder="Password">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Password</span>
+                        </div>
+
+                        <div class="form-group Address">
+                            <label>Address</label>
+                            <input class="au-input au-input--full" id="Address" type="text" name="Address" placeholder="Address">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Address</span>
+                        </div>
+
+                        <div class="form-group City">
+                            <label>City</label>
+                            <input class="au-input au-input--full" id="City" type="text" name="City" placeholder="City">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the City</span>
+                        </div>
+
+                        <div class="form-group Country">
+                            <label>Country</label>
+                            <input class="au-input au-input--full" id="Country" type="text" name="Country" placeholder="Country">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Country</span>
+                        </div>
+
+                        <div class="form-group Qualification">
+                            <label>Qualification</label>
+                            <input class="au-input au-input--full" id="Qualification" type="text" name="Qualification" placeholder="Qualification">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Qualification</span>
+                        </div>
+
+                        <div class="form-group Profession">
+                            <label>Profession</label>
+                            <input class="au-input au-input--full" id="Profession" type="text" name="Profession" placeholder="Profession">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Profession</span>
+                        </div>
+
+                        <div class="form-group QA">
+                            <label>Have you received any kind of Quranic education? if yes, from where</label>
+                            <input class="au-input au-input--full" id="QA" type="text" name="QA" placeholder="Answer">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Answer</span>
+                        </div>
+
+                        <div class="form-group Future_Plans">
+                            <label>Future Plans</label>
+                            <input class="au-input au-input--full" id="Future_Plans" type="text" name="Future_Plans" placeholder="Future Plans">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Future Plans</span>
+                        </div>
+
+                        <div class="form-group nameQA">
+                            <label>Full name of the person who recommendad you this course</label>
+                            <input class="au-input au-input--full" id="nameQA" type="text" name="nameQA" placeholder="Answer">
+                            <span class="error"><span class=" fas fa-exclamation-circle"></span> Enter the Answer</span>
+                        </div>
+
+
+                        @*<div class="login-checkbox">
+                                <label>
+                                    <input type="checkbox" name="aggree">Agree the terms and policy
+                                </label>
+                            </div>*@
+                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="button">register</button>
+                        @*<div class="social-login-content">
+                                <div class="social-button">
+                                    <button class="au-btn au-btn--block au-btn--blue m-b-20">register with facebook</button>
+                                    <button class="au-btn au-btn--block au-btn--blue2">register with twitter</button>
+                                </div>
+                            </div>*@
+                    </form>
+                    <div class="register-link">
+                        <p>
+                            Already have account?
+                            <a href="@Url.Action("Index","login")">Sign In</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#Save').click(function () {
+
+
+            var isAllValid = true;
+
+
+            if (!($('#uname').val().trim() != '')) {
+                isAllValid = false;
+                $('.uname .error').css('display', 'block');
+            }
+            else {
+                $('.uname .error').css('display', 'none');
+            }
+
+
+            if (!($('#pwd').val().trim() != '')) {
+                isAllValid = false;
+                $('.pwd .error').css('display', 'block');
+            }
+            else {
+                $('.pwd .error').css('display', 'none');
+            }
+
+
+
+            debugger
+
+            if (isAllValid) {
+                var data = {
+
+                    username: $('#uname').val(),
+                    password: $('#pwd').val(),
+
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login/Index',
+                    data: {
+                        'username': data.username,
+                        'password': data.password,
+
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            var baseUrl = "@Url.Action("Index","Dashboard")";
+                            window.location.href = baseUrl;
+                        }
+                        else {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>
