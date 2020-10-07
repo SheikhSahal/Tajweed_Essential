@@ -1,0 +1,369 @@
+﻿
+@{
+    ViewData["Title"] = "updatebatch";
+    Layout = "login";
+    var data = ViewBag.bhdata as Tajweed.Models.Batch_header;
+}
+
+
+<!-- MENU SIDEBAR-->
+@Html.Partial("Panel")
+<!-- END MENU SIDEBAR-->
+<!-- PAGE CONTAINER-->
+<div class="page-container">
+    <!-- HEADER DESKTOP-->
+    <header class="header-desktop2">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="header-wrap2">
+                    <div class="logo d-block d-lg-none">
+                        <a href="#">
+                            <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                        </a>
+                    </div>
+                    <div class="header-button2">
+                        <div class="header-button-item js-item-menu">
+                            <i class="zmdi zmdi-search"></i>
+                            <div class="search-dropdown js-dropdown">
+                                <form action="">
+                                    <input class="au-input au-input--full au-input--h65" type="text" placeholder="Search for datas &amp; reports..." />
+                                    <span class="search-dropdown__icon">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="header-button-item has-noti js-item-menu">
+                            <i class="zmdi zmdi-notifications"></i>
+                            <div class="notifi-dropdown js-dropdown">
+                                <div class="notifi__title">
+                                    <p>You have 3 Notifications</p>
+                                </div>
+                                <div class="notifi__item">
+                                    <div class="bg-c1 img-cir img-40">
+                                        <i class="zmdi zmdi-email-open"></i>
+                                    </div>
+                                    <div class="content">
+                                        <p>You got a email notification</p>
+                                        <span class="date">April 12, 2018 06:50</span>
+                                    </div>
+                                </div>
+                                <div class="notifi__item">
+                                    <div class="bg-c2 img-cir img-40">
+                                        <i class="zmdi zmdi-account-box"></i>
+                                    </div>
+                                    <div class="content">
+                                        <p>Your account has been blocked</p>
+                                        <span class="date">April 12, 2018 06:50</span>
+                                    </div>
+                                </div>
+                                <div class="notifi__item">
+                                    <div class="bg-c3 img-cir img-40">
+                                        <i class="zmdi zmdi-file-text"></i>
+                                    </div>
+                                    <div class="content">
+                                        <p>You got a new file</p>
+                                        <span class="date">April 12, 2018 06:50</span>
+                                    </div>
+                                </div>
+                                <div class="notifi__footer">
+                                    <a href="#">All notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header-button-item mr-0 js-sidebar-btn">
+                            <i class="zmdi zmdi-menu"></i>
+                        </div>
+                        <div class="setting-menu js-right-sidebar d-none d-lg-block">
+                            <div class="account-dropdown__body">
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-account"></i>Account
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-settings"></i>Setting
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-money-box"></i>Billing
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="account-dropdown__body">
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-globe"></i>Language
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-pin"></i>Location
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-email"></i>Email
+                                    </a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-notifications"></i>Notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- HEADER DESKTOP-->
+    <!-- MAIN CONTENT-->
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+
+                                    <div class="col-md-9">Batch</div>
+                                    <div class="col-md-3">
+                                        <button id="Save" type="button" class="btn btn-info">
+                                            <span id="payment-button-amount">Submit</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h3 class="text-center title-2">Create Batch</h3>
+                                </div>
+                                <hr>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-3">
+
+                                            <div class="form-group Batch_Name">
+                                                <label for="Batch_Name" class="control-label mb-1">Batch Name:</label>
+                                                <input id="Batch_Name" name="Batch_Name" type="text" class="form-control" aria-required="true" aria-invalid="false" placeholder="Batch Name" value="@data.Batch_Name">
+                                                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Batch Name</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label for="Teacher" class="control-label mb-1">Teacher Name:</label>
+                                            <select class="form-control" id="Teacher">
+                                                @foreach (var tech in ViewBag.Teachdropdown as List<Tajweed.Models.Teacher>)
+                                                {
+                                                    if (data.Teacher == tech.Teach_id)
+                                                    {
+                                                        <option value="@tech.Teach_id" selected>@tech.Teach_name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@tech.Teach_id">@tech.Teach_name</option>
+                                                    }
+
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label for="Volunteer" class="control-label mb-1">Volunteer:</label>
+                                            <select class="form-control" id="Volunteer">
+                                                @foreach (var std in ViewBag.stddropdown as List<Tajweed.Models.Student>)
+                                                {
+                                                    if (data.Volunteer == std.Stud_id)
+                                                    {
+                                                        <option value="@std.Stud_id" selected>@std.Stud_name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@std.Stud_id">@std.Stud_name</option>
+                                                    }
+
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3 Zoom">
+                                            <div class="form-group">
+                                                <label for="Zoom" class="control-label mb-1">Zoom:</label>
+                                                <input id="Zoom" name="Zoom" placeholder="Zoom" type="text" class="form-control" aria-required="true" aria-invalid="false" value="@data.Zoom">
+                                                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Zoom id</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <label for="Amount" class="control-label mb-1">Add Student:</label>
+                                            <select class="form-control" id="Amount">
+                                                @foreach (var std in ViewBag.stddropdown as List<Tajweed.Models.Student>)
+                                                {
+                                                    <option value="@std.Stud_id">@std.Stud_name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="Amount" class="control-label mb-1">&nbsp;&nbsp;&nbsp;</label>
+                                            <a href="#" class="btn btn-success add" id="add">Add</a>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="col-lg-6">
+                                        <!-- TOP CAMPAIGN-->
+                                        <div class="top-campaign">
+                                            <h3 class="title-3 m-b-30">Students</h3>
+                                            <div class="table-responsive">
+                                                <table class="table table-top-campaign display" id="example" style="text-align:left !important;">
+                                                    <tbody id="details">
+                                                    </tbody>
+                                                    <tbody>
+
+                                                        @foreach (var predata in ViewBag.bddata as List<Tajweed.Models.Batch_details>)
+                                                        {
+                                                            <tr>
+                                                                <td>@predata.stu_name</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--  END TOP CAMPAIGN-->
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.Partial("Footer")
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $('#add').click(function () {
+            var AllValid = true;
+            if (AllValid) {
+
+                var Amount = $('#Amount').val().trim();
+                var Amounttext = $('#Amount option:selected').text();
+                var Amount_text = '<td>' + Amounttext + '</td>';
+                var Amount_input = '<input type="text" id="at" class="at form-control collapse" value=' + Amount + ' />';
+                var remove_btn = '<td> <button type="button" data-dismiss=' + Amount+' class="rm btn btn-danger">x</button> </td>';
+
+                var detail_values = '<tr><td>' + Amount_input + '</td> ' + Amount_text + remove_btn+ '</tr>';
+                $('#details').prepend(detail_values);
+            }
+        });
+
+
+        $('#details').on('click', '.rm', function () {
+            var row = $(this).parent().parent("tr");
+            row.remove();
+        });
+
+        $('#Save').click(function () {
+
+
+            var isAllValid = true;
+
+
+            if (!($('#Batch_Name').val().trim() != '')) {
+                isAllValid = false;
+                $('.Batch_Name .error').css('display', 'block');
+            }
+            else {
+                $('.Batch_Name .error').css('display', 'none');
+            }
+
+
+            if (!($('#Zoom').val().trim() != '')) {
+                isAllValid = false;
+                $('.Zoom .error').css('display', 'block');
+            }
+            else {
+                $('.Zoom .error').css('display', 'none');
+            }
+
+
+
+            debugger
+
+            if (isAllValid) {
+
+                var isAllvalid = true;
+                var list = [];
+                $('#details tr').each(function (index, ele) {
+                    var orderItem = {
+                        stu_id: $('.at', this).val()
+                    }
+
+                    JSON.stringify(orderItem)
+                    list.push(orderItem);
+
+                })
+
+                var data = {
+
+                    Batch_Name: $('#Batch_Name').val(),
+                    Teacher: $('#Teacher').val(),
+                    Volunteer: $('#Volunteer').val(),
+                    Zoom: $('#Zoom').val(),
+
+                    Batch_details: list
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Batch_List/updatebatch',
+                    data: {
+                        'Batch_Name': data.Batch_Name,
+                        'Teacher': data.Teacher,
+                        'Volunteer': data.Volunteer,
+                        'Zoom': data.Zoom,
+                        'Batch_details': data.Batch_details
+                    }
+                    //,
+                    @*success: function (response) {
+                        if (response.success) {
+                            var baseUrl = "@Url.Action("Index","Dashboard")";
+                            window.location.href = baseUrl;
+                        }
+                        else {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                        }
+                    }*@
+
+                });
+
+            }
+
+
+        })
+    });
+</script>

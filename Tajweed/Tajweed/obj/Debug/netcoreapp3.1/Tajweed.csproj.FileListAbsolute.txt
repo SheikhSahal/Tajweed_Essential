@@ -9,7 +9,6 @@ D:\Madarsa\Tajweed\Tajweed\bin\Debug\netcoreapp3.1\Tajweed.dll
 D:\Madarsa\Tajweed\Tajweed\bin\Debug\netcoreapp3.1\Tajweed.pdb
 D:\Madarsa\Tajweed\Tajweed\bin\Debug\netcoreapp3.1\Tajweed.Views.dll
 D:\Madarsa\Tajweed\Tajweed\bin\Debug\netcoreapp3.1\Tajweed.Views.pdb
-D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Tajweed.csprojAssemblyReference.cache
 D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Tajweed.AssemblyInfoInputs.cache
 D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Tajweed.AssemblyInfo.cs
 D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Tajweed.RazorAssemblyInfo.cache
@@ -118,3 +117,9 @@ D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Tajweed.MvcApplicationPartsAs
 D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Login\Index.cshtml.g.cs
 D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Registration\Index.cshtml.g.cs
 D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Batch\Index.cshtml.g.cs
+D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Panel.cshtml.g.cs
+D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Panel_Header.cshtml.g.cs
+D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Batch_List\Index.cshtml.g.cs
+D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Footer.cshtml.g.cs
+D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Tajweed.csprojAssemblyReference.cache
+D:\Madarsa\Tajweed\Tajweed\obj\Debug\netcoreapp3.1\Razor\Views\Batch_List\updatebatch.cshtml.g.cs

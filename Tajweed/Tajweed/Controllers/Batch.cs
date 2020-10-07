@@ -28,6 +28,13 @@ namespace Tajweed.Controllers
         [HttpPost]
         public IActionResult Index(Batch_header bh)
         {
+
+            List<Teacher> tdp = db.Teacher_DropDown();
+            ViewBag.Teachdropdown = tdp;
+
+            List<Student> sdp = db.Student_DropDown();
+            ViewBag.stddropdown = sdp;
+
             var bh_id = db.AutoGenerate_batch_id();
 
             bh.Bh_id = Convert.ToInt32(bh_id.Bh_id);

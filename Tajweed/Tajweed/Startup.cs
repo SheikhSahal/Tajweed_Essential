@@ -50,7 +50,7 @@ namespace Tajweed
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Batch}/{action=Index}/{id?}");
+                    pattern: "{controller=Batch_List}/{action=Index}/{id?}");
             });
         }
     }

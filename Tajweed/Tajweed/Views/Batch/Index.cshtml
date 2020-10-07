@@ -5,187 +5,7 @@
 }
 
 <!-- MENU SIDEBAR-->
-<aside class="menu-sidebar2">
-    <div class="logo">
-        <a href="#">
-            <img src="images/icon/logo-white.png" alt="Cool Admin" />
-        </a>
-    </div>
-    <div class="menu-sidebar2__content js-scrollbar1">
-        <div class="account2">
-            <div class="image img-cir img-120">
-                <img src="images/icon/avatar-big-01.jpg" alt="John Doe" />
-            </div>
-            <h4 class="name">john doe</h4>
-            <a href="#">Sign out</a>
-        </div>
-        <nav class="navbar-sidebar2">
-            <ul class="list-unstyled navbar__list">
-                <li class="active has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-tachometer-alt"></i>Dashboard
-                        <span class="arrow">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="index.html">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard 1
-                            </a>
-                        </li>
-                        <li>
-                            <a href="index2.html">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard 2
-                            </a>
-                        </li>
-                        <li>
-                            <a href="index3.html">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard 3
-                            </a>
-                        </li>
-                        <li>
-                            <a href="index4.html">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard 4
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="inbox.html">
-                        <i class="fas fa-chart-bar"></i>Inbox
-                    </a>
-                    <span class="inbox-num">3</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-shopping-basket"></i>eCommerce
-                    </a>
-                </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-trophy"></i>Features
-                        <span class="arrow">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="table.html">
-                                <i class="fas fa-table"></i>Tables
-                            </a>
-                        </li>
-                        <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms
-                            </a>
-                        </li>
-                        <li>
-                            <a href="calendar.html">
-                                <i class="fas fa-calendar-alt"></i>Calendar
-                            </a>
-                        </li>
-                        <li>
-                            <a href="map.html">
-                                <i class="fas fa-map-marker-alt"></i>Maps
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-copy"></i>Pages
-                        <span class="arrow">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="login.html">
-                                <i class="fas fa-sign-in-alt"></i>Login
-                            </a>
-                        </li>
-                        <li>
-                            <a href="register.html">
-                                <i class="fas fa-user"></i>Register
-                            </a>
-                        </li>
-                        <li>
-                            <a href="forget-pass.html">
-                                <i class="fas fa-unlock-alt"></i>Forget Password
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-desktop"></i>UI Elements
-                        <span class="arrow">
-                            <i class="fas fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="button.html">
-                                <i class="fab fa-flickr"></i>Button
-                            </a>
-                        </li>
-                        <li>
-                            <a href="badge.html">
-                                <i class="fas fa-comment-alt"></i>Badges
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tab.html">
-                                <i class="far fa-window-maximize"></i>Tabs
-                            </a>
-                        </li>
-                        <li>
-                            <a href="card.html">
-                                <i class="far fa-id-card"></i>Cards
-                            </a>
-                        </li>
-                        <li>
-                            <a href="alert.html">
-                                <i class="far fa-bell"></i>Alerts
-                            </a>
-                        </li>
-                        <li>
-                            <a href="progress-bar.html">
-                                <i class="fas fa-tasks"></i>Progress Bars
-                            </a>
-                        </li>
-                        <li>
-                            <a href="modal.html">
-                                <i class="far fa-window-restore"></i>Modals
-                            </a>
-                        </li>
-                        <li>
-                            <a href="switch.html">
-                                <i class="fas fa-toggle-on"></i>Switchs
-                            </a>
-                        </li>
-                        <li>
-                            <a href="grid.html">
-                                <i class="fas fa-th-large"></i>Grids
-                            </a>
-                        </li>
-                        <li>
-                            <a href="fontawesome.html">
-                                <i class="fab fa-font-awesome"></i>FontAwesome
-                            </a>
-                        </li>
-                        <li>
-                            <a href="typo.html">
-                                <i class="fas fa-font"></i>Typography
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</aside>
+@Html.Partial("Panel")
 <!-- END MENU SIDEBAR-->
 <!-- PAGE CONTAINER-->
 <div class="page-container">
@@ -306,19 +126,31 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-header">Credit Card</div>
+                            <div class="card-header">
+                                <div class="row">
+
+                                    <div class="col-md-9">Batch</div>
+                                    <div class="col-md-3">
+                                        <button id="Save" type="button" class="btn btn-info">
+                                            <span id="payment-button-amount">Submit</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div class="card-body">
                                 <div class="card-title">
-                                    <h3 class="text-center title-2">Pay Invoice</h3>
+                                    <h3 class="text-center title-2">Create Batch</h3>
                                 </div>
                                 <hr>
                                 <form>
                                     <div class="row">
                                         <div class="col-md-3">
 
-                                            <div class="form-group">
+                                            <div class="form-group Batch_Name">
                                                 <label for="Batch_Name" class="control-label mb-1">Batch Name:</label>
                                                 <input id="Batch_Name" name="Batch_Name" type="text" class="form-control" aria-required="true" aria-invalid="false" placeholder="Batch Name">
+                                                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
                                             </div>
                                         </div>
 
@@ -343,10 +175,11 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-3 Zoom">
                                             <div class="form-group">
                                                 <label for="Zoom" class="control-label mb-1">Zoom:</label>
                                                 <input id="Zoom" name="Zoom" placeholder="Zoom" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                                                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Zoom id</span>
                                             </div>
                                         </div>
                                     </div>
@@ -354,14 +187,12 @@
                                     <div class="row">
                                         <div class="col-md-10">
                                             <label for="Amount" class="control-label mb-1">Add Student:</label>
-                                            @*<input id="Amount" name="Amount" placeholder="Zoom" type="text" class="form-control" aria-required="true" aria-invalid="false">*@
                                             <select class="form-control" id="Amount">
                                                 @foreach (var std in ViewBag.stddropdown as List<Tajweed.Models.Student>)
                                                 {
                                                     <option value="@std.Stud_id">@std.Stud_name</option>
                                                 }
                                             </select>
-                                            @*<input type="text" id="Amount" class="Amount" />*@
                                         </div>
                                         <div class="col-md-2">
                                             <label for="Amount" class="control-label mb-1">&nbsp;&nbsp;&nbsp;</label>
@@ -382,124 +213,74 @@
                                         </div>
                                         <!--  END TOP CAMPAIGN-->
                                     </div>
-
-                                    <div>
-                                        <button id="Save" type="button" class="btn btn-lg btn-info btn-block">
-                                            <i class="fa fa-lock fa-lg"></i>&nbsp;
-                                            <span id="payment-button-amount">Pay $100.00</span>
-                                            <span id="payment-button-sending" style="display:none;">Sending…</span>
-                                        </button>
-                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="copyright">
-                            <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                        </div>
-                    </div>
-                </div>
+                @Html.Partial("Footer")
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+</style>
 
 <script>
     $(document).ready(function () {
 
+      
+
         $('#add').click(function () {
             var AllValid = true;
-
-
-            //if (!($('#Item-Name').val().trim() != '')) {
-            //    AllValid = false;
-            //    $('#Item-Name').siblings('span.error').css('visibility', 'visible');
-            //}
-            //else {
-            //    $('#Item-Name').siblings('span.error').css('visibility', 'hidden');
-            //}
-
-
-            //if (!($('#Quantity').val().trim() != '')) {
-            //    AllValid = false;
-            //    $('#Quantity').siblings('span.error').css('visibility', 'visible');
-            //}
-            //else {
-            //    $('#Quantity').siblings('span.error').css('visibility', 'hidden');
-            //}
-
-
-            //if (!($('#Rate').val().trim() != '')) {
-            //    AllValid = false;
-            //    $('#Rate').siblings('span.error').css('visibility', 'visible');
-            //}
-            //else {
-            //    $('#Rate').siblings('span.error').css('visibility', 'hidden');
-            //}
-
-
-
-
             if (AllValid) {
 
                 var Amount = $('#Amount').val().trim();
                 var Amounttext = $('#Amount option:selected').text();
                 var Amount_text = '<td>' + Amounttext + '</td>';
                 var Amount_input = '<input type="text" id="at" class="at form-control collapse" value=' + Amount + ' />';
-                var remove_btn = '<td> <a class="btn btn-danger rm">x</a> </td>';
+                var remove_btn = '<td> <button type="button" data-dismiss=' + Amount+' class="rm btn btn-danger">x</button> </td>';
 
                 var detail_values = '<tr><td>' + Amount_input + '</td> ' + Amount_text + remove_btn+ '</tr>';
                 $('#details').prepend(detail_values);
-
-
-                //diable amount
-                //$('.at').prop("disabled", true);
-
-                //auto generate Serial number
-                //var sno = parseInt($('#SNO').val()) + 1;
-                //$('#SNO').val(sno);
-
-                //empty all values
-                //$('#Item-Name,#Quantity,#Amount,#Rate').val('');
-
             }
         });
 
-        $('.rm').click(function () {
-            //var row = $(this).parent().parent("tr");
-            //var onerow = row.find('at').val();
-            alert('click');
-            //row.css('border', '1px solid red;');
 
+        $('#details').on('click', '.rm', function () {
+            var row = $(this).parent().parent("tr");
+            row.remove();
         });
-
 
         $('#Save').click(function () {
 
-
+            alert('working');
             var isAllValid = true;
 
 
-            //if (!($('#uname').val().trim() != '')) {
-            //    isAllValid = false;
-            //    $('.uname .error').css('display', 'block');
-            //}
-            //else {
-            //    $('.uname .error').css('display', 'none');
-            //}
+            if (!($('#Batch_Name').val().trim() != '')) {
+                isAllValid = false;
+                $('.Batch_Name .error').css('display', 'block');
+            }
+            else {
+                $('.Batch_Name .error').css('display', 'none');
+            }
 
 
-            //if (!($('#pwd').val().trim() != '')) {
-            //    isAllValid = false;
-            //    $('.pwd .error').css('display', 'block');
-            //}
-            //else {
-            //    $('.pwd .error').css('display', 'none');
-            //}
+            if (!($('#Zoom').val().trim() != '')) {
+                isAllValid = false;
+                $('.Zoom .error').css('display', 'block');
+            }
+            else {
+                $('.Zoom .error').css('display', 'none');
+            }
 
 
 
