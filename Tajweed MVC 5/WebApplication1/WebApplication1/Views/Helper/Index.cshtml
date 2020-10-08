@@ -1,14 +1,13 @@
 ﻿
 @{
-    ViewBag.Title = "updatebatch";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Dashboard.cshtml";
-    var data = ViewBag.bhdata as WebApplication1.Models.Batch_header;
 }
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
             <span class="badge badge-pill badge-success">Success</span>
-            <span id="alt-msg"></span>
+            You successfully insert the record.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -28,7 +27,7 @@
 
                         <div class="card-body">
                             <div class="card-title">
-                                <h3 class="text-center title-2">Update Course</h3>
+                                <h3 class="text-center title-2">Create Helper</h3>
                             </div>
                             <hr>
 
@@ -39,61 +38,29 @@
                                     <div class="col-md-3">
                                         <div class="form-group Batch_Name">
                                             <label for="Batch_Name" class="form-control-label">Course Name:</label>
-                                            <input type="text" id="Batch_Name" name="Batch_Name" placeholder="Course Name" class="input-sm form-control-sm form-control" value="@data.Batch_Name">
-                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-3">
-                                        <div class="form-group Teacher">
-                                            <label for="Teacher" class="form-control-label">Teacher:</label>
-                                            <select class="form-control" id="Teacher">
-                                                @foreach (var tech in ViewBag.Teachdropdown as List<WebApplication1.Models.Teacher>)
+                                            <select class="form-control" id="Batch_Name">
+                                                @foreach (var std in ViewBag.cordropdown as List<WebApplication1.Models.Batch_header>)
                                                 {
-
-                                                    if (data.Teacher == tech.Teach_id)
-                                                    {
-                                                        <option value="@tech.Teach_id" selected>@tech.Teach_name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@tech.Teach_id">@tech.Teach_name</option>
-                                                    }
-
+                                                    <option value="@std.Bh_id">@std.Batch_Name</option>
                                                 }
                                             </select>
                                         </div>
                                     </div>
 
 
+
                                     <div class="col-md-3">
-                                        <div class="form-group Volunteer">
-                                            <label for="Volunteer" class="form-control-label">Volunteer:</label>
-                                            <select class="form-control" id="Volunteer">
+                                        <div class="form-group Helper">
+                                            <label for="Helper" class="form-control-label">Helper:</label>
+                                            <select class="form-control" id="Helper">
                                                 @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
                                                 {
-                                                    if (data.Volunteer == std.Stud_id)
-                                                    {
-                                                        <option value="@std.Stud_id" selected>@std.Stud_name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@std.Stud_id">@std.Stud_name</option>
-                                                    }
+                                                    <option value="@std.Stud_id">@std.Stud_name</option>
                                                 }
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
-
-                                        <div class="form-group Zoom">
-                                            <label for="Zoom" class="form-control-label">Zoom:</label>
-                                            <input type="text" id="Zoom" name="Zoom" placeholder="Zoom" class="input-sm form-control-sm form-control" value="@data.Zoom">
-                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Zoom</span>
-                                        </div>
-                                    </div>
                                 </div>
 
 
@@ -127,15 +94,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="details"></tbody>
-                                            @foreach (var precour in ViewBag.bddata as List<WebApplication1.Models.Batch_details>)
-                                            {
-
-                                                <tr>
-                                                    <td class="std-id collapse">@precour.stu_id</td>
-                                                    <td>@precour.stu_name</td>
-                                                    <td> <button type="button" class="rm-itm btn btn-danger">x</button> </td>
-                                                </tr>
-                                            }
                                         </table>
                                         <div id="orderItems">
                                             <table class="table table-responsive" id="orderdetailsItems"></table>
@@ -152,8 +110,6 @@
         </div>
     </div>
 </div>
-
-
 <style>
     span.error {
         display: none;
@@ -169,7 +125,6 @@
         left: 40%;
     }
 </style>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -197,55 +152,8 @@
         });
 
 
-        $('.rm-itm').click(function () {
-            var row = $(this).parent().parent("tr");
-            row.remove();
-            var get = row.find('.std-id');
-            var del= get.text();
-
-            $.ajax({
-                type: 'POST',
-                url: '/Course_List/DelSin',
-                data: {
-                    'id': del
-                },
-                success: function (resp) {
-                    if (resp.status) {
-                        $('#alt-msg').text('Your record delete successfully..');
-                        $('.message').delay(300).fadeIn();
-                        $('.message').delay(200).fadeOut();
-
-                    }
-                    else {
-                        alert('error');
-                    }
-                }
-            });
-
-        })
-
-
         $('#save').click(function () {
             var isAllValid = true;
-
-            if (!($('#Batch_Name').val().trim() != '')) {
-                isAllValid = false;
-                $('.Batch_Name .error').css('display', 'block');
-            }
-            else {
-                $('.Batch_Name .error').css('display', 'none');
-            }
-
-            if (!($('#Zoom').val().trim() != '')) {
-                isAllValid = false;
-                $('.Zoom .error').css('display', 'block');
-            }
-            else {
-                $('.Zoom .error').css('display', 'none');
-            }
-
-
-
             var list = [];
             $('#details tr').each(function (index, ele) {
 
@@ -257,48 +165,47 @@
                 list.push(orderItem);
 
             })
-            if (isAllValid) {
-                var data = {
-                    Batch_Name: $('#Batch_Name').val(),
-                    Teacher: $('#Teacher').val(),
-                    Volunteer: $('#Volunteer').val(),
-                    Zoom: $('#Zoom').val(),
 
-                    Batch_details: list
+            if (list.length == 0) {
+                $('#orderItemError').text('At least 1 record required.');
+                isAllValid = false;
+            }
+            if (isAllValid) {
+
+
+                var data = {
+                    Bh_id: $('#Batch_Name').val(),
+                    stu_id: $('#Helper').val(),
+
+                    Helper_dtl: list
                 }
                 debugger
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Course_List/updateCourse',
+                    url: '/Helper/Index',
                     data: {
-                        'Batch_Name': data.Batch_Name,
-                        'Teacher': data.Teacher,
-                        'Volunteer': data.Volunteer,
-                        'Zoom': data.Zoom,
-                        'Batch_details': data.Batch_details
+                        'Batch_Name': data.Bh_id,
+                        'stu_id': data.stu_id,
+                        'Helper_dtl': data.Helper_dtl
                     }
                     ,
                     success: function (resp) {
                         if (resp.status) {
-                            $('#alt-msg').text('Your record update successfully.');
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
-                            setTimeout(function () { location.href = '@Url.Action("Index", "Course_list")'; }, 3000);
-
+                            $('#Batch_Name,#Zoom').val('');
+                            $("#details").empty();
+                            if (list.length > 0) {
+                                $('#orderItemError').text('');
+                            }
                         }
                         else {
                             alert('error');
                         }
                     }
-
                 });
-
             }
-
         })
-
-
-
     });
 </script>

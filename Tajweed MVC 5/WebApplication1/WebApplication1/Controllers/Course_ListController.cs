@@ -80,9 +80,12 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult DelSin(int id)
         {
+            bool status = false;
             var BH_id = TempData["mydata"];
             db.dtlDelete(id, Convert.ToInt32(BH_id));
-            return View();
+            status = true;
+
+            return new JsonResult { Data = new { status = status } };
         }
     }
 }

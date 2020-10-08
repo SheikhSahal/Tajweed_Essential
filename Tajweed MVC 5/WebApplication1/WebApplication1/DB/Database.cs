@@ -11,6 +11,8 @@ namespace WebApplication1.DB
     public class Database
     {
         string connectString = Database_connecting.connectString;
+
+        //Courses Functions Start
         public Batch_header AutoGenerate_batch_id()
         {
             Batch_header bh = new Batch_header();
@@ -304,6 +306,56 @@ namespace WebApplication1.DB
                 }
             }
         }
+
+        //Courses Function End
+
+        //Helpers Function start
+        public Helper_mst AutoGenerate_Helper_id()
+        {
+            Helper_mst hm = new Helper_mst();
+            SqlConnection con = new SqlConnection(connectString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select  ISNULL(max(hh.hlp_id),0)+1 hh_id from hlp_header hh";
+            cmd.Connection = con;
+            con.Open();
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            hm.Hpl_id = Convert.ToInt16(reader["hh_id"]);
+
+            reader.Close();
+            return hm;
+        }
+
+        public List<Batch_header> Course_DropDown()
+        {
+            List<Batch_header> DBase = new List<Batch_header>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME from Batch_header bh where ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Batch_header std = new Batch_header();
+
+                        std.Bh_id = Convert.ToInt32(reader["BH_ID"]);
+                        std.Batch_Name = reader["BATCH_NAME"].ToString();
+
+
+                        DBase.Add(std);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
 
     }
 }
