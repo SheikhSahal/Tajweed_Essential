@@ -235,7 +235,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bd.BH_ID, s.Stud_name from Batch_details bd , Student s where bd.BH_ID = 1  and bd.STU_ID = s.Stud_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select bd.BH_ID, bd.STU_ID,  s.Stud_name from Batch_details bd , Student s where bd.BH_ID = @p_id  and bd.STU_ID = s.Stud_id", conn))
                 {
                     conn.Open();
 
@@ -248,7 +248,7 @@ namespace WebApplication1.DB
                         Batch_details emp = new Batch_details();
 
                         emp.Bh_id = Convert.ToInt32(reader["Bh_id"]);
-                        //emp.stu_id = Convert.ToInt32( reader["STU_ID"]);
+                        emp.stu_id = Convert.ToInt32(reader["STU_ID"]);
                         emp.stu_name = reader["Stud_name"].ToString();
 
 
@@ -282,6 +282,25 @@ namespace WebApplication1.DB
 
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public void dtlDelete(int id,int bh_id)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from Batch_details where BH_ID = @bh_id and STU_ID = @stu_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
+                    cmd.Parameters.AddWithValue("@stu_id", id);
+
+                    cmd.ExecuteNonQuery();
+
                 }
             }
         }

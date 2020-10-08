@@ -49,6 +49,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult updateCourse(Batch_header bh)
         {
+            bool status = false;
+
             var BH_id = TempData["mydata"];
             bh.Bh_id = Convert.ToInt32(BH_id);
 
@@ -60,12 +62,26 @@ namespace WebApplication1.Controllers
 
             db.Update_batch_Master(bh);
 
-            foreach (var bhdtl in bh.Batch_details)
+            if(bh.Batch_details != null)
             {
-                bhdtl.Bh_id = Convert.ToInt32(BH_id);
-                db.InsertBatchDetails(bhdtl);
+                foreach (var bhdtl in bh.Batch_details)
+                {
+                    bhdtl.Bh_id = Convert.ToInt32(BH_id);
+                    db.InsertBatchDetails(bhdtl);
+                }
             }
+            status = true;
 
+
+
+            return new JsonResult { Data = new { status = status } };
+        }
+
+        [HttpPost]
+        public ActionResult DelSin(int id)
+        {
+            var BH_id = TempData["mydata"];
+            db.dtlDelete(id, Convert.ToInt32(BH_id));
             return View();
         }
     }
