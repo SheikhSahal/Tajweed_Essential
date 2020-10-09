@@ -139,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AttandanceController.cs" />
+    <Compile Include="Controllers\Attendance_listController.cs" />
+    <Compile Include="Controllers\Helper_ListController.cs" />
     <Compile Include="Controllers\Course_ListController.cs" />
     <Compile Include="Controllers\Create_courseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -148,9 +151,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AP_Menu.cs" />
+    <Compile Include="Models\Attendance_dtl.cs" />
+    <Compile Include="Models\Attendance_mst.cs" />
     <Compile Include="Models\Batch_details.cs" />
     <Compile Include="Models\Batch_header.cs" />
     <Compile Include="Models\Batch_list.cs" />
+    <Compile Include="Models\Helper_list.cs" />
     <Compile Include="Models\Helper_mst.cs" />
     <Compile Include="Models\Helper_dtl.cs" />
     <Compile Include="Models\Teacher.cs" />
@@ -171,6 +178,10 @@
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Course_List\updateCourse.cshtml" />
     <Content Include="Views\Helper\Index.cshtml" />
+    <Content Include="Views\Helper_List\Index.cshtml" />
+    <Content Include="Views\Helper_List\updateHelper.cshtml" />
+    <Content Include="Views\Attandance\Index.cshtml" />
+    <Content Include="Views\Attendance_list\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -183,6 +194,7 @@
     <Folder Include="Content\css\" />
     <Folder Include="Content\js\" />
     <Folder Include="Content\vendor\" />
+    <Folder Include="Views\Batch_List\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

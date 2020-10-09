@@ -1,6 +1,7 @@
-﻿@model List<WebApplication1.Models.AP_Menu>
+﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "updateHelper";
+    var data = ViewBag.hmdata as WebApplication1.Models.Helper_mst;
     Layout = "~/Views/Shared/Dashboard.cshtml";
 }
 <div class="main-content">
@@ -27,11 +28,9 @@
 
                         <div class="card-body">
                             <div class="card-title">
-                                <h3 class="text-center title-2">Create Helper</h3>
+                                <h3 class="text-center title-2">Update Helper</h3>
                             </div>
                             <hr>
-
-
                             <form>
 
                                 <div class="row">
@@ -41,7 +40,14 @@
                                             <select class="form-control" id="Batch_Name">
                                                 @foreach (var std in ViewBag.cordropdown as List<WebApplication1.Models.Batch_header>)
                                                 {
-                                                    <option value="@std.Bh_id">@std.Batch_Name</option>
+                                                    if (data.bh_id == std.Bh_id)
+                                                    {
+                                                        <option value="@std.Bh_id" selected>@std.Batch_Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@std.Bh_id">@std.Batch_Name</option>
+                                                    }
                                                 }
                                             </select>
                                         </div>
@@ -55,7 +61,15 @@
                                             <select class="form-control" id="Helper">
                                                 @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
                                                 {
-                                                    <option value="@std.Stud_id">@std.Stud_name</option>
+                                                    if (data.stu_id == std.Stud_id)
+                                                    {
+                                                        <option value="@std.Stud_id" selected>@std.Stud_name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@std.Stud_id">@std.Stud_name</option>
+                                                    }
+
                                                 }
                                             </select>
                                         </div>
@@ -94,6 +108,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="details"></tbody>
+                                            @foreach(var hlpdtl in ViewBag.hddata as List<WebApplication1.Models.Helper_dtl>)
+                                            {
+                                            <tr>
+                                                <td class="std-id collapse">@hlpdtl.stud_id</td>
+                                                <td>@hlpdtl.stud_name</td>
+                                                <td> <button type="button" class="rm-itm btn btn-danger">x</button> </td>
+                                            </tr>
+                                            }
                                         </table>
                                         <div id="orderItems">
                                             <table class="table table-responsive" id="orderdetailsItems"></table>
@@ -151,38 +173,55 @@
             row.remove();
         });
 
+        $('.rm-itm').click(function () {
+            var row = $(this).parent().parent("tr");
+            row.remove();
+            var get = row.find('.std-id');
+            var del = get.text();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Helper_List/DelSin',
+                data: {
+                    'id': del
+                },
+                success: function (resp) {
+                    if (resp.status) {
+                        $('#alt-msg').text('Your record delete successfully..');
+                        $('.message').delay(300).fadeIn();
+                        $('.message').delay(200).fadeOut();
+
+                    }
+                    else {
+                        alert('error');
+                    }
+                }
+            });
+
+        })
+
         $('#save').click(function () {
             var isAllValid = true;
             var list = [];
             $('#details tr').each(function (index, ele) {
-
                 var orderItem = {
                     stud_id: $('.at', this).val()
                 }
-
                 JSON.stringify(orderItem)
                 list.push(orderItem);
 
             })
-            debugger
-            if (list.length == 0) {
-                $('#orderItemError').text('At least 1 record required.');
-                isAllValid = false;
-            }
             if (isAllValid) {
-
-
                 var data = {
                     Bh_id: $('#Batch_Name').val(),
                     stu_id: $('#Helper').val(),
-
                     Helper_dtl: list
                 }
                 debugger
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Helper/Index',
+                    url: '/Helper_List/updateHelper',
                     data: {
                         'Bh_id': data.Bh_id,
                         'stu_id': data.stu_id,

@@ -41,6 +41,6 @@ D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\bin\System.Web.Webpages
 D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\bin\System.Web.Webpages.Razor.xml
 D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\bin\System.Web.Helpers.xml
 D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\bin\System.Web.Mvc.xml
-D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
 D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
+D:\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache

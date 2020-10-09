@@ -49,10 +49,10 @@
         }
     </style>
 </head>
-@*@model IEnumerable<FYP.Models.AP_Menu>*@
+@model IEnumerable<WebApplication1.Models.AP_Menu>
 @*@{
-    string img = Session["pic"].ToString();
-}*@
+        string img = Session["pic"].ToString();
+    }*@
 
 
 <body class="animsition">
@@ -63,9 +63,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="#">
-                            @*<img src="~/Content/Images/logo.jpg" width="50" height="50" />*@
                             <img src="~/Content/Main_Menu/images/logo.PNG" />
-                            @*<img src="~/Content/Images/logo.png" alt="Big Bang Store" width="50" height="50" />*@
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -78,7 +76,7 @@
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                        @*@ShowMenu(Model)*@
+                        @ShowMenu(Model)
                     </ul>
                 </div>
             </nav>
@@ -96,7 +94,7 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        @*@ShowMenu(Model)*@
+                        @ShowMenu(Model)
                     </ul>
                 </nav>
             </div>
@@ -173,6 +171,30 @@
 
     </div>
 
+    @helper ShowMenu(IEnumerable<WebApplication1.Models.AP_Menu> menuList)
+    {
+foreach (var s in menuList)
+{
+        <li class="@(s.List.Any()?"dropdown":"") active has-sub">
+            @if (s.List.Any())
+            {
+                <a class="js-arrow" href="#">
+                    @s.Menu_name <span class="arrow"><i class="fas fa-angle-down"></i></span>
+                </a>
+
+                <ul class="list-unstyled navbar__sub-list js-sub-list">
+                    @ShowMenu(s.List)
+                </ul>
+            }
+            else
+            {
+                <a href="http://localhost:62056/@s.Menu_URL">
+                    @s.Menu_name
+                </a>
+            }
+        </li>
+}
+}
 
 
     <!-- Jquery JS-->

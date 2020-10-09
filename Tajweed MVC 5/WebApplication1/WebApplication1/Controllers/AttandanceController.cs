@@ -8,19 +8,17 @@ using WebApplication1.DB;
 
 namespace WebApplication1.Controllers
 {
-    public class HelperController : Controller
+    public class AttandanceController : Controller
     {
         Database db = new Database();
-        // GET: Helper
+        // GET: Attandance
         public ActionResult Index()
         {
+
             AP_Menu menu = new AP_Menu();
 
             var Menulist = db.user_rights(13);
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
-
-            List<Student> sdp = db.Student_DropDown();
-            ViewBag.stddropdown = sdp;
 
             List<Batch_header> bh = db.Course_DropDown();
             ViewBag.cordropdown = bh;
@@ -28,29 +26,29 @@ namespace WebApplication1.Controllers
             return View(menudisplay);
         }
 
+
         [HttpPost]
-        public ActionResult Index(Helper_mst hm)
+        public ActionResult Index(Attendance_mst am)
         {
             bool status = false;
-            List<Student> sdp = db.Student_DropDown();
-            ViewBag.stddropdown = sdp;
-
             List<Batch_header> bh = db.Course_DropDown();
             ViewBag.cordropdown = bh;
 
-            var hp_id = db.AutoGenerate_Helper_id();
-            hm.Hpl_id = Convert.ToInt32(hp_id.Hpl_id);
+            var at_id = db.AutoGenerate_attendance();
 
-            db.InsertHelperHeader(hm);
+            am.att_id = Convert.ToInt32(at_id.att_id);
 
-            foreach (var hmdtl in hm.Helper_dtl)
-            {
-                hmdtl.Hpl_id = Convert.ToInt32(hp_id.Hpl_id);
-                db.InsertHelperDetails(hmdtl);
-            }
+            db.InsertAttHeader(am);
             status = true;
-
             return new JsonResult { Data = new { status = status } };
+        }
+
+
+
+        public ActionResult DelAtt(int id)
+        {
+            db.Deleteatt(id);
+            return RedirectToAction("index", "Attendance_list");
         }
     }
 }

@@ -9,5 +9,6 @@ namespace WebApplication1.Models
     {
         public int Hpl_id { get; set; }
         public int stud_id { get; set; }
+        public string stud_name { get; set; }
     }
 }

@@ -8,14 +8,14 @@ using WebApplication1.DB;
 
 namespace WebApplication1.Controllers
 {
-    public class Course_ListController : Controller
+    public class Helper_ListController : Controller
     {
         Database db = new Database();
-
+        // GET: Batch_List
         public ActionResult Index()
         {
-            List<Batch_list> bhlist = db.Batchfetchdetail();
-            ViewBag.batchlist = bhlist;
+            List<Helper_list> hllist = db.Helperfetchdetail();
+            ViewBag.helperlist = hllist;
 
             AP_Menu menu = new AP_Menu();
 
@@ -28,60 +28,62 @@ namespace WebApplication1.Controllers
             return View(menudisplay);
         }
 
-
         public ActionResult DeleteRecord(int id)
         {
-            db.DeleteBatch(id);
-            return RedirectToAction("index", "Course_List");
+            db.Delete_Helper(id);
+            return RedirectToAction("index", "Helper_List");
         }
 
-        [HttpGet]
-        public ActionResult updateCourse(int id)
-        {
 
+        [HttpGet]
+        public ActionResult updateHelper(int id)
+        {
             AP_Menu menu = new AP_Menu();
 
             var Menulist = db.user_rights(13);
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
             TempData["mydata"] = id;
-            Batch_header bhdata = db.get_batch_Master_data(id);
-            ViewBag.bhdata = bhdata;
+            Helper_mst hmdata = db.get_helper_Master_data(id);
+            ViewBag.hmdata = hmdata;
 
-            List<Batch_details> bddata = db.Get_Batch_detail_data(id);
-            ViewBag.bddata = bddata;
-
-            List<Teacher> tdp = db.Teacher_DropDown();
-            ViewBag.Teachdropdown = tdp;
+            List<Helper_dtl> hddata = db.Get_helper_detail_data(id);
+            ViewBag.hddata = hddata;
 
             List<Student> sdp = db.Student_DropDown();
             ViewBag.stddropdown = sdp;
+
+            List<Batch_header> bh = db.Course_DropDown();
+            ViewBag.cordropdown = bh;
 
             return View(menudisplay);
         }
 
+
+        
+
         [HttpPost]
-        public ActionResult updateCourse(Batch_header bh)
+        public ActionResult updateHelper(Helper_mst hm)
         {
             bool status = false;
 
             var BH_id = TempData["mydata"];
-            bh.Bh_id = Convert.ToInt32(BH_id);
-
-            List<Teacher> tdp = db.Teacher_DropDown();
-            ViewBag.Teachdropdown = tdp;
+            hm.Hpl_id = Convert.ToInt32(BH_id);
 
             List<Student> sdp = db.Student_DropDown();
             ViewBag.stddropdown = sdp;
 
-            db.Update_batch_Master(bh);
+            List<Batch_header> bh = db.Course_DropDown();
+            ViewBag.cordropdown = bh;
 
-            if(bh.Batch_details != null)
+            db.Update_Helper_master(hm);
+
+            if (hm.Helper_dtl != null)
             {
-                foreach (var bhdtl in bh.Batch_details)
+                foreach (var hmdtl in hm.Helper_dtl)
                 {
-                    bhdtl.Bh_id = Convert.ToInt32(BH_id);
-                    db.InsertBatchDetails(bhdtl);
+                    hmdtl.Hpl_id = Convert.ToInt32(BH_id);
+                    db.InsertHelperDetails(hmdtl);
                 }
             }
             status = true;
@@ -93,7 +95,7 @@ namespace WebApplication1.Controllers
         {
             bool status = false;
             var BH_id = TempData["mydata"];
-            db.dtlDelete(id, Convert.ToInt32(BH_id));
+            db.hlpDelete(id, Convert.ToInt32(BH_id));
             status = true;
 
             return new JsonResult { Data = new { status = status } };

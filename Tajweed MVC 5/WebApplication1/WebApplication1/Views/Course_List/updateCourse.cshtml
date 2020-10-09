@@ -96,6 +96,16 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group course_end_date">
+                                            <label for="course_end_date" class="form-control-label">Course end date:</label>
+                                            <input type="date" id="course_end_date" name="course_end_date" placeholder="Zoom" class="input-sm form-control-sm form-control" value="@data.course_end_date">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a course end date</span>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div class="row form-group">
                                     <div class="col col-sm-2">
@@ -244,6 +254,13 @@
                 $('.Zoom .error').css('display', 'none');
             }
 
+            if (!($('#course_end_date').val().trim() != '')) {
+                isAllValid = false;
+                $('.course_end_date .error').css('display', 'block');
+            }
+            else {
+                $('.course_end_date .error').css('display', 'none');
+            }
 
 
             var list = [];
@@ -262,8 +279,8 @@
                     Batch_Name: $('#Batch_Name').val(),
                     Teacher: $('#Teacher').val(),
                     Volunteer: $('#Volunteer').val(),
+                    course_end_date: $('#course_end_date').val(),
                     Zoom: $('#Zoom').val(),
-
                     Batch_details: list
                 }
                 debugger
@@ -276,7 +293,8 @@
                         'Teacher': data.Teacher,
                         'Volunteer': data.Volunteer,
                         'Zoom': data.Zoom,
-                        'Batch_details': data.Batch_details
+                        'Batch_details': data.Batch_details,
+                        'course_end_date': data.course_end_date
                     }
                     ,
                     success: function (resp) {

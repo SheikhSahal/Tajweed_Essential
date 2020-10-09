@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- DATA TABLE -->
-                    <h3 class="title-5 m-b-35">All courses</h3>
+                    <h3 class="title-5 m-b-35">All Attendance</h3>
                     <div class="table-data__tool">
                         <div class="table-data__tool-left" style="visibility:hidden;">
                             <div class="rs-select2--light rs-select2--md">
@@ -33,8 +33,8 @@
                             </button>
                         </div>
                         <div class="table-data__tool-right">
-                            <a href="@Url.Action("Index","Create_course")" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i>Add course
+                            <a href="@Url.Action("Index","Attandance")" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                <i class="zmdi zmdi-plus"></i>Add Attendance
                             </a>
                         </div>
                     </div>
@@ -42,32 +42,34 @@
                         <table class="table table-data2">
                             <thead>
                                 <tr>
+                                    <th>S/No.</th>
                                     <th>Course</th>
-                                    <th>Enroll</th>
-                                    <th>Volunteer</th>
-                                    <th>Teacher</th>
+                                    <th>Attendance Created</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var s in ViewBag.batchlist as List<WebApplication1.Models.Batch_list>)
+                                @{int index = 1;}
+                                @foreach (var s in ViewBag.attlist as List<WebApplication1.Models.Batch_header>)
                                 {
-                                <tr class="tr-shadow">
-                                    <td>@s.Batch_name</td>
-                                    <td>@s.Std_count</td>
-                                    <td>@s.Stud_name</td>
-                                    <td>@s.Teach_name</td>
-                                    <td>
-                                        <div class="table-data-feature">
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateCourse", "Course_List",new { id =s.Bh_id})'">
-                                                <i class="zmdi zmdi-edit"></i>
-                                            </button>
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteRecord", "Course_List",new { id =s.Bh_id})'">
-                                                <i class="zmdi zmdi-delete"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr class="tr-shadow">
+                                        <td>
+                                            @index
+                                        </td>
+                                        <td>@s.Batch_Name</td>
+                                        <td>@s.Att_date.ToString("dd-MMM-yyyy")</td>
+                                        <td>
+                                            <div class="table-data-feature">
+                                                @*<button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateCourse", "Course_List",new { id =s.Bh_id})'">
+                                                    <i class="zmdi zmdi-edit"></i>
+                                                </button>*@
+                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DelAtt", "Attandance",new { id =s.att_id})'">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    index++;
                                 }
                             </tbody>
                         </table>

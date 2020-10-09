@@ -12,6 +12,32 @@ namespace WebApplication1.DB
     {
         string connectString = Database_connecting.connectString;
 
+        //Start Menu
+        public List<AP_Menu> user_rights(int user_id)
+        {
+            List<AP_Menu> DBase = new List<AP_Menu>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select m.Menu_id ,m.Menu_name , m.Menu_parent_id ,m.Menu_URL from Login l , role r , user_privilege u , Menu m where l.Role_id = r.Role_id and r.Role_id = u.role_id and u.menu_id = m.Menu_id and l.User_id = @user_id", conn))
+                {
+                    conn.Open();
+                    SqlParameter user = cmd.Parameters.AddWithValue("@user_id", user_id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        AP_Menu emp = new AP_Menu();
+                        emp.Menu_id = Convert.ToInt16(reader["Menu_id"]);
+                        emp.Menu_name = reader["Menu_name"].ToString();
+                        emp.Menu_URL = reader["Menu_URL"].ToString();
+                        emp.Menu_parent_id = reader["Menu_parent_id"] != DBNull.Value ? Convert.ToInt16(reader["Menu_Parent_id"]) : (int?)null;
+                        DBase.Add(emp);
+                    }
+                }
+            }
+            return DBase;
+        }
+        //end Menu
+
         //Courses Functions Start
         public Batch_header AutoGenerate_batch_id()
         {
@@ -32,12 +58,11 @@ namespace WebApplication1.DB
             return bh;
         }
 
-
         public void InsertBatchHeader(Batch_header bh)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("insert into batch_header (BH_ID,BATCH_NAME,TEACHER_ID,VOLUNTEER_ID,ZOOM_ID,CREATED_BY) values (@BH_ID,@BATCH_NAME,@TEACHER_ID,@VOLUNTEER_ID,@ZOOM_ID,@CREATED_BY)", conn))
+                using (SqlCommand cmd = new SqlCommand("insert into batch_header (BH_ID,BATCH_NAME,TEACHER_ID,VOLUNTEER_ID,ZOOM_ID,CREATED_BY,bh_end_date) values (@BH_ID,@BATCH_NAME,@TEACHER_ID,@VOLUNTEER_ID,@ZOOM_ID,@CREATED_BY,@bh_end_date)", conn))
                 {
 
                     conn.Open();
@@ -48,13 +73,14 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@VOLUNTEER_ID", bh.Volunteer);
                     cmd.Parameters.AddWithValue("@ZOOM_ID", bh.Zoom);
                     cmd.Parameters.AddWithValue("@CREATED_BY", "hellow");
+                    cmd.Parameters.AddWithValue("@bh_end_date", bh.course_end_date);
+                    
 
                     cmd.ExecuteNonQuery();
                 }
             }
 
         }
-
 
         public void InsertBatchDetails(Batch_details bd)
         {
@@ -73,7 +99,6 @@ namespace WebApplication1.DB
             }
 
         }
-
 
         public List<Teacher> Teacher_DropDown()
         {
@@ -101,7 +126,6 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-
         public List<Student> Student_DropDown()
         {
             List<Student> DBase = new List<Student>();
@@ -127,7 +151,6 @@ namespace WebApplication1.DB
             }
             return DBase;
         }
-
 
         public List<Batch_list> Batchfetchdetail()
         {
@@ -183,8 +206,6 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-
-
         public void DeleteBatch(int id)
         {
 
@@ -224,12 +245,11 @@ namespace WebApplication1.DB
                     employee.Teacher = Convert.ToInt32(reader["Teacher_id"]);
                     employee.Volunteer = Convert.ToInt32( reader["Volunteer_id"]);
                     employee.Zoom = reader["Zoom_id"].ToString();
+                    employee.course_end_date = Convert.ToDateTime(reader["bh_end_date"]);
                 }
             }
             return employee;
         }
-
-
 
         public List<Batch_details> Get_Batch_detail_data(int id)
         {
@@ -262,16 +282,13 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-
         public void Update_batch_Master(Batch_header bh)
         {
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("update Batch_header set batch_name = @batch_name, teacher_id =@teach_id, volunteer_id = @volunt_id, zoom_id = @zoom_id where bh_id = @bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("update Batch_header set batch_name = @batch_name, teacher_id =@teach_id, volunteer_id = @volunt_id, zoom_id = @zoom_id,bh_end_date = @bh_end_date where bh_id = @bh_id", conn))
                 {
-
-
                     conn.Open();
 
                     cmd.Parameters.AddWithValue("@bh_id", bh.Bh_id);
@@ -279,15 +296,11 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@teach_id", bh.Teacher);
                     cmd.Parameters.AddWithValue("@volunt_id", bh.Volunteer);
                     cmd.Parameters.AddWithValue("@zoom_id", bh.Zoom);
-
-
-
-
+                    cmd.Parameters.AddWithValue("@bh_end_date", bh.course_end_date);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
-
 
         public void dtlDelete(int id,int bh_id)
         {
@@ -355,7 +368,287 @@ namespace WebApplication1.DB
             return DBase;
         }
 
+        public void InsertHelperHeader(Helper_mst hm)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into hlp_header(hlp_id,bh_id,stu_id,created_by) values (@hlp_id,@bh_id,@stu_id,@created_by)", conn))
+                {
 
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_id", hm.Hpl_id);
+                    cmd.Parameters.AddWithValue("@bh_id", hm.bh_id);
+                    cmd.Parameters.AddWithValue("@stu_id", hm.stu_id);
+                    cmd.Parameters.AddWithValue("@created_by", "hellow");
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        public void InsertHelperDetails(Helper_dtl hd)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into hlp_details values (@hpl_id,@stu_id)", conn))
+                {
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hpl_id", hd.Hpl_id);
+                    cmd.Parameters.AddWithValue("@stu_id", hd.stud_id);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        public List<Helper_list> Helperfetchdetail()
+        {
+            List<Helper_list> DBase = new List<Helper_list>();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.bh_id, bh.BATCH_NAME,count(*) stud_enroll , s.Stud_name helper from Hlp_header hh, Hlp_details hd , Batch_header bh , Student s  where hh.hlp_id = hd.Hpl_id   and bh.bh_id = hh.bh_id  and s.Stud_id = hh.stu_id  and ISNULL(hh.Delete_flag,'N') <> 'Y' group by hh.hlp_id, hh.bh_id, bh.BATCH_NAME,s.Stud_name", conn))
+                {
+                    conn.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_list emp = new Helper_list();
+
+
+                        if (reader["hlp_id"] != DBNull.Value)
+                        {
+                            emp.hlp_id = Convert.ToInt32(reader["hlp_id"]);
+                        }
+
+                        if (reader["bh_id"] != DBNull.Value)
+                        {
+                            emp.bh_id = Convert.ToInt32(reader["bh_id"]);
+                        }
+
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            emp.batch_name = reader["BATCH_NAME"].ToString();
+                        }
+
+                        if (reader["helper"] != DBNull.Value)
+                        {
+                            emp.Helper = reader["helper"].ToString();
+                        }
+
+                        if (reader["stud_enroll"] != DBNull.Value)
+                        {
+                            emp.stud_enroll = Convert.ToInt32(reader["stud_enroll"]);
+                        }
+
+                        
+
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public void Delete_Helper(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update hlp_header set Delete_flag= 'Y' where hlp_id = @hp_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@hp_id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public Helper_mst get_helper_Master_data(int id)
+        {
+            Helper_mst employee = new Helper_mst();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select * from Hlp_header where hlp_id = @h_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@h_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    employee.Hpl_id = Convert.ToInt16(reader["hlp_id"]);
+                    employee.bh_id = Convert.ToInt16(reader["bh_id"]);
+                    employee.stu_id = Convert.ToInt16(reader["stu_id"]);
+                }
+            }
+            return employee;
+        }
+
+        public List<Helper_dtl> Get_helper_detail_data(int id)
+        {
+            List<Helper_dtl> DBase = new List<Helper_dtl>();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select hd.Hpl_id, hd.stud_id, s.Stud_name from Hlp_details hd, Student s where hd.stud_id = s.Stud_id and Hpl_id = @hlp_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_dtl emp = new Helper_dtl();
+
+                        emp.Hpl_id = Convert.ToInt32(reader["Hpl_id"]);
+                        emp.stud_id = Convert.ToInt32(reader["stud_id"]);
+                        emp.stud_name = reader["Stud_name"].ToString();
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public void Update_Helper_master(Helper_mst m)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update Hlp_header set bh_id = @bh_id, stu_id = @stu_id where hlp_id = @hlp_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_id", m.Hpl_id);
+                    cmd.Parameters.AddWithValue("@bh_id", m.bh_id);
+                    cmd.Parameters.AddWithValue("@stu_id", m.stu_id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void hlpDelete(int id, int hm_id)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from Hlp_details where hpl_id = @hpl_id and stud_id = @stud_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hpl_id", hm_id);
+                    cmd.Parameters.AddWithValue("@stud_id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+        }
+        //Helpers Function end
+
+         //Attendance Functions start
+        public Attendance_mst AutoGenerate_attendance()
+        {
+            Attendance_mst at = new Attendance_mst();
+            SqlConnection con = new SqlConnection(connectString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select  ISNULL(max(a.Att_id),0)+1 at_id from Attendance a";
+            cmd.Connection = con;
+            con.Open();
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            at.att_id = Convert.ToInt16(reader["at_id"]);
+
+            reader.Close();
+            return at;
+        }
+
+        public void InsertAttHeader(Attendance_mst at)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Attendance(Att_id, bh_id, att_pass,created_by)  values(@Att_id, @bh_id, @att_pass,@created_by)", conn))
+                {
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@Att_id", at.att_id);
+                    cmd.Parameters.AddWithValue("@bh_id", at.bh_id);
+                    cmd.Parameters.AddWithValue("@att_pass", at.att_pass);
+                    cmd.Parameters.AddWithValue("@created_by", "hellow");
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+
+        public List<Batch_header> Attfetchdetail()
+        {
+            List<Batch_header> DBase = new List<Batch_header>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select a.Att_id, a.bh_id,bh.BATCH_NAME,a.created_date from Attendance a  , Batch_header bh where a.bh_id = bh.BH_ID and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Batch_header emp = new Batch_header();
+                        if (reader["Att_id"] != DBNull.Value)
+                        {
+                            emp.att_id = Convert.ToInt32(reader["Att_id"]);
+                        }
+                        if (reader["bh_id"] != DBNull.Value)
+                        {
+                            emp.Bh_id = Convert.ToInt32(reader["bh_id"]);
+                        }
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            emp.Batch_Name = Convert.ToString(reader["BATCH_NAME"]);
+                        }
+                        if (reader["created_date"] != DBNull.Value)
+                        {
+                            emp.Att_date = Convert.ToDateTime(reader["created_date"]);
+                        }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public void Deleteatt(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update Attendance set Delete_flag= 'Y' where Att_id = @att_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@att_id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
     }
 }
+

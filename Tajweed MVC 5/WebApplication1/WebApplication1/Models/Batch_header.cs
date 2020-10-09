@@ -12,6 +12,10 @@ namespace WebApplication1.Models
         public int Teacher { get; set; }
         public int Volunteer { get; set; }
         public string Zoom { get; set; }
+        public DateTime course_end_date { get; set; }
+
+        public DateTime Att_date { get; set; }
+        public int att_id { get; set; }
 
         public virtual ICollection<Batch_details> Batch_details { get; set; }
     }

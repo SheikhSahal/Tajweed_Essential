@@ -1,4 +1,4 @@
-﻿
+﻿@model List<WebApplication1.Models.AP_Menu>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Dashboard.cshtml";
@@ -17,7 +17,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="col-md-3" style="float:right;"> 
+                            <div class="col-md-3" style="float:right;">
                                 <a id="save" href="#" class="btn btn-lg btn-info btn-block">
                                     <i class="fas fa-save"></i>&nbsp;
                                     <span>Save</span>
@@ -30,10 +30,7 @@
                                 <h3 class="text-center title-2">Create Course</h3>
                             </div>
                             <hr>
-
-
                             <form>
-
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group Batch_Name">
@@ -42,8 +39,6 @@
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
                                         </div>
                                     </div>
-
-
                                     <div class="col-md-3">
                                         <div class="form-group Teacher">
                                             <label for="Teacher" class="form-control-label">Teacher:</label>
@@ -70,11 +65,20 @@
                                     </div>
 
                                     <div class="col-md-3">
-
                                         <div class="form-group Zoom">
                                             <label for="Zoom" class="form-control-label">Zoom:</label>
                                             <input type="text" id="Zoom" name="Zoom" placeholder="Zoom" class="input-sm form-control-sm form-control">
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Zoom</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group course_end_date">
+                                            <label for="Zoom" class="form-control-label">Course end date:</label>
+                                            <input type="date" id="course_end_date" name="course_end_date" placeholder="Zoom" class="input-sm form-control-sm form-control">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a course end date</span>
                                         </div>
                                     </div>
                                 </div>
@@ -189,8 +193,16 @@
                 $('.Zoom .error').css('display', 'none');
             }
 
-                       
+            if (!($('#course_end_date').val().trim() != '')) {
+                isAllValid = false;
+                $('.course_end_date .error').css('display', 'block');
+            }
+            else {
+                $('.course_end_date .error').css('display', 'none');
+            }
+
             
+
             var list = [];
             $('#details tr').each(function (index, ele) {
 
@@ -202,21 +214,17 @@
                 list.push(orderItem);
 
             })
-
             if (list.length == 0) {
                 $('#orderItemError').text('At least 1 record required.');
                 isAllValid = false;
             }
-
-
             if (isAllValid) {
-
-
                 var data = {
 
                     Batch_Name: $('#Batch_Name').val(),
                     Teacher: $('#Teacher').val(),
                     Volunteer: $('#Volunteer').val(),
+                    course_end_date: $('#course_end_date').val(),
                     Zoom: $('#Zoom').val(),
 
                     Batch_details: list
@@ -231,14 +239,15 @@
                         'Teacher': data.Teacher,
                         'Volunteer': data.Volunteer,
                         'Zoom': data.Zoom,
-                        'Batch_details': data.Batch_details
+                        'Batch_details': data.Batch_details,
+                        'course_end_date': data.course_end_date
                     }
                     ,
                     success: function (resp) {
                         if (resp.status) {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
-                            $('#Batch_Name,#Zoom').val('');
+                            $('#Batch_Name,#Zoom,#course_end_date').val('');
                             $("#details").empty();
                             if (list.length > 0) {
                                 $('#orderItemError').text('');

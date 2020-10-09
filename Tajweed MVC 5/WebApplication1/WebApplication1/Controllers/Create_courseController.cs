@@ -15,13 +15,18 @@ namespace WebApplication1.Controllers
 
         public ActionResult Index()
         {
+            AP_Menu menu = new AP_Menu();
+
+            var Menulist = db.user_rights(13);
+            List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
+
             List<Teacher> tdp = db.Teacher_DropDown();
             ViewBag.Teachdropdown = tdp;
 
             List<Student> sdp = db.Student_DropDown();
             ViewBag.stddropdown = sdp;
 
-            return View();
+            return View(menudisplay);
         }
 
 
