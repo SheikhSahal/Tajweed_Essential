@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
 
             AP_Menu menu = new AP_Menu();
 
-            var Menulist = db.user_rights(13);
+            var Menulist = db.user_rights(15);
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
             List<Batch_header> bh = db.Course_DropDown();
@@ -38,9 +38,20 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public ActionResult updateHelper(int id)
         {
+           var enddate_with_id = db.get_helper_Course_end_date(id);
+
+            DateTime date = DateTime.Now;
+            var current_date = date.Date;
+            if (enddate_with_id.created_date < current_date)
+            {
+                return RedirectToAction("Index", "Helper_list");
+            }
+            else
+            {
+
             AP_Menu menu = new AP_Menu();
 
-            var Menulist = db.user_rights(13);
+            var Menulist = db.user_rights(15);
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
             TempData["mydata"] = id;
@@ -57,6 +68,7 @@ namespace WebApplication1.Controllers
             ViewBag.cordropdown = bh;
 
             return View(menudisplay);
+            }
         }
 
 

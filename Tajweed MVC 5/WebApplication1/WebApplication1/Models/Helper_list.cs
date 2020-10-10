@@ -12,5 +12,6 @@ namespace WebApplication1.Models
         public string batch_name { get; set; }
         public string Helper { get; set; }
         public int stud_enroll { get; set; }
+        public DateTime bh_end_date { get; set; }
     }
 }

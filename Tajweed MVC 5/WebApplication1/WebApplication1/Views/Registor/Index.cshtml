@@ -1,0 +1,322 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+<div class="login-form">
+    <form>
+        <div class="form-group Full_Name">
+            <label>Full Name:</label>
+            <input class="au-input au-input--full Full_Name" type="text" id="Full_Name" name="Full_Name" placeholder="Full Name">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Full Name</span>
+        </div>
+        <div class="form-group DOB">
+            <label>Date of Birth</label>
+            <input class="au-input au-input--full DOB" type="date" id="DOB" name="DOB" placeholder="DOB" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Date of birth</span>
+        </div>
+
+        <div class="row form-group Marital_Status">
+            <div class="col col-md-12">
+                <label for="select" class="form-control-label">Marital Status:</label>
+            </div>
+            <div class="col-12 col-md-12">
+                <select name="Marital_Status" id="Marital_Status" class="form-control">
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Separated">Separated</option>
+                </select>
+            </div>
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp;Enter Marital Status</span>
+        </div>
+
+        <div class="form-group FH_name">
+            <label>Father / Husband name:</label>
+            <input class="au-input au-input--full FH_name" id="FH_name" type="text" name="FH_name" placeholder="Father / Husband name">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Father / Husband name</span>
+        </div>
+
+        <div class="form-group IDCardNo">
+            <label>ID Card No.:</label>
+            <input class="au-input au-input--full IDCardNo" id="IDCardNo" type="text" name="IDCardNo" placeholder="ID Card No.">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter ID Card No.</span>
+        </div>
+
+        <div class="form-group M_W_no">
+            <label>Mobile / Whatsapp No.:</label>
+            <input class="au-input au-input--full M_W_no" id="M_W_no" type="text" name="M_W_no" placeholder="Mobile / Whatsapp No.">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Mobile / Whatsapp No.</span>
+        </div>
+
+        <div class="form-group email">
+            <label>E-mail:</label>
+            <input class="au-input au-input--full email" id="email" type="text" name="email" placeholder="E-mail">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter E-mail</span>
+        </div>
+
+        <div class="form-group pass">
+            <label>Password:</label>
+            <input class="au-input au-input--full pass" id="pass" type="password" name="pass" placeholder="Password">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Password</span>
+        </div>
+
+        <div class="form-group Address">
+            <label>Address:</label>
+            <input class="au-input au-input--full Address" id="Address" type="text" name="Address" placeholder="Address">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Address</span>
+        </div>
+
+        <div class="form-group Country">
+            <label>Country:</label>
+            <input class="au-input au-input--full Country" id="Country" type="text" name="Country" placeholder="Country">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Country</span>
+        </div>
+
+        <div class="form-group Qualification">
+            <label>Qualification:</label>
+            <input class="au-input au-input--full Qualification" id="Qualification" type="text" name="Qualification" placeholder="Qualification">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Qualification</span>
+        </div>
+
+        <div class="form-group Profession">
+            <label>Profession:</label>
+            <input class="au-input au-input--full Country" id="Profession" type="text" name="Profession" placeholder="Profession">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Profession</span>
+        </div>
+
+        <div class="form-group Q_A">
+            <label>Have you received any kind of Quranic education? if yes, from where?:</label>
+            <input class="au-input au-input--full Q_A" id="Q_A" type="text" name="Q_A" placeholder="Answer">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Answer</span>
+        </div>
+
+        <div class="form-group Future_plan">
+            <label>Future Plan:</label>
+            <input class="au-input au-input--full Future_plan" id="Future_plan" type="text" name="Future_plan" placeholder="Future Plan">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Future Plan</span>
+        </div>
+
+        <div class="form-group recommended">
+            <label>Full name of the person who recommended you this course:</label>
+            <input class="au-input au-input--full recommended" id="recommended" type="text" name="recommended" placeholder="Answer">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Answer</span>
+        </div>
+
+
+        <button id="save" class="au-btn au-btn--block au-btn--green m-b-20">register</button>
+
+    </form>
+    <div class="register-link">
+        <p>
+            Already have account?
+            <a href="#">Sign In</a>
+        </p>
+    </div>
+</div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if (!($('#Full_Name').val().trim() != '')) {
+                isAllValid = false;
+                $('.Full_Name .error').css('display', 'block');
+            }
+            else {
+                $('.Full_Name .error').css('display', 'none');
+            }
+
+            if (!($('#DOB').val().trim() != '')) {
+                isAllValid = false;
+                $('.DOB .error').css('display', 'block');
+            }
+            else {
+                $('.DOB .error').css('display', 'none');
+            }
+
+            if (!($('#Marital_Status').val().trim() != '')) {
+                isAllValid = false;
+                $('.Marital_Status .error').css('display', 'block');
+            }
+            else {
+                $('.Marital_Status .error').css('display', 'none');
+            }
+
+            if (!($('#FH_name').val().trim() != '')) {
+                isAllValid = false;
+                $('.FH_name .error').css('display', 'block');
+            }
+            else {
+                $('.FH_name .error').css('display', 'none');
+            }
+
+            if (!($('#IDCardNo').val().trim() != '')) {
+                isAllValid = false;
+                $('.IDCardNo .error').css('display', 'block');
+            }
+            else {
+                $('.IDCardNo .error').css('display', 'none');
+            }
+
+            if (!($('#M_W_no').val().trim() != '')) {
+                isAllValid = false;
+                $('.M_W_no .error').css('display', 'block');
+            }
+            else {
+                $('.M_W_no .error').css('display', 'none');
+            }
+
+            if (!($('#email').val().trim() != '')) {
+                isAllValid = false;
+                $('.email .error').css('display', 'block');
+            }
+            else {
+                $('.email .error').css('display', 'none');
+            }
+
+            if (!($('#pass').val().trim() != '')) {
+                isAllValid = false;
+                $('.pass .error').css('display', 'block');
+            }
+            else {
+                $('.pass .error').css('display', 'none');
+            }
+
+
+            if (!($('#Address').val().trim() != '')) {
+                isAllValid = false;
+                $('.Address .error').css('display', 'block');
+            }
+            else {
+                $('.Address .error').css('display', 'none');
+            }
+
+            if (!($('#Country').val().trim() != '')) {
+                isAllValid = false;
+                $('.Country .error').css('display', 'block');
+            }
+            else {
+                $('.Country .error').css('display', 'none');
+            }
+
+            if (!($('#Qualification').val().trim() != '')) {
+                isAllValid = false;
+                $('.Qualification .error').css('display', 'block');
+            }
+            else {
+                $('.Qualification .error').css('display', 'none');
+            }
+
+            if (!($('#Profession').val().trim() != '')) {
+                isAllValid = false;
+                $('.Profession .error').css('display', 'block');
+            }
+            else {
+                $('.Profession .error').css('display', 'none');
+            }
+
+            if (!($('#Q_A').val().trim() != '')) {
+                isAllValid = false;
+                $('.Q_A .error').css('display', 'block');
+            }
+            else {
+                $('.Q_A .error').css('display', 'none');
+            }
+
+            if (!($('#Future_plan').val().trim() != '')) {
+                isAllValid = false;
+                $('.Future_plan .error').css('display', 'block');
+            }
+            else {
+                $('.Future_plan .error').css('display', 'none');
+            }
+
+            if (!($('#recommended').val().trim() != '')) {
+                isAllValid = false;
+                $('.recommended .error').css('display', 'block');
+            }
+            else {
+                $('.recommended .error').css('display', 'none');
+            }
+
+
+            if (isAllValid) {
+                var data = {
+                    Full_Name: $('#Full_Name').val(),
+                    DOB: $('#DOB').val(),
+                    Marital_Status: $('#Marital_Status').val(),
+                    FH_name: $('#FH_name').val(),
+                    IDCardNo: $('#IDCardNo').val(),
+                    M_W_no: $('#M_W_no').val(),
+                    email: $('#email').val(),
+                    pass: $('#pass').val(),
+                    Address: $('#Address').val(),
+                    Country: $('#Country').val(),
+                    Qualification: $('#Qualification').val(),
+                    Profession: $('#Profession').val(),
+                    Q_A: $('#Q_A').val(),
+                    Future_plan: $('#Future_plan').val(),
+                    recommended: $('#recommended').val()
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Registor/Index',
+                    data: {
+                        'Full_Name': data.Full_Name,
+                        'DOB': data.DOB,
+                        'Marital_Status': data.Marital_Status,
+                        'FH_name': data.FH_name,
+                        'IDCardNo': data.IDCardNo,
+                        'M_W_no': data.M_W_no,
+                        'email': data.email,
+                        'pass': data.pass,
+                        'Address': data.Address,
+                        'Country': data.Country,
+                        'Qualification': data.Qualification,
+                        'Profession': data.Profession,
+                        'Q_A': data.Q_A,
+                        'Future_plan': data.Future_plan,
+                        'recommended': data.recommended,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#alt-msge').text("You successfully insert the record.");
+                            $('#Full_Name,	#DOB,	#pass,	#FH_name,	#IDCardNo,	#M_W_no,	#email,	#Address,	#Country,	#Qualification,	#Profession,	#Q_A,	#Future_plan,	#recommended').val('');
+                        }
+                        else {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-success').addClass('alert-danger');
+                            $('#alt-msge').text("please contact to admin.");
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>

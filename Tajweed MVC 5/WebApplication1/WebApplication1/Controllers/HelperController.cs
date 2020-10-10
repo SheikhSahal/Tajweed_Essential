@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         {
             AP_Menu menu = new AP_Menu();
 
-            var Menulist = db.user_rights(13);
+            var Menulist = db.user_rights(15);
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
             List<Student> sdp = db.Student_DropDown();
@@ -31,7 +31,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(Helper_mst hm)
         {
-            bool status = false;
+            string status = null;
             List<Student> sdp = db.Student_DropDown();
             ViewBag.stddropdown = sdp;
 
@@ -41,14 +41,27 @@ namespace WebApplication1.Controllers
             var hp_id = db.AutoGenerate_Helper_id();
             hm.Hpl_id = Convert.ToInt32(hp_id.Hpl_id);
 
-            db.InsertHelperHeader(hm);
+            Batch_header get_date = db.get_batch_Master_data(hm.bh_id);
+            var bhdate = get_date.course_end_date.Date;
 
+            DateTime date = DateTime.Now;
+            var current_date = date.Date;
+
+            if (bhdate < current_date)
+            {
+                status = "ederror";
+            }
+            else
+            {
+            db.InsertHelperHeader(hm);
             foreach (var hmdtl in hm.Helper_dtl)
             {
                 hmdtl.Hpl_id = Convert.ToInt32(hp_id.Hpl_id);
                 db.InsertHelperDetails(hmdtl);
             }
-            status = true;
+            status = "done";
+            }
+
 
             return new JsonResult { Data = new { status = status } };
         }

@@ -100,7 +100,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group course_end_date">
                                             <label for="course_end_date" class="form-control-label">Course end date:</label>
-                                            <input type="date" id="course_end_date" name="course_end_date" placeholder="Zoom" class="input-sm form-control-sm form-control" value="@data.course_end_date">
+                                            <input type="date" id="course_end_date" name="course_end_date" placeholder="Zoom" class="input-sm form-control-sm form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@data.course_end_date.ToString("yyyy-MM-dd")">
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a course end date</span>
                                         </div>
                                     </div>

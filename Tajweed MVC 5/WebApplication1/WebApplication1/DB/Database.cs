@@ -230,7 +230,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select * from Batch_header bh where bh.BH_ID = @p_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select * from Batch_header bh where bh.BH_ID = @p_id and ISNULL(Delete_flag,'N') <> 'Y'", conn))
                 {
 
                     conn.Open();
@@ -245,7 +245,11 @@ namespace WebApplication1.DB
                     employee.Teacher = Convert.ToInt32(reader["Teacher_id"]);
                     employee.Volunteer = Convert.ToInt32( reader["Volunteer_id"]);
                     employee.Zoom = reader["Zoom_id"].ToString();
-                    employee.course_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                    if (reader["bh_end_date"] != DBNull.Value)
+                    {
+                        employee.course_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                    }
+                    
                 }
             }
             return employee;
@@ -404,7 +408,6 @@ namespace WebApplication1.DB
                     cmd.ExecuteNonQuery();
                 }
             }
-
         }
 
         public List<Helper_list> Helperfetchdetail()
@@ -413,7 +416,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.bh_id, bh.BATCH_NAME,count(*) stud_enroll , s.Stud_name helper from Hlp_header hh, Hlp_details hd , Batch_header bh , Student s  where hh.hlp_id = hd.Hpl_id   and bh.bh_id = hh.bh_id  and s.Stud_id = hh.stu_id  and ISNULL(hh.Delete_flag,'N') <> 'Y' group by hh.hlp_id, hh.bh_id, bh.BATCH_NAME,s.Stud_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.bh_id, bh.BATCH_NAME,count(*) stud_enroll , s.Stud_name helper , bh.bh_end_date from Hlp_header hh, Hlp_details hd , Batch_header bh , Student s   where hh.hlp_id = hd.Hpl_id  and bh.bh_id = hh.bh_id  and s.Stud_id = hh.stu_id  and ISNULL(hh.Delete_flag,'N') <> 'Y' group by hh.hlp_id, hh.bh_id, bh.BATCH_NAME,s.Stud_name, bh.bh_end_date", conn))
                 {
                     conn.Open();
 
@@ -422,7 +425,6 @@ namespace WebApplication1.DB
                     while (reader.Read())
                     {
                         Helper_list emp = new Helper_list();
-
 
                         if (reader["hlp_id"] != DBNull.Value)
                         {
@@ -448,9 +450,10 @@ namespace WebApplication1.DB
                         {
                             emp.stud_enroll = Convert.ToInt32(reader["stud_enroll"]);
                         }
-
-                        
-
+                        if (reader["bh_end_date"] != DBNull.Value)
+                        {
+                            emp.bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        }
                         DBase.Add(emp);
 
                     }
@@ -599,13 +602,12 @@ namespace WebApplication1.DB
 
         }
 
-
         public List<Batch_header> Attfetchdetail()
         {
             List<Batch_header> DBase = new List<Batch_header>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select a.Att_id, a.bh_id,bh.BATCH_NAME,a.created_date from Attendance a  , Batch_header bh where a.bh_id = bh.BH_ID and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select a.Att_id, a.bh_id,bh.BATCH_NAME,a.created_date,bh.bh_end_date from Attendance a  , Batch_header bh where a.bh_id = bh.BH_ID and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -628,6 +630,10 @@ namespace WebApplication1.DB
                         {
                             emp.Att_date = Convert.ToDateTime(reader["created_date"]);
                         }
+                        if (reader["bh_end_date"] != DBNull.Value)
+                        {
+                            emp.course_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        }
                         DBase.Add(emp);
 
                     }
@@ -649,6 +655,77 @@ namespace WebApplication1.DB
             }
         }
 
+        public Attendance_mst get_Duplicate_data(int id, DateTime date)
+        {
+            Attendance_mst employee = new Attendance_mst();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) att from Attendance a where a.bh_id = @bh_id and a.created_date = @created_date and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    cmd.Parameters.AddWithValue("@created_date", date);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    employee.att_id = Convert.ToInt16(reader["att"]);
+                }
+            }
+            return employee;
+        }
+
+        public Helper_mst get_helper_Course_end_date(int id)
+        {
+            Helper_mst employee = new Helper_mst();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select h.bh_id,bh.bh_end_date from Hlp_header h, Batch_header bh where h.bh_id = bh.BH_ID and h.hlp_id = @h_id and ISNULL(h.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@h_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    employee.bh_id = Convert.ToInt32(reader["bh_id"]);
+                    employee.created_date = Convert.ToDateTime(reader["bh_end_date"]);
+                }
+            }
+            return employee;
+        }
+        //Attendance Functions end
+
+
+        public void Registration(Registor r)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	Password,	User_email,	User_contact,	DOB,	Martial_status,	F_H_name,	ID_Card,	Address,	Country,	Qualification,	Profession,	Q_A,	Future_Plan,	recommended) values (@User_name,	@Password,	@User_email,	@User_contact,	@DOB,	@Martial_status,	@F_H_name,	@ID_Card,	@Address,	@Country,	@Qualification,	@Profession,	@Q_A,	@Future_Plan,	@recommended)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
+                    cmd.Parameters.AddWithValue("@Password", r.pass);
+                    cmd.Parameters.AddWithValue("@User_email", r.email);
+                    cmd.Parameters.AddWithValue("@User_contact", r.M_W_no);
+                    cmd.Parameters.AddWithValue("@DOB", r.DOB);
+                    cmd.Parameters.AddWithValue("@Martial_status", r.Marital_Status);
+                    cmd.Parameters.AddWithValue("@F_H_name", r.FH_name);
+                    cmd.Parameters.AddWithValue("@ID_Card", r.IDCardNo);
+                    cmd.Parameters.AddWithValue("@Address", r.Address);
+                    cmd.Parameters.AddWithValue("@Country", r.Country);
+                    cmd.Parameters.AddWithValue("@Qualification", r.Qualification);
+                    cmd.Parameters.AddWithValue("@Profession", r.Profession);
+                    cmd.Parameters.AddWithValue("@Q_A", r.Q_A);
+                    cmd.Parameters.AddWithValue("@Future_Plan", r.Future_plan);
+                    cmd.Parameters.AddWithValue("@recommended", r.recommended);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
     }
 }
 

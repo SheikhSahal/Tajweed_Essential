@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
         {
             AP_Menu menu = new AP_Menu();
 
-            var Menulist = db.user_rights(13);
+            var Menulist = db.user_rights(15);
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
             List<Teacher> tdp = db.Teacher_DropDown();

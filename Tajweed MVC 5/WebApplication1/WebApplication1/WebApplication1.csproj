@@ -146,6 +146,7 @@
     <Compile Include="Controllers\Create_courseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
+    <Compile Include="Controllers\RegistorController.cs" />
     <Compile Include="Database_connecting.cs" />
     <Compile Include="DB\Database.cs" />
     <Compile Include="Global.asax.cs">
@@ -160,6 +161,7 @@
     <Compile Include="Models\Helper_list.cs" />
     <Compile Include="Models\Helper_mst.cs" />
     <Compile Include="Models\Helper_dtl.cs" />
+    <Compile Include="Models\Registor.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -182,6 +184,8 @@
     <Content Include="Views\Helper_List\updateHelper.cshtml" />
     <Content Include="Views\Attandance\Index.cshtml" />
     <Content Include="Views\Attendance_list\Index.cshtml" />
+    <Content Include="Views\Registor\Index.cshtml" />
+    <Content Include="Views\Shared\_Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

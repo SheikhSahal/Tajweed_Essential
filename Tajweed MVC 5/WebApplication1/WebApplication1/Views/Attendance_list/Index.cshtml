@@ -59,14 +59,15 @@
                                         <td>@s.Batch_Name</td>
                                         <td>@s.Att_date.ToString("dd-MMM-yyyy")</td>
                                         <td>
+                                            @{ var current_date = DateTime.Now.Date;}
+                                            @if(s.course_end_date.Date >= current_date)
+                                            {
                                             <div class="table-data-feature">
-                                                @*<button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateCourse", "Course_List",new { id =s.Bh_id})'">
-                                                    <i class="zmdi zmdi-edit"></i>
-                                                </button>*@
                                                 <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DelAtt", "Attandance",new { id =s.att_id})'">
                                                     <i class="zmdi zmdi-delete"></i>
                                                 </button>
                                             </div>
+                                            }
                                         </td>
                                     </tr>
                                     index++;

@@ -60,18 +60,22 @@
                                         <td>@s.Helper</td>
                                         <td>@s.stud_enroll</td>
                                         <td>
-                                            <div class="table-data-feature">
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateHelper", "Helper_List",new { id =s.hlp_id})'">
-                                                    <i class="zmdi zmdi-edit"></i>
-                                                </button>
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteRecord", "Helper_List",new { id =s.hlp_id})'">
-                                                    <i class="zmdi zmdi-delete"></i>
-                                                </button>
-                                            </div>
+                                            @{ var current_date = DateTime.Now.Date;}
+                                            @if (s.bh_end_date.Date >= current_date)
+                                            {
+                                                <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateHelper", "Helper_List", new { id = s.hlp_id })'">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteRecord", "Helper_List", new { id = s.hlp_id })'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
+                                                </div>
+                                            }
                                         </td>
                                     </tr>
-                                    index++;
-                                }
+                                                    index++;
+                                                }
                             </tbody>
                         </table>
                     </div>
@@ -81,4 +85,3 @@
         </div>
     </div>
 </div>
-

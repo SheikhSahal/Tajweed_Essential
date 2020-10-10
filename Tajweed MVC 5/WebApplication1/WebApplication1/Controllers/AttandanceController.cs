@@ -30,7 +30,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(Attendance_mst am)
         {
-            bool status = false;
+            string status = null;
             List<Batch_header> bh = db.Course_DropDown();
             ViewBag.cordropdown = bh;
 
@@ -38,8 +38,31 @@ namespace WebApplication1.Controllers
 
             am.att_id = Convert.ToInt32(at_id.att_id);
 
-            db.InsertAttHeader(am);
-            status = true;
+            Batch_header get_date = db.get_batch_Master_data(am.bh_id);
+            var bhdate = get_date.course_end_date.Date;
+
+            DateTime date = DateTime.Now;
+            var current_date = date.Date;
+
+
+            if (bhdate < current_date)
+            {
+                status = "ederror";
+            }
+            else
+            {
+               var dprcd= db.get_Duplicate_data(am.bh_id, current_date);
+
+                if (dprcd.att_id == 0)
+                {
+                    db.InsertAttHeader(am);
+                    status = "done";
+                }
+                else
+                {
+                    status = "dupcte";
+                }
+            }
             return new JsonResult { Data = new { status = status } };
         }
 
