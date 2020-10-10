@@ -324,6 +324,7 @@
                         if (resp.status == "done") {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-danger').addClass('alert-success');
                             $('#alt-msge').text("You successfully insert the record.");
                             $('#Full_Name,	#DOB,	#pass,	#FH_name,	#IDCardNo,	#M_W_no,	#email,	#Address,	#Country,	#Qualification,	#Profession,	#Q_A,	#Future_plan,	#recommended').val('');
                         }
