@@ -726,6 +726,32 @@ namespace WebApplication1.DB
             }
 
         }
+
+        public Registor get_email(string email)
+        {
+            Registor employee = new Registor();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) email from login l where lower(l.User_email) = @email", conn))
+                {
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@email", email);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["email"] != DBNull.Value)
+                    {
+                        employee.email = Convert.ToString(reader["email"]);
+                    }
+
+                }
+            }
+            return employee;
+        }
     }
 }
 

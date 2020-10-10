@@ -20,9 +20,22 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(Registor r)
         {
-            bool status = false;
-            db.Registration(r);
-            status = true;
+            string status = null;
+
+            var get_email = db.get_email(r.email);
+
+            if (Convert.ToInt32(get_email.email) == 1)
+            {
+                status = "dupl";
+            }
+            else
+            {
+                db.Registration(r);
+                status = "done";
+            }
+
+            
+            
 
             return new JsonResult { Data = new { status = status } };
         }

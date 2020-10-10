@@ -54,6 +54,7 @@
             <label>E-mail:</label>
             <input class="au-input au-input--full email" id="email" type="text" name="email" placeholder="E-mail">
             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter E-mail</span>
+            <span class="valid"><i class="fas fa-exclamation-circle"></i>&nbsp; This E-mail is not valid</span>
         </div>
 
         <div class="form-group pass">
@@ -117,6 +118,13 @@
 </div>
 <style>
     span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+     span.valid {
         display: none;
         color: #d93025;
         font-size: 80%;
@@ -189,9 +197,20 @@
             if (!($('#email').val().trim() != '')) {
                 isAllValid = false;
                 $('.email .error').css('display', 'block');
+                $('.email .valid').css('display', 'none');
             }
             else {
                 $('.email .error').css('display', 'none');
+                var emailReg = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+                var emailval = $('#email').val();
+
+                if (emailReg.test(emailval)) {
+                    $('.email .valid').css('display', 'none');
+                }
+                else {
+                    isAllValid = false;
+                    $('.email .valid').css('display', 'block');
+                }
             }
 
             if (!($('#pass').val().trim() != '')) {
@@ -302,7 +321,7 @@
                     }
                     ,
                     success: function (resp) {
-                        if (resp.status) {
+                        if (resp.status == "done") {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
                             $('#alt-msge').text("You successfully insert the record.");
@@ -312,7 +331,7 @@
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
                             $('#message').removeClass('alert-success').addClass('alert-danger');
-                            $('#alt-msge').text("please contact to admin.");
+                            $('#alt-msge').text("This E-mail address already in used.");
                         }
                     }
                 });
