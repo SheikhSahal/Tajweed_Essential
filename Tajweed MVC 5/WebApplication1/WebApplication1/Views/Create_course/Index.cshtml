@@ -48,6 +48,7 @@
                                                     <option value="@tech.Teach_id">@tech.Teach_name</option>
                                                 }
                                             </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Teacher</span>
                                         </div>
                                     </div>
 
@@ -61,6 +62,7 @@
                                                     <option value="@std.Stud_id">@std.Stud_name</option>
                                                 }
                                             </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Volunteer</span>
                                         </div>
                                     </div>
 
@@ -176,6 +178,22 @@
 
         $('#save').click(function () {
             var isAllValid = true;
+
+            if (!($('#Teacher').val().trim() != '')) {
+                isAllValid = false;
+                $('.Teacher .error').css('display', 'block');
+            }
+            else {
+                $('.Teacher .error').css('display', 'none');
+            }
+
+            if (!($('#Volunteer').val().trim() != '')) {
+                isAllValid = false;
+                $('.Volunteer .error').css('display', 'block');
+            }
+            else {
+                $('.Volunteer .error').css('display', 'none');
+            }
 
             if (!($('#Batch_Name').val().trim() != '')) {
                 isAllValid = false;

@@ -12,5 +12,6 @@ namespace WebApplication1.Models
         public int Std_count { get; set; }
         public string Teach_name { get; set; }
         public string Stud_name { get; set; }
+        public DateTime bh_end_date { get; set; }
     }
 }

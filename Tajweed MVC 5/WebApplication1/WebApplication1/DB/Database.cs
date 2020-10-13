@@ -131,7 +131,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select * from student", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id,l.User_name from Login l where ISNULL(l.User_status,'W') = 'A'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -140,8 +140,8 @@ namespace WebApplication1.DB
                     {
                         Student std = new Student();
 
-                        std.Stud_id = Convert.ToInt32(reader["Stud_id"]);
-                        std.Stud_name = reader["Stud_name"].ToString();
+                        std.Stud_id = Convert.ToInt32(reader["User_id"]);
+                        std.Stud_name = reader["User_name"].ToString();
 
 
                         DBase.Add(std);
@@ -158,7 +158,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, Count(*)as std_count, t.Teach_name , s.Stud_name from Batch_header bh , Batch_details bd , Teacher t , Student s  where bh.BH_ID = bd.BH_ID  and t.Teach_id = bh.TEACHER_ID and ISNull(bh.delete_flag,'N') <> 'Y' and bh.VOLUNTEER_ID = s.Stud_id group by bh.BATCH_NAME , t.Teach_name,s.Stud_name,bh.BH_ID", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, Count(*)as std_count, t.Teach_name , s.User_name, bh.bh_end_date from Batch_header bh , Batch_details bd , Teacher t , login s   where bh.BH_ID = bd.BH_ID   and t.Teach_id = bh.TEACHER_ID  and ISNull(bh.delete_flag,'N') <> 'Y'  and bh.VOLUNTEER_ID = s.User_id group by bh.BATCH_NAME , t.Teach_name,s.User_name,bh.BH_ID,bh.bh_end_date", conn))
                 {
                     conn.Open();
 
@@ -189,15 +189,14 @@ namespace WebApplication1.DB
                             emp.Teach_name = reader["Teach_name"].ToString();
                         }
 
-                        if (reader["Stud_name"] != DBNull.Value)
+                        if (reader["User_name"] != DBNull.Value)
                         {
-                            emp.Stud_name = reader["Stud_name"].ToString();
+                            emp.Stud_name = reader["User_name"].ToString();
                         }
-
-
-
-
-
+                        if (reader["bh_end_date"] != DBNull.Value)
+                        {
+                            emp.bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        }
                         DBase.Add(emp);
 
                     }
@@ -261,7 +260,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bd.BH_ID, bd.STU_ID,  s.Stud_name from Batch_details bd , Student s where bd.BH_ID = @p_id  and bd.STU_ID = s.Stud_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select bd.BH_ID, bd.STU_ID,  s.User_name from Batch_details bd , login s  where bd.BH_ID = @p_id   and bd.STU_ID = s.User_id", conn))
                 {
                     conn.Open();
 
@@ -275,7 +274,7 @@ namespace WebApplication1.DB
 
                         emp.Bh_id = Convert.ToInt32(reader["Bh_id"]);
                         emp.stu_id = Convert.ToInt32(reader["STU_ID"]);
-                        emp.stu_name = reader["Stud_name"].ToString();
+                        emp.stu_name = reader["User_name"].ToString();
 
 
                         DBase.Add(emp);
@@ -416,7 +415,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.bh_id, bh.BATCH_NAME,count(*) stud_enroll , s.Stud_name helper , bh.bh_end_date from Hlp_header hh, Hlp_details hd , Batch_header bh , Student s   where hh.hlp_id = hd.Hpl_id  and bh.bh_id = hh.bh_id  and s.Stud_id = hh.stu_id  and ISNULL(hh.Delete_flag,'N') <> 'Y' group by hh.hlp_id, hh.bh_id, bh.BATCH_NAME,s.Stud_name, bh.bh_end_date", conn))
+                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.bh_id, bh.BATCH_NAME,count(*) stud_enroll , s.User_name helper , bh.bh_end_date  from Hlp_header hh, Hlp_details hd , Batch_header bh , Login s    where hh.hlp_id = hd.Hpl_id   and bh.bh_id = hh.bh_id   and s.User_id = hh.stu_id  and ISNULL(hh.Delete_flag,'N') <> 'Y' group by hh.hlp_id, hh.bh_id, bh.BATCH_NAME,s.User_name, bh.bh_end_date", conn))
                 {
                     conn.Open();
 
@@ -503,7 +502,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select hd.Hpl_id, hd.stud_id, s.Stud_name from Hlp_details hd, Student s where hd.stud_id = s.Stud_id and Hpl_id = @hlp_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select hd.Hpl_id, hd.stud_id, s.User_name Stud_name from Hlp_details hd, login s  where hd.stud_id = s.User_id and Hpl_id = @hlp_id", conn))
                 {
                     conn.Open();
 
@@ -691,6 +690,26 @@ namespace WebApplication1.DB
                     reader.Read();
 
                     employee.bh_id = Convert.ToInt32(reader["bh_id"]);
+                    employee.created_date = Convert.ToDateTime(reader["bh_end_date"]);
+                }
+            }
+            return employee;
+        }
+        public Helper_mst get_course_end_date(int id)
+        {
+            Helper_mst employee = new Helper_mst();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID, bh.bh_end_date from Batch_header bh where bh.BH_ID = @bh_id and ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    employee.bh_id = Convert.ToInt32(reader["BH_ID"]);
                     employee.created_date = Convert.ToDateTime(reader["bh_end_date"]);
                 }
             }

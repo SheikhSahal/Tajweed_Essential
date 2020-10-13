@@ -38,7 +38,16 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public ActionResult updateCourse(int id)
         {
+            var enddate_with_id = db.get_course_end_date(id);
 
+            DateTime date = DateTime.Now;
+            var current_date = date.Date;
+            if (enddate_with_id.created_date < current_date)
+            {
+                return RedirectToAction("Index","Course_list");
+            }
+            else
+            {
             AP_Menu menu = new AP_Menu();
 
             var Menulist = db.user_rights(15);
@@ -56,8 +65,9 @@ namespace WebApplication1.Controllers
 
             List<Student> sdp = db.Student_DropDown();
             ViewBag.stddropdown = sdp;
-
             return View(menudisplay);
+            }
+
         }
 
         [HttpPost]
