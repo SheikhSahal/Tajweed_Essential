@@ -7,6 +7,7 @@ namespace WebApplication1.Models
 {
     public class Registor
     {
+        public int User_id { get; set; }
         public string Full_Name { get; set; }
         public DateTime DOB { get; set; }
         public string Marital_Status { get; set; }
@@ -22,6 +23,8 @@ namespace WebApplication1.Models
         public string Q_A { get; set; }
         public string Future_plan { get; set; }
         public string recommended { get; set; }
+        public string User_status { get; set; }
+        public long User_contact { get; set; }
 
     }
 }

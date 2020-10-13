@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+<div class="login-form">
+    <form action="" method="post">
+        <div class="form-group email">
+            <label>Email Address</label>
+            <input class="au-input au-input--full email" type="email" name="email" placeholder="Email" id="email">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter E-mail</span>
+        </div>
+        <div class="form-group password">
+            <label>Password</label>
+            <input class="au-input au-input--full password" type="password" name="password" placeholder="Password" id="password">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Password</span>
+        </div>
+        <div class="login-checkbox collapse">
+            <label>
+                <a href="#">Forgotten Password?</a>
+            </label>
+        </div>
+        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" id="save">sign in</button>
+    </form>
+    <div class="register-link">
+        <p>
+            Don't you have account?
+            <a href="#">Sign Up Here</a>
+        </p>
+    </div>
+</div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+    .page-content--bge5 {
+    background: #e5e5e5;
+    height: 100vh;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if (!($('#email').val().trim() != '')) {
+                isAllValid = false;
+                $('.email .error').css('display', 'block');
+            }
+            else {
+                $('.email .error').css('display', 'none');
+            }
+
+            if (!($('#password').val().trim() != '')) {
+                isAllValid = false;
+                $('.password .error').css('display', 'block');
+            }
+            else {
+                $('.password .error').css('display', 'none');
+            }
+
+
+            if (isAllValid) {
+                var data = {
+                    email: $('#email').val(),
+                    password: $('#password').val(),
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login/Index',
+                    data: {
+                        'email': data.email,
+                        'password': data.password,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status == "done") {
+                            location.href = '@Url.Action("Index", "Dashboard")';
+                        }
+                        else {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-success').addClass('alert-danger');
+                            $('#alt-msge').text("This E-mail address or password is invalid.");
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>

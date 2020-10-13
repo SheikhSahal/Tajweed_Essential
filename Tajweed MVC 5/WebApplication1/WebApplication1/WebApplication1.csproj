@@ -146,7 +146,9 @@
     <Compile Include="Controllers\Create_courseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegistorController.cs" />
+    <Compile Include="Controllers\User_StatusController.cs" />
     <Compile Include="Database_connecting.cs" />
     <Compile Include="DB\Database.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,6 +188,8 @@
     <Content Include="Views\Attendance_list\Index.cshtml" />
     <Content Include="Views\Registor\Index.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\User_Status\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

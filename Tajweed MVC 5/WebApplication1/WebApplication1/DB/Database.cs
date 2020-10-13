@@ -74,7 +74,7 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@ZOOM_ID", bh.Zoom);
                     cmd.Parameters.AddWithValue("@CREATED_BY", "hellow");
                     cmd.Parameters.AddWithValue("@bh_end_date", bh.course_end_date);
-                    
+
 
                     cmd.ExecuteNonQuery();
                 }
@@ -141,7 +141,7 @@ namespace WebApplication1.DB
                         Student std = new Student();
 
                         std.Stud_id = Convert.ToInt32(reader["Stud_id"]);
-                        std.Stud_name= reader["Stud_name"].ToString();
+                        std.Stud_name = reader["Stud_name"].ToString();
 
 
                         DBase.Add(std);
@@ -171,7 +171,7 @@ namespace WebApplication1.DB
 
                         if (reader["BH_ID"] != DBNull.Value)
                         {
-                            emp.Bh_id = Convert.ToInt32( reader["BH_ID"]);
+                            emp.Bh_id = Convert.ToInt32(reader["BH_ID"]);
                         }
 
                         if (reader["BATCH_NAME"] != DBNull.Value)
@@ -195,8 +195,8 @@ namespace WebApplication1.DB
                         }
 
 
-                        
-                  
+
+
 
                         DBase.Add(emp);
 
@@ -243,13 +243,13 @@ namespace WebApplication1.DB
                     employee.Bh_id = Convert.ToInt16(reader["Bh_id"]);
                     employee.Batch_Name = reader["Batch_Name"].ToString();
                     employee.Teacher = Convert.ToInt32(reader["Teacher_id"]);
-                    employee.Volunteer = Convert.ToInt32( reader["Volunteer_id"]);
+                    employee.Volunteer = Convert.ToInt32(reader["Volunteer_id"]);
                     employee.Zoom = reader["Zoom_id"].ToString();
                     if (reader["bh_end_date"] != DBNull.Value)
                     {
                         employee.course_end_date = Convert.ToDateTime(reader["bh_end_date"]);
                     }
-                    
+
                 }
             }
             return employee;
@@ -306,7 +306,7 @@ namespace WebApplication1.DB
             }
         }
 
-        public void dtlDelete(int id,int bh_id)
+        public void dtlDelete(int id, int bh_id)
         {
 
             using (SqlConnection conn = new SqlConnection(connectString))
@@ -562,7 +562,7 @@ namespace WebApplication1.DB
         }
         //Helpers Function end
 
-         //Attendance Functions start
+        //Attendance Functions start
         public Attendance_mst AutoGenerate_attendance()
         {
             Attendance_mst at = new Attendance_mst();
@@ -752,6 +752,138 @@ namespace WebApplication1.DB
             }
             return employee;
         }
+
+        public List<Registor> Userfetchdetail()
+        {
+            List<Registor> DBase = new List<Registor>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.user_id,l.user_name, l.User_email,l.User_contact,l.ID_Card, l.recommended, case when ISNULL(l.User_status,'W') = 'W' then 'Waiting' when ISNULL(l.User_status,'W') = 'A' then 'Approved'  end as user_status from login l", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Registor emp = new Registor();
+                        if (reader["user_id"] != DBNull.Value)
+                        {
+                            emp.User_id = Convert.ToInt32(reader["user_id"]);
+                        }
+                        if (reader["user_name"] != DBNull.Value)
+                        {
+                            emp.Full_Name = Convert.ToString(reader["user_name"]);
+                        }
+                        if (reader["User_email"] != DBNull.Value)
+                        {
+                            emp.email = Convert.ToString(reader["User_email"]);
+                        }
+                        if (reader["User_contact"] != DBNull.Value)
+                        {
+                            emp.User_contact = Convert.ToInt64(reader["User_contact"]);
+                        }
+                        if (reader["ID_Card"] != DBNull.Value)
+                        {
+                            emp.IDCardNo = Convert.ToString(reader["ID_Card"]);
+                        }
+
+                        if (reader["User_status"] != DBNull.Value)
+                        {
+                            emp.User_status = Convert.ToString(reader["User_status"]);
+                        }
+
+
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public void Approveduser(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update login  set User_status = 'A' where User_id = @bh_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public void DeleteUser(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from login where User_id = @user_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@user_id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public Registor user_login(string email, string password)
+        {
+            Registor employee = new Registor();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id,l.User_name,l.User_email,l.Password from Login l where l.User_email = @user_email and l.Password = @user_password and ISNULL(l.User_status,'W') <> 'W'", conn))
+                {
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@user_email", email);
+                    cmd.Parameters.AddWithValue("@user_password", password);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            employee.User_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            employee.Full_Name = Convert.ToString(reader["User_name"]);
+                        }
+                        if (reader["User_email"] != DBNull.Value)
+                        {
+                            employee.email = Convert.ToString(reader["User_email"]);
+                        }
+
+                        if (reader["Password"] != DBNull.Value)
+                        {
+                            employee.pass = Convert.ToString(reader["Password"]);
+                        }
+                    }
+
+
+                }
+            }
+            return employee;
+        }
+
+        public void Logoutupdate(int id,string user_active)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update login set User_Active = @User_active where User_id = @user_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@user_id", id);
+                    cmd.Parameters.AddWithValue("@User_active", user_active);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
 
