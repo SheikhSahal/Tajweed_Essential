@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
             return View(menudisplay);
         }
 
-        public ActionResult AttInsert(int id)
+        public ActionResult AttInsert(int id, string pass)
         {
             return View();
         }

@@ -112,9 +112,9 @@
                                     <td>@idx</td>
                                     <td>@s.Batch_name</td>
                                     <td>@s.Teach_name</td>
-                                    <td class="pass"><input type="password" id="pass" class="form-control"/><span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Attendance Password</span></td>
+                                    <td class="pass"><input type="password" id="pass" class="form-control"/></td>
                                     <td>
-                                        <button class="item btn btn-primary" data-toggle="tooltip" data-placement="top" title="Submit" id="submit" onclick="location.href='@Url.Action("AttInsert", "Dashboard", new { id = s.att_id })'">
+                                        <button class="item btn btn-primary" data-toggle="tooltip" data-placement="top" id="submit" onclick="location.href='@Url.Action("DeleteRecord", "Course_List", new { id = s.att_id, pass="psl" })'">
                                             Submit
                                         </button>
                                     </td>
@@ -136,50 +136,9 @@
         font-size: 80%;
         margin-top: 3px;
     }
+    #submit{
+        display:none;
+    }
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#submit').click(function () {
-            var isAllValid = true;
 
-            if (!($('#pass').val().trim() != '')) {
-                isAllValid = false;
-                $('.pass .error').css('display', 'block');
-            }
-            else {
-                $('.pass .error').css('display', 'none');
-            }
-
-            if (isAllValid) {
-                var data = {
-                    pass: $('#pass').val(),
-                }
-                debugger
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/Dashboard/AttInsert',
-                    data: {
-                        'pass': data.pass,
-                    }
-                    ,
-                    success: function (resp) {
-                        if (resp.status) {
-                            $('.message').delay(300).fadeIn();
-                            $('.message').delay(200).fadeOut();
-                            $("#details").empty();
-                            if (list.length > 0) {
-                                $('#orderItemError').text('');
-                            }
-                        }
-                        else {
-                            alert('error');
-                        }
-                    }
-                });
-            }
-        })
-    });
-</script>
