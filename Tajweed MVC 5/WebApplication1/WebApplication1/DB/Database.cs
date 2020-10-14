@@ -912,7 +912,7 @@ namespace WebApplication1.DB
             List<Attendance_data> DBase = new List<Attendance_data>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select a.Att_id, bh.BH_ID, bh.BATCH_NAME, t.Teach_name, bh.bh_end_date, a.created_date att_date from Attendance a , Batch_header bh , Batch_details bd, Teacher t  where a.bh_id = bh.BH_ID and  bh.BH_ID = bd.BH_ID  and bd.STU_ID = @STU_ID  and bh.TEACHER_ID = t.Teach_id  and ISNULL(bh.Delete_flag,'N') <> 'Y' and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select a.Att_id,a.att_pass ,bh.BH_ID, bh.BATCH_NAME, t.Teach_name, bh.bh_end_date, a.created_date att_date from Attendance a , Batch_header bh , Batch_details bd, Teacher t  where a.bh_id = bh.BH_ID and  bh.BH_ID = bd.BH_ID  and bd.STU_ID = @STU_ID  and bh.TEACHER_ID = t.Teach_id  and ISNULL(bh.Delete_flag,'N') <> 'Y' and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@STU_ID", id);
@@ -926,6 +926,11 @@ namespace WebApplication1.DB
                         {
                             emp.att_id = Convert.ToInt32(reader["Att_id"]);
                         }
+                        if (reader["Att_pass"] != DBNull.Value)
+                        {
+                            emp.Att_pass = Convert.ToString(reader["Att_pass"]);
+                        }
+                        
                         if (reader["BH_ID"] != DBNull.Value)
                         {
                             emp.BH_id = Convert.ToInt32(reader["BH_ID"]);
@@ -953,6 +958,68 @@ namespace WebApplication1.DB
                 }
             }
             return DBase;
+        }
+
+        public Attendance_data get_att_pass(int att_id,string pass)
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) att from Attendance a where a.Att_id = @att_id and upper(a.att_pass) = upper(@pass) and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                {
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@att_id", att_id);
+                    cmd.Parameters.AddWithValue("@pass", pass);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    employee.att_id = Convert.ToInt16(reader["att"]);
+                }
+            }
+            return employee;
+        }
+
+        public void Insertattdetails(int att_id,int stud_id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Attendance_details values(@att_id,@stud_id,@att_status)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@att_id", att_id);
+                    cmd.Parameters.AddWithValue("@stud_id", stud_id);
+                    cmd.Parameters.AddWithValue("@att_status", "P");
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        public Attendance_data stop_duplicate_att(int id, int stud_id)
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) att_taken from Attendance ah, Attendance_details ad   where ah.Att_id = ad.att_id and ah.Att_id =@att_id  and ad.stud_id = @stud_id and ah.created_date = CONVERT(VARCHAR(10), GETDATE(), 120)  and ISNULL(ah.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@att_id", id);
+                    cmd.Parameters.AddWithValue("@stud_id", stud_id);
+                    
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    employee.att_id = Convert.ToInt16(reader["att_taken"]);
+                }
+            }
+            return employee;
         }
 
     }

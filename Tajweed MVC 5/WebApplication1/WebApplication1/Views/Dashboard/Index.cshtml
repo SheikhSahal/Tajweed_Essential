@@ -6,6 +6,14 @@
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
+            <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+                <span id="alt-msge">
+                    hellow world
+                </span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="overview-wrap">
@@ -106,18 +114,28 @@
                         </thead>
                         <tbody>
                             @{int idx = 1; }
+                            @{ var current_date = DateTime.Now.Date;}
                             @foreach (var s in ViewBag.attendnce as List<WebApplication1.Models.Attendance_data>)
                             {
                                 <tr>
                                     <td>@idx</td>
-                                    <td>@s.Batch_name</td>
+                                    <td class="att_id collapse">@s.att_id</td>
+                                    <td class="batch">@s.Batch_name</td>
                                     <td>@s.Teach_name</td>
-                                    <td class="pass"><input type="password" id="pass" class="form-control"/></td>
+                                    @if(s.att_created.Date == current_date)
+                                    {
+                                    <td class="password"><input type="password" id="pass" class="form-control pass"/><span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Attendance Password</span></td>
                                     <td>
-                                        <button class="item btn btn-primary" data-toggle="tooltip" data-placement="top" id="submit" onclick="location.href='@Url.Action("DeleteRecord", "Course_List", new { id = s.att_id, pass="psl" })'">
+                                        <button class="item btn btn-primary submit" data-toggle="tooltip" data-placement="top" id="submit">
                                             Submit
                                         </button>
                                     </td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                        <td></td>
+                                    }
                                 </tr>
                                 idx++;
                             }
@@ -136,9 +154,77 @@
         font-size: 80%;
         margin-top: 3px;
     }
-    #submit{
+    #message{
         display:none;
     }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
 
 
+        $('.submit').click(function () {
+            var isAllValid = true;
+
+            var row = $(this).parent().parent("tr");
+            var findval = row.find('.pass').val();
+            var finderror = row.find('span.error');
+
+            if(findval == '')
+            {
+                isAllValid = false;
+                finderror.css('display', 'block');
+            }
+            else
+            {
+                finderror.css('display', 'none');
+            }
+
+            if (isAllValid) {
+               var att_id= row.find('.att_id').text();
+               var pass = row.find('.pass').val();
+                var data = {
+
+                    id: att_id,
+                    pass: pass,
+                    
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Dashboard/AttInsert',
+                    data: {
+                        'id': data.id,
+                        'pass': data.pass,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status =="done") {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-danger').addClass('alert-success');
+                            $('#alt-msge').text("Your attendance mark on this session");
+                        }
+                        else if (resp.status == "dup")
+                        {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-success').addClass('alert-danger');
+                            $('#alt-msge').text("you already mark the attendance of this session today");
+                        }
+                        else {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-success').addClass('alert-danger');
+                            $('#alt-msge').text("Something is wrong please contant your admin");
+                        }
+                    }
+
+                });
+
+            }
+
+        })
+    });
+</script>

@@ -157,6 +157,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="temp-data collapse">@TempData["mydata"]</div>
             </div>
             @Html.Partial("~/Views/Shared/Footer.cshtml")
         </div>
@@ -217,7 +218,8 @@
                 type: 'POST',
                 url: '/Course_List/DelSin',
                 data: {
-                    'id': del
+                    'id': del,
+                    'bh_id': $('.temp-data').text()
                 },
                 success: function (resp) {
                     if (resp.status) {
@@ -281,6 +283,7 @@
                     Volunteer: $('#Volunteer').val(),
                     course_end_date: $('#course_end_date').val(),
                     Zoom: $('#Zoom').val(),
+                    bh_id: $('.temp-data').text(),
                     Batch_details: list
                 }
                 debugger
@@ -294,7 +297,8 @@
                         'Volunteer': data.Volunteer,
                         'Zoom': data.Zoom,
                         'Batch_details': data.Batch_details,
-                        'course_end_date': data.course_end_date
+                        'course_end_date': data.course_end_date,
+                        'bh_id': data.bh_id
                     }
                     ,
                     success: function (resp) {

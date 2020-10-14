@@ -7,5 +7,8 @@ namespace WebApplication1.Models
 {
     public class Attendance_dtl
     {
+        public int att_id { get; set; }
+        public int stud_id { get; set; }
+        public string Att_status { get; set; }
     }
 }

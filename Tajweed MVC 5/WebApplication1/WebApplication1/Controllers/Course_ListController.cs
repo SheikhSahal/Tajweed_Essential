@@ -75,7 +75,12 @@ namespace WebApplication1.Controllers
         {
             bool status = false;
 
+            
             var BH_id = TempData["mydata"];
+            if(BH_id == null)
+            {
+                BH_id = bh.Bh_id;
+            }
             bh.Bh_id = Convert.ToInt32(BH_id);
 
             List<Teacher> tdp = db.Teacher_DropDown();
@@ -99,10 +104,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult DelSin(int id)
+        public ActionResult DelSin(int id,int bh_id)
         {
             bool status = false;
             var BH_id = TempData["mydata"];
+            if(BH_id == null)
+            {
+                BH_id = bh_id;
+            }
             db.dtlDelete(id, Convert.ToInt32(BH_id));
             status = true;
 
