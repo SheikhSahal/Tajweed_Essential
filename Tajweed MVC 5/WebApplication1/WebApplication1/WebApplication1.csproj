@@ -148,6 +148,8 @@
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegistorController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\Report_ParamController.cs" />
     <Compile Include="Controllers\User_StatusController.cs" />
     <Compile Include="Database_connecting.cs" />
     <Compile Include="DB\Database.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="Models\Attendance_data.cs" />
     <Compile Include="Models\Attendance_dtl.cs" />
     <Compile Include="Models\Attendance_mst.cs" />
+    <Compile Include="Models\Att_Report.cs" />
     <Compile Include="Models\Batch_details.cs" />
     <Compile Include="Models\Batch_header.cs" />
     <Compile Include="Models\Batch_list.cs" />
@@ -191,6 +194,9 @@
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\User_Status\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Report_Param\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Shared\_Report.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1022,6 +1022,44 @@ namespace WebApplication1.DB
             return employee;
         }
 
+        public List<Att_Report> report_att_present(int id,DateTime fromdate, DateTime todate)
+        {
+            List<Att_Report> DBase = new List<Att_Report>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select ad.Stud_id , l.User_name stud_name, ad.att_status  from Attendance_details ad, Attendance ah, login l  where ah.created_date between @Fromdate and @todate and ad.att_id = ah.Att_id  and l.User_id = ad.stud_id  and ah.bh_id = @bh_id  and ISNULL(ah.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Fromdate", fromdate);
+                    cmd.Parameters.AddWithValue("@todate", todate);
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Att_Report emp = new Att_Report();
+
+                        if (reader["Stud_id"] != DBNull.Value)
+                        {
+                            emp.stud_id = Convert.ToInt32(reader["Stud_id"]);
+                        }
+                        if (reader["stud_name"] != DBNull.Value)
+                        {
+                            emp.Stud_name = Convert.ToString(reader["stud_name"]);
+                        }
+
+                        if (reader["att_status"] != DBNull.Value)
+                        {
+                            emp.att_status = Convert.ToString(reader["att_status"]);
+                        }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
     }
 }
 

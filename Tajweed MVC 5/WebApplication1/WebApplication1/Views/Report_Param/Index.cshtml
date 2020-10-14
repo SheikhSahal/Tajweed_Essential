@@ -1,0 +1,167 @@
+﻿@model List<WebApplication1.Models.AP_Menu>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- DATA TABLE -->
+                    <h3 class="title-5 m-b-35">Report</h3>
+                    <div class="table-data__tool">
+                        <div class="table-data__tool-left" style="visibility:hidden;">
+                            <div class="rs-select2--light rs-select2--md">
+                                <select class="js-select2" name="property">
+                                    <option selected="selected">All Properties</option>
+                                    <option value="">Option 1</option>
+                                    <option value="">Option 2</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <div class="rs-select2--light rs-select2--sm">
+                                <select class="js-select2" name="time">
+                                    <option selected="selected">Today</option>
+                                    <option value="">3 Days</option>
+                                    <option value="">1 Week</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                            <button class="au-btn-filter">
+                                <i class="zmdi zmdi-filter-list"></i>filters
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                <div class="col-md-3" style="float:right;">
+                                    <a id="save" href="#" class="btn btn-lg btn-info btn-block">
+                                        <i class="fas fa-file-alt"></i>&nbsp;
+                                        <span>Run</span>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group From_Date">
+                                <label for="From_Date" class="form-control-label">From Date:</label>
+                                <input type="date" id="From_Date" name="From_Date" placeholder="From Date" class="input-sm form-control-sm form-control">
+                                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter From Date</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group To_Date">
+                                <label for="To_Date" class="form-control-label">To Date:</label>
+                                <input type="date" id="To_Date" name="To_Date" placeholder="Zoom" class="input-sm form-control-sm form-control">
+                                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter To Date</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group Batch_Name">
+                                <label for="Batch_Name" class="form-control-label">Course Name:</label>
+                                <select class="form-control" id="Batch_Name">
+                                    @foreach (var std in ViewBag.cordropdown as List<WebApplication1.Models.Batch_header>)
+                                    {
+                                        <option value="@std.Bh_id">@std.Batch_Name</option>
+                                    }
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Batch Name</span>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- END DATA TABLE -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#save').click(function () {
+            var isAllValid = true;
+
+            if (!($('#From_Date').val().trim() != '')) {
+                isAllValid = false;
+                $('.From_Date .error').css('display', 'block');
+            }
+            else {
+                $('.From_Date .error').css('display', 'none');
+            }
+
+            if (!($('#To_Date').val().trim() != '')) {
+                isAllValid = false;
+                $('.To_Date .error').css('display', 'block');
+            }
+            else {
+                $('.To_Date .error').css('display', 'none');
+            }
+
+            if (!($('#Batch_Name').val().trim() != '')) {
+                isAllValid = false;
+                $('.Batch_Name .error').css('display', 'block');
+            }
+            else {
+                $('.Batch_Name .error').css('display', 'none');
+            }
+
+           
+
+         
+            if (isAllValid) {
+                var data = {
+
+                    From_Date: $('#From_Date').val(),
+                    To_Date: $('#To_Date').val(),
+                    Batch_Name: $('#Batch_Name').val(),
+
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Report/Index',
+                    data: {
+                        'From_Date': data.From_Date,
+                        'To_Date': data.To_Date,
+                        'Batch_Name': data.Batch_Name,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#Batch_Name,#Zoom,#course_end_date').val('');
+                            $("#details").empty();
+                            if (list.length > 0) {
+                                $('#orderItemError').text('');
+                            }
+                        }
+                        else {
+                            alert('error');
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>
