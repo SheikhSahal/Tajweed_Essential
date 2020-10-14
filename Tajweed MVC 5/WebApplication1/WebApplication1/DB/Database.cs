@@ -852,7 +852,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id,l.User_name,l.User_email,l.Password from Login l where l.User_email = @user_email and l.Password = @user_password and ISNULL(l.User_status,'W') <> 'W'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id,l.User_name,l.User_email,l.Password,l.role_id from Login l where l.User_email = @user_email and l.Password = @user_password and ISNULL(l.User_status,'W') <> 'W'", conn))
                 {
 
                     conn.Open();
@@ -881,6 +881,10 @@ namespace WebApplication1.DB
                         {
                             employee.pass = Convert.ToString(reader["Password"]);
                         }
+                        if (reader["role_id"] != DBNull.Value)
+                        {
+                            employee.Role_id = Convert.ToInt32(reader["role_id"]);
+                        }
                     }
 
 
@@ -901,6 +905,54 @@ namespace WebApplication1.DB
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public List<Attendance_data> Attendancefetchdetail(int id)
+        {
+            List<Attendance_data> DBase = new List<Attendance_data>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select a.Att_id, bh.BH_ID, bh.BATCH_NAME, t.Teach_name, bh.bh_end_date, a.created_date att_date from Attendance a , Batch_header bh , Batch_details bd, Teacher t  where a.bh_id = bh.BH_ID and  bh.BH_ID = bd.BH_ID  and bd.STU_ID = @STU_ID  and bh.TEACHER_ID = t.Teach_id  and ISNULL(bh.Delete_flag,'N') <> 'Y' and ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@STU_ID", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Attendance_data emp = new Attendance_data();
+
+                        if (reader["Att_id"] != DBNull.Value)
+                        {
+                            emp.att_id = Convert.ToInt32(reader["Att_id"]);
+                        }
+                        if (reader["BH_ID"] != DBNull.Value)
+                        {
+                            emp.BH_id = Convert.ToInt32(reader["BH_ID"]);
+                        }
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            emp.Batch_name = Convert.ToString(reader["BATCH_NAME"]);
+                        }
+                        if (reader["Teach_name"] != DBNull.Value)
+                        {
+                            emp.Teach_name = Convert.ToString(reader["Teach_name"]);
+                        }
+                        if (reader["bh_end_date"] != DBNull.Value)
+                        {
+                            emp.Bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        }
+                        if (reader["att_date"] != DBNull.Value)
+                        {
+                            emp.att_created = Convert.ToDateTime(reader["att_date"]);
+                        }
+
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
         }
 
     }

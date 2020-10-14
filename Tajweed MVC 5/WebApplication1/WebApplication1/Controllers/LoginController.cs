@@ -29,6 +29,7 @@ namespace WebApplication1.Controllers
                 status = "done";
                 Session["Username"] = userdata.Full_Name;
                 Session["User_id"] = userdata.User_id;
+                Session["Role_id"] = userdata.Role_id;
                 db.Logoutupdate(userdata.User_id, "Y");
             }
             else

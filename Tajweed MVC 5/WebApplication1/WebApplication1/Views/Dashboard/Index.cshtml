@@ -13,133 +13,173 @@
                     </div>
                 </div>
             </div>
-            <div class="row m-t-25">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="overview-item overview-item--c1">
-                        <div class="overview__inner">
-                            <div class="overview-box clearfix">
-                                <div class="icon">
-                                    <i class="fa fa-gavel fa-6x" aria-hidden="true"></i>
+            @if (Convert.ToInt32(Session["Role_id"]) == 1)
+            {
+
+                <div class="row m-t-25">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="overview-item overview-item--c1">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="fa fa-gavel fa-6x" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="text">
+                                        @*<h2>@ViewBag.bid_count</h2>*@
+                                        <span>Bid</span>
+                                    </div>
                                 </div>
-                                <div class="text">
-                                    @*<h2>@ViewBag.bid_count</h2>*@
-                                    <span>Bid</span>
+                                <div class="overview-chart">
+                                    <canvas id="widgetChart1"></canvas>
                                 </div>
                             </div>
-                            <div class="overview-chart">
-                                <canvas id="widgetChart1"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="fas fa-box-open fa-6x" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="text">
+                                        @*<h2>@ViewBag.bid_prod</h2>*@
+                                        <span>Post</span>
+                                    </div>
+                                </div>
+                                <div class="overview-chart">
+                                    <canvas id="widgetChart2"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="overview-item overview-item--c3">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="fas fa-comment-dollar fa-6x" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="text">
+                                        @*<h2>@ViewBag.bid_saleprod</h2>*@
+                                        <span>Sold Product</span>
+                                    </div>
+                                </div>
+                                <div class="overview-chart">
+                                    <canvas id="widgetChart3"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="overview-item overview-item--c4">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="zmdi zmdi-money"></i>
+                                    </div>
+                                    <div class="text">
+                                        @*<h2>@ViewBag.earn</h2>*@
+                                        <span>total earnings</span>
+                                    </div>
+                                </div>
+                                <div class="overview-chart">
+                                    <canvas id="widgetChart4"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="overview-item overview-item--c2">
-                        <div class="overview__inner">
-                            <div class="overview-box clearfix">
-                                <div class="icon">
-                                    <i class="fas fa-box-open fa-6x" aria-hidden="true"></i>
-                                </div>
-                                <div class="text">
-                                    @*<h2>@ViewBag.bid_prod</h2>*@
-                                    <span>Post</span>
-                                </div>
-                            </div>
-                            <div class="overview-chart">
-                                <canvas id="widgetChart2"></canvas>
-                            </div>
-                        </div>
-                    </div>
+            }
+            else
+            {
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2">
+                        <thead>
+                            <tr>
+                                <th>S/No.</th>
+                                <th>Course</th>
+                                <th>Teacher</th>
+                                <th>Password</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int idx = 1; }
+                            @foreach (var s in ViewBag.attendnce as List<WebApplication1.Models.Attendance_data>)
+                            {
+                                <tr>
+                                    <td>@idx</td>
+                                    <td>@s.Batch_name</td>
+                                    <td>@s.Teach_name</td>
+                                    <td class="pass"><input type="password" id="pass" class="form-control"/><span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Attendance Password</span></td>
+                                    <td>
+                                        <button class="item btn btn-primary" data-toggle="tooltip" data-placement="top" title="Submit" id="submit" onclick="location.href='@Url.Action("AttInsert", "Dashboard", new { id = s.att_id })'">
+                                            Submit
+                                        </button>
+                                    </td>
+                                </tr>
+                                idx++;
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="overview-item overview-item--c3">
-                        <div class="overview__inner">
-                            <div class="overview-box clearfix">
-                                <div class="icon">
-                                    <i class="fas fa-comment-dollar fa-6x" aria-hidden="true"></i>
-                                </div>
-                                <div class="text">
-                                    @*<h2>@ViewBag.bid_saleprod</h2>*@
-                                    <span>Sold Product</span>
-                                </div>
-                            </div>
-                            <div class="overview-chart">
-                                <canvas id="widgetChart3"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="overview-item overview-item--c4">
-                        <div class="overview__inner">
-                            <div class="overview-box clearfix">
-                                <div class="icon">
-                                    <i class="zmdi zmdi-money"></i>
-                                </div>
-                                <div class="text">
-                                    @*<h2>@ViewBag.earn</h2>*@
-                                    <span>total earnings</span>
-                                </div>
-                            </div>
-                            <div class="overview-chart">
-                                <canvas id="widgetChart4"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @*<div class="row">
-                    <div class="col-lg-12">
-                        <h2 class="title-1 m-b-25">Earnings By Items</h2>
-                        <div class="table-responsive table--no-card m-b-40">
-                            <table class="table table-borderless table-striped table-earning">
-                                <thead>
-                                    <tr>
-                                        <th>S.No</th>
-                                        <th>Product Name</th>
-                                        <th>Condition</th>
-                                        <th>Make</th>
-                                        <th>Bid</th>
-                                        <th class="text-right">Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @{int RowNo = 0;}
-                                    @foreach (var s in ViewBag.table_list as IEnumerable<FYP.Models.Ads>)
-                                    {
-                                        <tr>
-                                            <td>@{RowNo++;} @RowNo</td>
-                                            <td>@s.P_name</td>
-                                            <td class="cond">@s.Condition</td>
-                                            <td>@s.Make</td>
-                                            <td>
-                                                <a href="@Url.Action("index","Bid", new { getid=s.p_id })">
-                                                    <div class="noti__item js-item-menu">
-                                                        <i class="zmdi zmdi-notifications"></i>
-                                                        <span class="quantity">@s.bid</span>
-                                                    </div>
-                                                </a>
-
-                                            </td>
-                                            <td class="text-right">@s.Price</td>
-                                        </tr>
-                                                }
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>*@
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <p>Copyright © 2019 Big Bang Store. All rights reserved. Template by <a href="$">Big Bang Store</a>.</p>
-                    </div>
-                </div>
-            </div>
+                                }
+            @Html.Partial("~/Views/Shared/Footer.cshtml")
         </div>
     </div>
 </div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#submit').click(function () {
+            var isAllValid = true;
+
+            if (!($('#pass').val().trim() != '')) {
+                isAllValid = false;
+                $('.pass .error').css('display', 'block');
+            }
+            else {
+                $('.pass .error').css('display', 'none');
+            }
+
+            if (isAllValid) {
+                var data = {
+                    pass: $('#pass').val(),
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Dashboard/AttInsert',
+                    data: {
+                        'pass': data.pass,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $("#details").empty();
+                            if (list.length > 0) {
+                                $('#orderItemError').text('');
+                            }
+                        }
+                        else {
+                            alert('error');
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>
