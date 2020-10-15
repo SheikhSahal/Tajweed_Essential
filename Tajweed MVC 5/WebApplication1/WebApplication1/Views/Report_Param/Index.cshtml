@@ -124,44 +124,50 @@
                 $('.Batch_Name .error').css('display', 'none');
             }
 
-           
+            if(isAllValid)
+            {
+                var from_date = $('#From_Date').val();
+                var to_date = $('#To_Date').val();
+                var Batch_Name = $('#Batch_Name').val();
+                window.open('/Report/Index?From_Date=' + from_date + '&To_Date=' + to_date + '&Batch_Name=' + Batch_Name + '', '_blank')
+            }
 
          
-            if (isAllValid) {
-                var data = {
+            //if (isAllValid) {
+            //    var data = {
 
-                    From_Date: $('#From_Date').val(),
-                    To_Date: $('#To_Date').val(),
-                    Batch_Name: $('#Batch_Name').val(),
+            //        From_Date: $('#From_Date').val(),
+            //        To_Date: $('#To_Date').val(),
+            //        Batch_Name: $('#Batch_Name').val(),
 
-                }
-                debugger
+            //    }
+            //    debugger
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/Report/Index',
-                    data: {
-                        'From_Date': data.From_Date,
-                        'To_Date': data.To_Date,
-                        'Batch_Name': data.Batch_Name,
-                    }
-                    ,
-                    success: function (resp) {
-                        if (resp.status) {
-                            $('.message').delay(300).fadeIn();
-                            $('.message').delay(200).fadeOut();
-                            $('#Batch_Name,#Zoom,#course_end_date').val('');
-                            $("#details").empty();
-                            if (list.length > 0) {
-                                $('#orderItemError').text('');
-                            }
-                        }
-                        else {
-                            alert('error');
-                        }
-                    }
-                });
-            }
+            //    $.ajax({
+            //        type: 'POST',
+            //        url: '/Report/Index',
+            //        data: {
+            //            'From_Date': data.From_Date,
+            //            'To_Date': data.To_Date,
+            //            'Batch_Name': data.Batch_Name,
+            //        }
+            //        ,
+            //        success: function (resp) {
+            //            if (resp.status) {
+            //                $('.message').delay(300).fadeIn();
+            //                $('.message').delay(200).fadeOut();
+            //                $('#Batch_Name,#Zoom,#course_end_date').val('');
+            //                $("#details").empty();
+            //                if (list.length > 0) {
+            //                    $('#orderItemError').text('');
+            //                }
+            //            }
+            //            else {
+            //                alert('error');
+            //            }
+            //        }
+            //    });
+            //}
         })
     });
 </script>

@@ -1030,8 +1030,8 @@ namespace WebApplication1.DB
                 using (SqlCommand cmd = new SqlCommand("select ad.Stud_id , l.User_name stud_name, ad.att_status  from Attendance_details ad, Attendance ah, login l  where ah.created_date between @Fromdate and @todate and ad.att_id = ah.Att_id  and l.User_id = ad.stud_id  and ah.bh_id = @bh_id  and ISNULL(ah.Delete_flag,'N') <> 'Y'", conn))
                 {
                     conn.Open();
-                    cmd.Parameters.AddWithValue("@Fromdate", fromdate);
-                    cmd.Parameters.AddWithValue("@todate", todate);
+                    cmd.Parameters.AddWithValue("@Fromdate", fromdate.Date);
+                    cmd.Parameters.AddWithValue("@todate", todate.Date);
                     cmd.Parameters.AddWithValue("@bh_id", id);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1046,6 +1046,42 @@ namespace WebApplication1.DB
                         if (reader["stud_name"] != DBNull.Value)
                         {
                             emp.Stud_name = Convert.ToString(reader["stud_name"]);
+                        }
+
+                        if (reader["att_status"] != DBNull.Value)
+                        {
+                            emp.att_status = Convert.ToString(reader["att_status"]);
+                        }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<Att_Report> report_att_abcent(int id)
+        {
+            List<Att_Report> DBase = new List<Att_Report>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bd.STU_ID, l.User_name,'A' att_status  from Batch_details bd , Batch_header bh, login l  where bh.BH_ID = bd.BH_ID  and l.User_id = bd.STU_ID  and bh.BH_ID = @bh_id and bd.STU_ID not in (select ad.stud_id from Attendance a ,Attendance_details ad where a.Att_id = ad.att_id and a.bh_id = @bh_id and ISNULL(a.Delete_flag,'N') <> 'Y')", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Att_Report emp = new Att_Report();
+
+                        if (reader["STU_ID"] != DBNull.Value)
+                        {
+                            emp.stud_id = Convert.ToInt32(reader["STU_ID"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            emp.Stud_name = Convert.ToString(reader["User_name"]);
                         }
 
                         if (reader["att_status"] != DBNull.Value)
