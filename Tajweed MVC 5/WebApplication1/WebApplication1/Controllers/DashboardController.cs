@@ -31,8 +31,17 @@ namespace WebApplication1.Controllers
 
             Attendance_data attendance = db.Get_all_attendance();
             ViewBag.attendance = attendance.att_id;
+            string status = null;
+            if (Session["User_id"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View(menudisplay);
+            }
 
-            return View(menudisplay);
+
         }
 
         public ActionResult AttInsert(int id, string pass)

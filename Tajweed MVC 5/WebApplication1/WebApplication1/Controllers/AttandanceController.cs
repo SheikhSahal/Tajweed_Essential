@@ -14,7 +14,6 @@ namespace WebApplication1.Controllers
         // GET: Attandance
         public ActionResult Index()
         {
-
             AP_Menu menu = new AP_Menu();
 
             var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
@@ -23,7 +22,35 @@ namespace WebApplication1.Controllers
             List<Batch_header> bh = db.Course_DropDown();
             ViewBag.cordropdown = bh;
 
-            return View(menudisplay);
+            string status = null;
+            if (Session["User_id"] == null)
+            {
+                status = "usernull";
+            }
+            else
+            {
+                if(Convert.ToInt32(Session["Role_id"]) == 1)
+                {
+                    status = "done";
+                }
+                else
+                {
+                    status = "usernotrole";
+                }
+            }
+
+            if(status == "usernull")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else if(status == "usernotrole")
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            else
+            {
+                return View(menudisplay);
+            }
         }
 
 
@@ -51,7 +78,7 @@ namespace WebApplication1.Controllers
             }
             else
             {
-               var dprcd= db.get_Duplicate_data(am.bh_id, current_date);
+                var dprcd = db.get_Duplicate_data(am.bh_id, current_date);
 
                 if (dprcd.att_id == 0)
                 {

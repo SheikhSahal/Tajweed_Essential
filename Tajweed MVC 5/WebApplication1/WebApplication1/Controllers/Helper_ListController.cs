@@ -25,7 +25,35 @@ namespace WebApplication1.Controllers
             List<Batch_header> bh = db.Course_DropDown();
             ViewBag.cordropdown = bh;
 
-            return View(menudisplay);
+            string status = null;
+            if (Session["User_id"] == null)
+            {
+                status = "usernull";
+            }
+            else
+            {
+                if (Convert.ToInt32(Session["Role_id"]) == 1)
+                {
+                    status = "done";
+                }
+                else
+                {
+                    status = "usernotrole";
+                }
+            }
+
+            if (status == "usernull")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else if (status == "usernotrole")
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            else
+            {
+                return View(menudisplay);
+            }
         }
 
         public ActionResult DeleteRecord(int id)
