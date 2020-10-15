@@ -21,6 +21,7 @@ namespace WebApplication1.Controllers
             List<Attendance_data> att_data = db.Attendancefetchdetail(Convert.ToInt32(Session["User_id"]));
             ViewBag.attendnce = att_data;
 
+
             List<Batch_header> bh = db.Course_DropDown();
             ViewBag.cordropdown = bh;
 

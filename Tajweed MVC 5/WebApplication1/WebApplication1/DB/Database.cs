@@ -1096,6 +1096,33 @@ namespace WebApplication1.DB
             return DBase;
         }
 
+        public Attendance_data Get_report_header(int id)
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BATCH_NAME,bh.bh_end_date from Batch_header bh where bh.BH_ID =@bh_id and ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["BATCH_NAME"] != DBNull.Value)
+                    {
+                        employee.Batch_name = Convert.ToString(reader["BATCH_NAME"]);
+                    }
+                    if (reader["bh_end_date"] != DBNull.Value)
+                    {
+                        employee.Bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                    }
+                }
+            }
+            return employee;
+        }
+
     }
 }
 
