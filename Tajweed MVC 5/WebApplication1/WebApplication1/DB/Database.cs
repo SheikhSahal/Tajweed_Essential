@@ -1122,6 +1122,90 @@ namespace WebApplication1.DB
             }
             return employee;
         }
+        public Attendance_data Get_all_users()
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) Students from Login l", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["Students"] != DBNull.Value)
+                    {
+                        employee.att_id = Convert.ToInt32(reader["Students"]);
+                    }
+                }
+            }
+            return employee;
+        }
+        public Attendance_data Get_all_courses()
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) courses from Batch_header bh where ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["courses"] != DBNull.Value)
+                    {
+                        employee.att_id = Convert.ToInt32(reader["courses"]);
+                    }
+                }
+            }
+            return employee;
+        }
+        public Attendance_data Get_all_helpers()
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) helpers from Hlp_header hh where ISNULL(hh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["helpers"] != DBNull.Value)
+                    {
+                        employee.att_id = Convert.ToInt32(reader["helpers"]);
+                    }
+                }
+            }
+            return employee;
+        }
+        public Attendance_data Get_all_attendance()
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) Attendance from Attendance a where ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["Attendance"] != DBNull.Value)
+                    {
+                        employee.att_id = Convert.ToInt32(reader["Attendance"]);
+                    }
+                }
+            }
+            return employee;
+        }
 
     }
 }

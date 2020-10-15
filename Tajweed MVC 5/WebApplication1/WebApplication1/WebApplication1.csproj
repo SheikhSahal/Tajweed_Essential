@@ -198,6 +198,7 @@
     <Content Include="Views\Report_Param\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Shared\_Report.cshtml" />
+    <Content Include="Views\Shared\Logo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
