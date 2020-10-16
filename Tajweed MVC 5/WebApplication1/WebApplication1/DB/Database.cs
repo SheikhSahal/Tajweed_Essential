@@ -36,6 +36,7 @@ namespace WebApplication1.DB
             }
             return DBase;
         }
+
         //end Menu
 
         //Courses Functions Start
@@ -893,7 +894,7 @@ namespace WebApplication1.DB
             return employee;
         }
 
-        public void Logoutupdate(int id,string user_active)
+        public void Logoutupdate(int id, string user_active)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
@@ -930,7 +931,7 @@ namespace WebApplication1.DB
                         {
                             emp.Att_pass = Convert.ToString(reader["Att_pass"]);
                         }
-                        
+
                         if (reader["BH_ID"] != DBNull.Value)
                         {
                             emp.BH_id = Convert.ToInt32(reader["BH_ID"]);
@@ -960,7 +961,7 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-        public Attendance_data get_att_pass(int att_id,string pass)
+        public Attendance_data get_att_pass(int att_id, string pass)
         {
             Attendance_data employee = new Attendance_data();
 
@@ -983,7 +984,7 @@ namespace WebApplication1.DB
             return employee;
         }
 
-        public void Insertattdetails(int att_id,int stud_id)
+        public void Insertattdetails(int att_id, int stud_id)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
@@ -1011,7 +1012,7 @@ namespace WebApplication1.DB
 
                     cmd.Parameters.AddWithValue("@att_id", id);
                     cmd.Parameters.AddWithValue("@stud_id", stud_id);
-                    
+
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     reader.Read();
@@ -1022,7 +1023,7 @@ namespace WebApplication1.DB
             return employee;
         }
 
-        public List<Att_Report> report_att_present(int id,DateTime fromdate, DateTime todate)
+        public List<Att_Report> report_att_present(int id, DateTime fromdate, DateTime todate)
         {
             List<Att_Report> DBase = new List<Att_Report>();
             using (SqlConnection conn = new SqlConnection(connectString))
@@ -1205,6 +1206,63 @@ namespace WebApplication1.DB
                 }
             }
             return employee;
+        }
+
+        public void InsertCourse(New_Course nc)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Batch_header(BATCH_NAME,	Teacher_1,	CREATED_BY,	CREATED_DATE,	Delete_flag,	bh_end_date,	bh_start_date,	Teacher_2,	Teacher_3,	Teacher_4,	Teacher_5,	Course_desc) values (@BATCH_NAME,	@Teacher_1,	@CREATED_BY,	@CREATED_DATE,	@Delete_flag,	@bh_end_date,	@bh_start_date,	@Teacher_2,	@Teacher_3,	@Teacher_4,	@Teacher_5,	@Course_desc)", conn))
+                {
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@BATCH_NAME", nc.BATCH_NAME);
+                    cmd.Parameters.AddWithValue("@Teacher_1", nc.Teacher_1);
+                    cmd.Parameters.AddWithValue("@CREATED_BY", "hellow");
+                    cmd.Parameters.AddWithValue("@CREATED_DATE", DateTime.Now.Date);
+                    cmd.Parameters.AddWithValue("@Delete_flag", "N");
+                    cmd.Parameters.AddWithValue("@bh_end_date", nc.bh_end_date.Date);
+                    cmd.Parameters.AddWithValue("@bh_start_date", nc.bh_start_date.Date);
+                    cmd.Parameters.AddWithValue("@Teacher_2", nc.Teacher_2);
+                    cmd.Parameters.AddWithValue("@Teacher_3", nc.Teacher_3);
+                    cmd.Parameters.AddWithValue("@Teacher_4", nc.Teacher_4);
+                    cmd.Parameters.AddWithValue("@Teacher_5", nc.Teacher_5);
+                    cmd.Parameters.AddWithValue("@Course_desc", nc.Course_desc);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        public List<New_Course> Courses_Cart()
+        {
+            List<New_Course> DBase = new List<New_Course>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID, bh.BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        New_Course teach = new New_Course();
+
+                        teach.bh_id = Convert.ToInt32(reader["BH_ID"]);
+                        teach.BATCH_NAME = reader["BATCH_NAME"].ToString();
+                        teach.Course_desc = reader["course_desc"].ToString();
+                        teach.Teach_name = reader["Teach_name"].ToString();
+                        teach.bh_start_date = Convert.ToDateTime( reader["bh_start_date"]);
+                        teach.bh_end_date =Convert.ToDateTime(reader["bh_end_date"]);
+
+
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
         }
 
     }

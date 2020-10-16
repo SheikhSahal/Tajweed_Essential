@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Report.cshtml";
+}
+<div class="row">
+    @foreach (var s in ViewBag.courselist as List<WebApplication1.Models.New_Course>)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title mb-3">@s.BATCH_NAME</strong>
+                </div>
+                <div class="card-body">
+                    <div class="mx-auto d-block">
+                        <div class="location text-sm-center">
+                            @s.Course_desc
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="card-text text-sm-center">
+                        <div class="btn btn-default">
+                         Expired:   @s.bh_end_date.ToString("dd-MM-yyyy")
+                        </div>
+                        @*<a href="#">
+                                <i class="fa fa-facebook pr-1"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-twitter pr-1"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-linkedin pr-1"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-pinterest pr-1"></i>
+                            </a>*@
+                        <button class="btn btn-primary">Registor</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

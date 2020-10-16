@@ -142,12 +142,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AttandanceController.cs" />
     <Compile Include="Controllers\Attendance_listController.cs" />
+    <Compile Include="Controllers\CoursesDetailsController.cs" />
     <Compile Include="Controllers\Helper_ListController.cs" />
     <Compile Include="Controllers\Course_ListController.cs" />
     <Compile Include="Controllers\Create_courseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\New_CourseController.cs" />
     <Compile Include="Controllers\RegistorController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\Report_ParamController.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Models\Helper_list.cs" />
     <Compile Include="Models\Helper_mst.cs" />
     <Compile Include="Models\Helper_dtl.cs" />
+    <Compile Include="Models\New_Course.cs" />
     <Compile Include="Models\Registor.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\Student.cs" />
@@ -199,6 +202,8 @@
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Shared\_Report.cshtml" />
     <Content Include="Views\Shared\Logo.cshtml" />
+    <Content Include="Views\CoursesDetails\Index.cshtml" />
+    <Content Include="Views\New_Course\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
