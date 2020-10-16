@@ -1240,7 +1240,7 @@ namespace WebApplication1.DB
             List<New_Course> DBase = new List<New_Course>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID, bh.BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID, bh.BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and ISNULL(bh.Delete_flag,'N') <> 'Y' order by bh.bh_id desc", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
