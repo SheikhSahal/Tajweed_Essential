@@ -16,6 +16,7 @@ namespace WebApplication1.Controllers
         {
             List<New_Course> course_cart = db.Courses_Cart();
             ViewBag.courselist = course_cart;
+
             return View();
         }
     }

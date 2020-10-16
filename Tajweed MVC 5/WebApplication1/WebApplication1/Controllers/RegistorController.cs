@@ -12,9 +12,21 @@ namespace WebApplication1.Controllers
     {
         Database db = new Database();
 
-        public ActionResult Index()
+        public ActionResult Index(int id, DateTime end_date)
         {
-            return View();
+            var current_date = DateTime.Now.Date;
+
+            if (end_date.Date <= current_date)
+            {
+                return RedirectToAction("Index","CoursesDetails");
+            }
+            else
+            {
+                TempData["Registor_bh_id"] = id;
+                return View();
+            }
+
+         
         }
 
         [HttpPost]
@@ -22,20 +34,22 @@ namespace WebApplication1.Controllers
         {
             string status = null;
 
-            var get_email = db.get_email(r.email);
+            //var get_email = db.get_email(r.email);
 
-            if (Convert.ToInt32(get_email.email) == 1)
-            {
-                status = "dupl";
-            }
-            else
-            {
-                db.Registration(r);
-                status = "done";
-            }
+            //if (Convert.ToInt32(get_email.email) == 1)
+            //{
+            //    status = "dupl";
+            //}
+            //else
+            //{
 
-            
-            
+            r.bh_id = Convert.ToInt32(TempData["Registor_bh_id"]);
+            db.Registration(r);
+            status = "done";
+            //}
+
+
+
 
             return new JsonResult { Data = new { status = status } };
         }

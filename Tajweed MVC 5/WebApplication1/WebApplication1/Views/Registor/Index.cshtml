@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Login.cshtml";
 }
+<h2>@ViewBag.bh_id</h2>
 <div class="login-form">
     <form>
         <div class="form-group Full_Name">
@@ -57,12 +58,6 @@
             <span class="valid"><i class="fas fa-exclamation-circle"></i>&nbsp; This E-mail is not valid</span>
         </div>
 
-        <div class="form-group pass">
-            <label>Password:</label>
-            <input class="au-input au-input--full pass" id="pass" type="password" name="pass" placeholder="Password">
-            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Password</span>
-        </div>
-
         <div class="form-group Address">
             <label>Address:</label>
             <input class="au-input au-input--full Address" id="Address" type="text" name="Address" placeholder="Address">
@@ -109,12 +104,7 @@
         <button id="save" class="au-btn au-btn--block au-btn--green m-b-20">register</button>
 
     </form>
-    <div class="register-link">
-        <p>
-            Already have account?
-            <a href="/Login/Index">Sign In</a>
-        </p>
-    </div>
+   
 </div>
 <style>
     span.error {
@@ -216,13 +206,6 @@
                 }
             }
 
-            if (!($('#pass').val().trim() != '')) {
-                isAllValid = false;
-                $('.pass .error').css('display', 'block');
-            }
-            else {
-                $('.pass .error').css('display', 'none');
-            }
 
 
             if (!($('#Address').val().trim() != '')) {
@@ -291,7 +274,6 @@
                     IDCardNo: $('#IDCardNo').val(),
                     M_W_no: $('#M_W_no').val(),
                     email: $('#email').val(),
-                    pass: $('#pass').val(),
                     Address: $('#Address').val(),
                     Country: $('#Country').val(),
                     Qualification: $('#Qualification').val(),
@@ -313,7 +295,6 @@
                         'IDCardNo': data.IDCardNo,
                         'M_W_no': data.M_W_no,
                         'email': data.email,
-                        'pass': data.pass,
                         'Address': data.Address,
                         'Country': data.Country,
                         'Qualification': data.Qualification,

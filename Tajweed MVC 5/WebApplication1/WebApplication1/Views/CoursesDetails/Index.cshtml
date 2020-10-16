@@ -3,6 +3,12 @@
     Layout = "~/Views/Shared/_Report.cshtml";
 }
 <div class="row">
+    <div class="col-md-12 text-right">
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Login")'">login</button>
+    </div>
+</div>
+<br />
+<div class="row">
     @foreach (var s in ViewBag.courselist as List<WebApplication1.Models.New_Course>)
     {
         <div class="col-md-4">
@@ -17,26 +23,26 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="card-text text-sm-center">
-                        <div class="btn btn-default">
-                        Course Expired:   @s.bh_end_date.ToString("dd-MM-yyyy")
+                    @{ var current_date = DateTime.Now.Date;}
+                    @if (s.bh_end_date.Date >= current_date)
+                    {
+                        <div class="card-text text-sm-center">
+                            <div class="btn btn-default">
+                                Last Date :   @s.bh_end_date.ToString("dd-MM-yyyy")
+                            </div>
+                            <button class="btn btn-info" onclick="location.href='@Url.Action("Index", "Registor", new { id = s.bh_id , end_date = s.bh_end_date })'">Registor</button>
                         </div>
-                        @*<a href="#">
-                                <i class="fa fa-facebook pr-1"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-twitter pr-1"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-linkedin pr-1"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-pinterest pr-1"></i>
-                            </a>*@
-                        <button class="btn btn-primary">Registor</button>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="card-text text-sm-center">
+                            <div class="btn btn-danger">
+                                This Course is Expired
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-    }
+                        }
 </div>

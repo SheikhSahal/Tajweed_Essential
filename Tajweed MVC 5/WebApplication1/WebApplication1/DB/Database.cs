@@ -723,11 +723,10 @@ namespace WebApplication1.DB
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	Password,	User_email,	User_contact,	DOB,	Martial_status,	F_H_name,	ID_Card,	Address,	Country,	Qualification,	Profession,	Q_A,	Future_Plan,	recommended) values (@User_name,	@Password,	@User_email,	@User_contact,	@DOB,	@Martial_status,	@F_H_name,	@ID_Card,	@Address,	@Country,	@Qualification,	@Profession,	@Q_A,	@Future_Plan,	@recommended)", conn))
+                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_email,	User_contact,	DOB,	Martial_status,	F_H_name,	ID_Card,	Address,	Country,	Qualification,	Profession,	Q_A,	Future_Plan,	recommended, bh_id) values (@User_name,	@User_email,	@User_contact,	@DOB,	@Martial_status,	@F_H_name,	@ID_Card,	@Address,	@Country,	@Qualification,	@Profession,	@Q_A,	@Future_Plan,	@recommended,@bh_id)", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
-                    cmd.Parameters.AddWithValue("@Password", r.pass);
                     cmd.Parameters.AddWithValue("@User_email", r.email);
                     cmd.Parameters.AddWithValue("@User_contact", r.M_W_no);
                     cmd.Parameters.AddWithValue("@DOB", r.DOB);
@@ -741,6 +740,8 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@Q_A", r.Q_A);
                     cmd.Parameters.AddWithValue("@Future_Plan", r.Future_plan);
                     cmd.Parameters.AddWithValue("@recommended", r.recommended);
+                    cmd.Parameters.AddWithValue("@bh_id", r.bh_id);
+                    
                     cmd.ExecuteNonQuery();
                 }
             }
