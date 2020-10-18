@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+            <span class="badge badge-pill badge-success">Success</span>
+            You successfully insert the record.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Create Helper</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group batch_name">
+                                            <label for="batch_name" class="control-label mb-1">Course Name:</label>
+                                            @*<input id="batch_name" name="batch_name" type="text" class="form-control" aria-required="true" aria-invalid="false">*@
+                                            <select class="form-control" id="batch_name">
+                                                <option value="0">--Select--</option>
+                                                @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
+                                                {
+                                                    <option value="@s.Bh_id">@s.Batch_Name</option>
+                                                }
+                                            </select>
+
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group List_name">
+                                            <label for="List_name" class="control-label mb-1">List Name:</label>
+                                            <select class="form-control" id="List_name">
+                                                <option value="0">--Select--</option>
+                                                @foreach (var s in ViewBag.list as List<WebApplication1.Models.List_Header>)
+                                                {
+                                                    <option value="@s.List_id">@s.List_name</option>
+                                                }
+                                            </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a List Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group student">
+                                            <label for="student" class="control-label mb-1">Student:</label>
+                                            @*<input id="student" name="student" type="text" class="form-control" aria-required="true" aria-invalid="false">*@
+                                            <select class="form-control" id="student">
+                                                <option value="0">--Select--</option>
+                                            </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Select a Student</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group Helper">
+                                            <label for="Helper" class="control-label mb-1">Helper:</label>
+                                            <select class="form-control" id="Helper">
+                                                <option value="0">--Select--</option>
+                                            </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Select a Helper</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="Stud_id" style="visibility:hidden;" class="control-label mb-1">Student:</label>
+                                        <button class="btn btn-success" id="add">Add</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-borderless table-striped table-earning">
+                                            <tbody id="details"></tbody>
+                                        </table>
+                                        <div id="orderItems">
+                                            <table class="table table-responsive" id="orderdetailsItems"></table>
+                                            <span id="orderItemError" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button id="save" class="btn btn-lg btn-info btn-block">
+                                        <i class="fas fa-save"></i>&nbsp;
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.Partial("~/Views/Shared/Footer.cshtml")
+        </div>
+    </div>
+</div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#List_name').change(function () {
+            alert('working');
+            $('#Helper').empty();
+            $.ajax({
+                type: 'POST',
+                url: '/New_Helper/Cascade_stud',
+                data: {
+                    'id': $('#Helper').val(),
+                    'flag': 'B',
+                }
+                ,
+                success: function (resp) {
+                    console.log(resp);
+                    $.each(resp, function (i, city) {
+                        $('#Helper').append('<option value"'
+                            + city.Value + '">'
+                            + city.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('error')
+                }
+            });
+        })
+
+
+        $('#batch_name').change(function () {
+            $('#student').empty();
+            $.ajax({
+                type: 'POST',
+                url: '/New_Helper/Cascade_stud',
+                data: {
+                    'id': $('#batch_name').val(),
+                    'flag': 'A',
+                }
+                ,
+                success: function (resp) {
+                    console.log(resp);
+                    $.each(resp, function (i, city) {
+                        $('#student').append('<option value"'
+                            + city.Value + '">'
+                            + city.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('error')
+                }
+            });
+        })
+
+
+        
+
+
+
+        //$('#save').click(function (e) {
+        //    e.preventDefault();
+        //    var isAllValid = true;
+
+        //    if (!($('#batch_name').val().trim() != '')) {
+        //        isAllValid = false;
+        //        $('.batch_name .error').css('display', 'block');
+        //    }
+        //    else {
+        //        $('.batch_name .error').css('display', 'none');
+        //    }
+
+        //    if (!($('#Course_desc').val().trim() != '')) {
+        //        isAllValid = false;
+        //        $('.Course_desc .error').css('display', 'block');
+        //    }
+        //    else {
+        //        $('.Course_desc .error').css('display', 'none');
+        //    }
+        //    if ($('#Teacher_1 option:selected').val() == 0) {
+        //        isAllValid = false;
+        //        $('.Teacher_1 .error').css('display', 'block');
+        //    }
+        //    else {
+        //        $('.Teacher_1 .error').css('display', 'none');
+        //    }
+
+        //    if (!($('#Start_date').val().trim() != '')) {
+        //        isAllValid = false;
+        //        $('.Start_date .error').css('display', 'block');
+        //    }
+        //    else {
+        //        $('.Start_date .error').css('display', 'none');
+        //    }
+        //    if (!($('#End_date').val().trim() != '')) {
+        //        isAllValid = false;
+        //        $('.End_date .error').css('display', 'block');
+        //    }
+        //    else {
+        //        $('.End_date .error').css('display', 'none');
+        //    }
+        //    if (isAllValid) {
+        //        var data = {
+        //            batch_name: $('#batch_name').val(),
+        //            Course_desc: $('#Course_desc').val(),
+        //            Teacher_1: $('#Teacher_1').val(),
+        //            Teacher_2: $('#Teacher_2').val(),
+        //            Teacher_3: $('#Teacher_3').val(),
+        //            Teacher_4: $('#Teacher_4').val(),
+        //            bh_start_date: $('#Start_date').val(),
+        //            bh_end_date: $('#End_date').val(),
+        //        }
+        //        debugger
+
+        //        $.ajax({
+        //            type: 'POST',
+        //            url: '/New_Course/Index',
+        //            data: {
+        //                'batch_name': data.batch_name,
+        //                'Course_desc': data.Course_desc,
+        //                'Teacher_1': data.Teacher_1,
+        //                'Teacher_2': data.Teacher_2,
+        //                'Teacher_3': data.Teacher_3,
+        //                'Teacher_4': data.Teacher_4,
+        //                'bh_start_date': data.bh_start_date,
+        //                'bh_end_date': data.bh_end_date,
+        //            }
+        //            ,
+        //            success: function (resp) {
+        //                if (resp.status) {
+        //                    $('.message').delay(300).fadeIn();
+        //                    $('.message').delay(200).fadeOut();
+        //                    $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
+        //                    $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
+        //                }
+        //                else {
+        //                    alert('error');
+        //                }
+        //            }
+        //        });
+        //    }
+        //})
+    });
+</script>

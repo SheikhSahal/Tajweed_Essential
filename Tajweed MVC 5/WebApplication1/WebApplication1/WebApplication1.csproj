@@ -151,6 +151,7 @@
     <Compile Include="Controllers\List_HeaderController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\New_CourseController.cs" />
+    <Compile Include="Controllers\New_HelperController.cs" />
     <Compile Include="Controllers\RegistorController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\Report_ParamController.cs" />
@@ -208,6 +209,7 @@
     <Content Include="Views\CoursesDetails\Index.cshtml" />
     <Content Include="Views\New_Course\Index.cshtml" />
     <Content Include="Views\List_Header\Index.cshtml" />
+    <Content Include="Views\New_Helper\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

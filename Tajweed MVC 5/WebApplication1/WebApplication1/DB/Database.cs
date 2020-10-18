@@ -1342,6 +1342,124 @@ namespace WebApplication1.DB
 
         }
 
+        public List<Batch_header> get_Course_dropdown()
+        {
+            List<Batch_header> DBase = new List<Batch_header>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME from Batch_header bh where bh.bh_end_date >= GETDATE()", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Batch_header teach = new Batch_header();
+                        if (reader["BH_ID"] != DBNull.Value)
+                        {
+                            teach.Bh_id = Convert.ToInt32(reader["BH_ID"]);
+                        }
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            teach.Batch_Name = reader["BATCH_NAME"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<List_Header> get_list_dropdown()
+        {
+            List<List_Header> DBase = new List<List_Header>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select lh.List_id, lh.List_name from List_header lh", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        List_Header teach = new List_Header();
+                        if (reader["List_id"] != DBNull.Value)
+                        {
+                            teach.List_id = Convert.ToInt32(reader["List_id"]);
+                        }
+                        if (reader["List_name"] != DBNull.Value)
+                        {
+                            teach.List_name = reader["List_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<Student> get_Cascade_student(int id)
+        {
+            List<Student> DBase = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Student teach = new Student();
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["Full_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = reader["Full_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<Student> get_Cascade_list_student(int id)
+        {
+            List<Student> DBase = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select ld.Stud_id, CONCAT( l.User_name, ' ',l.F_H_name) stud_name from List_header lh,List_details ld, login l where lh.List_id = ld.List_id and ld.Stud_id = l.User_id and lh.List_id =@bh_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Student teach = new Student();
+                        if (reader["Stud_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["Stud_id"]);
+                        }
+                        if (reader["stud_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = reader["stud_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
     }
 }
 
