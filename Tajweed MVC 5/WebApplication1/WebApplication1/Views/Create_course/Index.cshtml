@@ -223,11 +223,9 @@
 
             var list = [];
             $('#details tr').each(function (index, ele) {
-
                 var orderItem = {
                     stu_id: $('.at', this).val()
                 }
-
                 JSON.stringify(orderItem)
                 list.push(orderItem);
 
@@ -238,13 +236,11 @@
             }
             if (isAllValid) {
                 var data = {
-
                     Batch_Name: $('#Batch_Name').val(),
                     Teacher: $('#Teacher').val(),
                     Volunteer: $('#Volunteer').val(),
                     course_end_date: $('#course_end_date').val(),
                     Zoom: $('#Zoom').val(),
-
                     Batch_details: list
                 }
                 debugger

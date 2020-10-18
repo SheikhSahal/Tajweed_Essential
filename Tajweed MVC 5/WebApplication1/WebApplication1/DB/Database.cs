@@ -1266,6 +1266,81 @@ namespace WebApplication1.DB
             }
             return DBase;
         }
+        public List<Student> Get_student_list()
+        {
+            List<Student> DBase = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name   from login l , Batch_header bh  where l.Bh_id = bh.BH_ID and bh.bh_end_date <= GETDATE() and ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Student teach = new Student();
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["Full_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = reader["Full_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List_Header AutoGenerate_List_Header()
+        {
+            List_Header bh = new List_Header();
+            SqlConnection con = new SqlConnection(connectString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select ISNULL(MAX(l.list_id),0)+1 list_id from list_header l";
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            bh.List_id = Convert.ToInt16(reader["list_id"]);
+
+            reader.Close();
+            return bh;
+        }
+
+        public void InsertList_header(List_Header lh)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into List_header (List_id,List_name) values (@List_id,@List_name)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@List_id", lh.List_id);
+                    cmd.Parameters.AddWithValue("@List_name", lh.List_name);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        public void InsertList_Detail(List_Details ld)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into List_details(List_id,Stud_id) values (@List_id,@Stud_id)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@List_id", ld.List_id);
+                    cmd.Parameters.AddWithValue("@Stud_id", ld.Stud_id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
 
     }
 }

@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+            <span class="badge badge-pill badge-success">Success</span>
+            You successfully insert the record.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Create List</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group List_name">
+                                            <label for="List_name" class="control-label mb-1">List Name:</label>
+                                            <input id="List_name" name="List_name" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a List Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group Amount">
+                                            <label for="Amount" class="control-label mb-1">Add Student:</label>
+                                            <select class="form-control" id="Amount">
+                                                <option value="0">--Select--</option>
+                                                @foreach (var s in ViewBag.student as List<WebApplication1.Models.Student>)
+                                                {
+                                                    <option value="@s.Stud_id">@s.Stud_name</option>
+                                                }
+                                            </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Select a Student</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="Stud_id" style="visibility:hidden;" class="control-label mb-1">Student:</label>
+                                        <button class="btn btn-success" id="add">Add</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-borderless table-striped table-earning">
+                                            <tbody id="details"></tbody>
+                                        </table>
+                                        <div id="orderItems">
+                                            <table class="table table-responsive" id="orderdetailsItems"></table>
+                                            <span id="orderItemError" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button id="save" class="btn btn-lg btn-info btn-block">
+                                        <i class="fas fa-save"></i>&nbsp;
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+               
+            </div>
+            @Html.Partial("~/Views/Shared/Footer.cshtml")
+        </div>
+    </div>
+</div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#add').click(function (e) {
+            e.preventDefault();
+            var AllValid = true;
+            if ($('#Amount option:selected').val() == 0) {
+                AllValid = false;
+                $('.Amount .error').css('display', 'block');
+            }
+            else {
+                $('.Amount .error').css('display', 'none');
+            }
+
+            if (AllValid) {
+
+                var Amount = $('#Amount').val().trim();
+                var Amounttext = $('#Amount option:selected').text();
+                var Amount_text = '<td>' + Amounttext + '</td>';
+                var Amount_input = '<input type="text" id="at" class="at form-control" value=' + Amount + ' />';
+                var remove_btn = '<td> <button type="button" data-dismiss=' + Amount + ' class="rm btn btn-danger">x</button> </td>';
+
+                var detail_values = '<tr class="tr-row"><td class="">' + Amount_input + '</td> ' + Amount_text + remove_btn + '</tr>';
+                $('#details').prepend(detail_values);
+
+                $('#Amount').val(0)
+                $('#orderItemError').text('');
+            }
+        });
+
+        $('#details').on('click', '.rm', function () {
+            var row = $(this).parent().parent("tr");
+            row.remove();
+        });
+
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if (!($('#List_name').val().trim() != '')) {
+                isAllValid = false;
+                $('.List_name .error').css('display', 'block');
+            }
+            else {
+                $('.List_name .error').css('display', 'none');
+            }
+
+            var list = [];
+            $('#details tr').each(function (index, ele) {
+                var orderItem = {
+                    Stud_id: $('.at', this).val()
+                }
+                JSON.stringify(orderItem)
+                list.push(orderItem);
+            })
+            if (list.length == 0) {
+                $('#orderItemError').text('At least 1 record required.');
+                isAllValid = false;
+            }
+          
+            if (isAllValid) {
+                var data = {
+                    List_name: $('#List_name').val(),
+                    List_Details: list
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/List_header/Index',
+                    data: {
+                        'List_name': data.List_name,
+                        'List_Details': data.List_Details,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $("#List_name").val('');
+                            $("#details").empty();
+                            if (list.length > 0) {
+                                $('#orderItemError').text('');
+                            }
+                        }
+                        else {
+                            alert('error');
+                        }
+                    }
+
+                });
+
+            }
+
+        })
+
+
+
+    });
+</script>
