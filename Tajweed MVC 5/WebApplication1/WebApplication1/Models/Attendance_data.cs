@@ -13,7 +13,11 @@ namespace WebApplication1.Models
         public string Teach_name { get; set; }
         public DateTime Bh_end_date { get; set; }
         public DateTime att_created { get; set; }
+        public string Att_status { get; set; }
+        public string stud_id { get; set; }
         public string Att_pass { get; set; }
+
+        public virtual ICollection<Attendance_dtl> Attendance_dtl { get; set; }
 
     }
 }

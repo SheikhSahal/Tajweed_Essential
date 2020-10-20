@@ -225,6 +225,7 @@
     <Folder Include="Content\js\" />
     <Folder Include="Content\vendor\" />
     <Folder Include="Views\Batch_List\" />
+    <Folder Include="Views\New_attendence\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -26,7 +26,6 @@
                                     <div class="col-md-6">
                                         <div class="form-group batch_name">
                                             <label for="batch_name" class="control-label mb-1">Course Name:</label>
-                                            @*<input id="batch_name" name="batch_name" type="text" class="form-control" aria-required="true" aria-invalid="false">*@
                                             <select class="form-control" id="batch_name">
                                                 <option value="0">--Select--</option>
                                                 @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
@@ -123,6 +122,10 @@
 <script>
     $(document).ready(function () {
 
+        $('#details').on('click', '.rm', function () {
+            var row = $(this).parent().parent("tr");
+            row.remove();
+        });
 
         $('#List_name').change(function () {
             $('#Helper').empty();
@@ -193,32 +196,18 @@
             }
 
             if (isAllValid) {
-
-                //var Amount = $("select#student option").filter(":selected").val();
-                //    //$('#student').text();
-                //alert(Amount);
-                //var Amounttext = $('#student option:selected').text();
-                //var Amount_text = '<td>' + Amounttext + '</td>';
-                //var Amount_input = '<input type="text" id="at" class="at form-control" value=' + Amount + ' />';
-                //var remove_btn = '<td> <button type="button" data-dismiss=' + Amount + ' class="rm btn btn-danger">x</button> </td>';
-
-                //var detail_values = '<tr class="tr-row"><td>' + Amount_input + '</td> ' + Amount_text + remove_btn + '</tr>';
-                //$('#details').prepend(detail_values);
                 var student = $('#student :selected').val();
-                alert(student);
                 var studenttext = $('#student option:selected').text();
                 var std_text = '<td>' + studenttext + '</td>';
-                var std_input = '<input type="text" id="std_val" class="std_val form-control" value=' + student + ' />';
+                var std_input = '<td class="std_val collapse">' + student + '</td>';
 
                 var helper = $('#Helper option:selected').val();
                 var helpertext = $('#Helper option:selected').text();
                 var helper_text = '<td>' + helpertext + '</td>';
-                var helper_input = '<input type="text" id="helper_val" class="helper_val form-control collapse" value=' + helper + ' />';
+                var helper_input = '<td class="helper_val collapse">' + helper + '</td>';
 
-                var remove_btn = '<td> <button type="button" class="rm btn btn-danger">x</button> </td>';
-
-                alert(std_input + ' ' + helper_input);
-                var detail_values = '<tr class="tr-row" style="border:1px solid red;">' + std_input + std_text + helper_input + helper_text + remove_btn + '</tr>';
+                var remove_btn = '<td> <button type="button" class="rm btn btn-danger"><i class="fas fa-trash"></i></button> </td>';
+                var detail_values = '<tr class="tr-row">' + std_input + std_text + helper_input + helper_text + remove_btn + '</tr>';
                 $('#details').prepend(detail_values);
 
                 $('#orderItemError').text('');
@@ -248,8 +237,8 @@
             var list = [];
             $('#details tr').each(function (index, ele) {
                 var orderItem = {
-                    stud_id: $('.std_val', this).val(),
-                    hlp_stud_id: $('.helper_val', this).val(),
+                    stud_id: $('.std_val', this).text(),
+                    hlp_stud_id: $('.helper_val', this).text(),
                 }
                 JSON.stringify(orderItem)
                 list.push(orderItem);
@@ -276,105 +265,24 @@
                         'list_id': data.list_id,
                         'Helper_dtl': data.Helper_dtl,
                     }
-                    //,
-                    //success: function (resp) {
-                    //    if (resp.status) {
-                    //        $('.message').delay(300).fadeIn();
-                    //        $('.message').delay(200).fadeOut();
-                    //        $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
-                    //        $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
-                    //    }
-                    //    else {
-                    //        alert('error');
-                    //    }
-                    //}
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#batch_name,#List_name').val(0);
+                            $('#Teacher_1,#Teacher_2').val();
+                            $('#Helper,#student').empty();
+                            $("#details").empty();
+
+                        }
+                        else {
+                            alert('error');
+                        }
+                    }
                 });
             }
         })
-
-
-        //$('#save').click(function (e) {
-        //    e.preventDefault();
-        //    var isAllValid = true;
-
-        //    if (!($('#batch_name').val().trim() != '')) {
-        //        isAllValid = false;
-        //        $('.batch_name .error').css('display', 'block');
-        //    }
-        //    else {
-        //        $('.batch_name .error').css('display', 'none');
-        //    }
-
-        //    if (!($('#Course_desc').val().trim() != '')) {
-        //        isAllValid = false;
-        //        $('.Course_desc .error').css('display', 'block');
-        //    }
-        //    else {
-        //        $('.Course_desc .error').css('display', 'none');
-        //    }
-        //    if ($('#Teacher_1 option:selected').val() == 0) {
-        //        isAllValid = false;
-        //        $('.Teacher_1 .error').css('display', 'block');
-        //    }
-        //    else {
-        //        $('.Teacher_1 .error').css('display', 'none');
-        //    }
-
-        //    if (!($('#Start_date').val().trim() != '')) {
-        //        isAllValid = false;
-        //        $('.Start_date .error').css('display', 'block');
-        //    }
-        //    else {
-        //        $('.Start_date .error').css('display', 'none');
-        //    }
-        //    if (!($('#End_date').val().trim() != '')) {
-        //        isAllValid = false;
-        //        $('.End_date .error').css('display', 'block');
-        //    }
-        //    else {
-        //        $('.End_date .error').css('display', 'none');
-        //    }
-        //    if (isAllValid) {
-        //        var data = {
-        //            batch_name: $('#batch_name').val(),
-        //            Course_desc: $('#Course_desc').val(),
-        //            Teacher_1: $('#Teacher_1').val(),
-        //            Teacher_2: $('#Teacher_2').val(),
-        //            Teacher_3: $('#Teacher_3').val(),
-        //            Teacher_4: $('#Teacher_4').val(),
-        //            bh_start_date: $('#Start_date').val(),
-        //            bh_end_date: $('#End_date').val(),
-        //        }
-        //        debugger
-
-        //        $.ajax({
-        //            type: 'POST',
-        //            url: '/New_Course/Index',
-        //            data: {
-        //                'batch_name': data.batch_name,
-        //                'Course_desc': data.Course_desc,
-        //                'Teacher_1': data.Teacher_1,
-        //                'Teacher_2': data.Teacher_2,
-        //                'Teacher_3': data.Teacher_3,
-        //                'Teacher_4': data.Teacher_4,
-        //                'bh_start_date': data.bh_start_date,
-        //                'bh_end_date': data.bh_end_date,
-        //            }
-        //            ,
-        //            success: function (resp) {
-        //                if (resp.status) {
-        //                    $('.message').delay(300).fadeIn();
-        //                    $('.message').delay(200).fadeOut();
-        //                    $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
-        //                    $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
-        //                }
-        //                else {
-        //                    alert('error');
-        //                }
-        //            }
-        //        });
-        //    }
-        //})
     });
 
 </script>

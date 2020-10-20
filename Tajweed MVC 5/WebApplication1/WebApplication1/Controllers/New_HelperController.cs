@@ -32,7 +32,26 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(Helper_mst hm)
         {
-            return View();
+            List<Batch_header> Course_dropdown = db.get_Course_dropdown();
+            ViewBag.course = Course_dropdown;
+
+            List<List_Header> List_dropdown = db.get_list_dropdown();
+            ViewBag.list = List_dropdown;
+
+            bool status = false;
+            var hlper_id =db.AutoGenerate_Helperid();
+
+            hm.Hpl_id = hlper_id.Hpl_id;
+            db.InsertHelpermst(hm);
+
+            foreach(var s in hm.Helper_dtl)
+            {
+                s.Hpl_id = hm.Hpl_id;
+                db.InsertHelperdtl(s);
+            }
+
+            status = true;
+            return new JsonResult { Data = new { status = status } };
         }
 
         public ActionResult Cas_stud_id(int id)

@@ -1460,6 +1460,83 @@ namespace WebApplication1.DB
             return DBase;
         }
 
+
+        public Helper_mst AutoGenerate_Helperid()
+        {
+            Helper_mst bh = new Helper_mst();
+            SqlConnection con = new SqlConnection(connectString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select ISNULL(max(hh.hlp_id),0)+1 help_id from Hlp_header hh";
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            bh.Hpl_id= Convert.ToInt16(reader["help_id"]);
+
+            reader.Close();
+            return bh;
+        }
+
+        public void InsertHelpermst(Helper_mst ms)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Hlp_header (hlp_id , bh_id,List_id) values (@hlp_id , @bh_id,@List_id)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@hlp_id", ms.Hpl_id);
+                    cmd.Parameters.AddWithValue("@bh_id", ms.bh_id);
+                    cmd.Parameters.AddWithValue("@List_id", ms.list_id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void InsertHelperdtl(Helper_dtl md)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Hlp_details (hpl_id , stud_id,hlp_stud_id) values (@hpl_id , @stud_id,@hlp_stud_id)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@hpl_id", md.Hpl_id);
+                    cmd.Parameters.AddWithValue("@stud_id", md.stud_id);
+                    cmd.Parameters.AddWithValue("@hlp_stud_id", md.hlp_stud_id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Student> get_att_students(int id)
+        {
+            List<Student> DBase = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name from Login l , Batch_header bh where l.Bh_id = bh.BH_ID and bh.bh_end_date >= GETDATE() and l.User_status = 'A' and bh.BH_ID = @bh_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Student teach = new Student();
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = reader["User_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
     }
 }
 

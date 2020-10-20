@@ -12,5 +12,7 @@ namespace WebApplication1.Models
         public string att_pass { get; set; }
         public string created_by { get; set; }
         public DateTime created_date { get; set; }
+
+        
     }
 }

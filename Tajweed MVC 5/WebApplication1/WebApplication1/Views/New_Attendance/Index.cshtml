@@ -1,4 +1,4 @@
-﻿
+﻿@model List<WebApplication1.Models.AP_Menu>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Dashboard.cshtml";
@@ -14,121 +14,178 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <div class="col-md-3" style="float:right;">
-                                <a id="save" href="#" class="btn btn-lg btn-info btn-block">
-                                    <i class="fas fa-save"></i>&nbsp;
-                                    <span>Save</span>
-                                </a>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    Attendance
+                                </div>
+                                <div class="col-md-4">
+                                    <button id="save" class="btn btn-info btn-block">
+                                        <i class="fas fa-save"></i>&nbsp;
+                                        <span>Save</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-
                         <div class="card-body">
-                            <div class="card-title">
-                                <h3 class="text-center title-2">Create Course</h3>
-                            </div>
-                            <hr>
                             <form>
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group Batch_Name">
-                                            <label for="Batch_Name" class="form-control-label">Course Name:</label>
-                                            <input type="text" id="Batch_Name" name="Batch_Name" placeholder="Course Name" class="input-sm form-control-sm form-control">
+                                    <div class="col-md-8">
+                                        <div class="form-group batch_name_list">
+                                            <label for="batch_name" class="control-label mb-1">Course Name:</label>
+                                            <select class="form-control" id="batch_name_list">
+                                                <option value="0">--Select--</option>
+                                                @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
+                                                {
+                                                    <option value="@s.Bh_id">@s.Batch_Name</option>
+                                                }
+                                            </select>
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group Teacher">
-                                            <label for="Teacher" class="form-control-label">Teacher:</label>
-                                            <select class="form-control" id="Teacher">
-                                                @foreach (var tech in ViewBag.Teachdropdown as List<WebApplication1.Models.Teacher>)
-                                                {
-                                                    <option value="@tech.Teach_id">@tech.Teach_name</option>
-                                                }
-                                            </select>
-                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Teacher</span>
-                                        </div>
-                                    </div>
 
-
-                                    <div class="col-md-3">
-                                        <div class="form-group Volunteer">
-                                            <label for="Volunteer" class="form-control-label">Volunteer:</label>
-                                            <select class="form-control" id="Volunteer">
-                                                @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
-                                                {
-                                                    <option value="@std.Stud_id">@std.Stud_name</option>
-                                                }
-                                            </select>
-                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Volunteer</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group Zoom">
-                                            <label for="Zoom" class="form-control-label">Zoom:</label>
-                                            <input type="text" id="Zoom" name="Zoom" placeholder="Zoom" class="input-sm form-control-sm form-control">
-                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Zoom</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group course_end_date">
-                                            <label for="Zoom" class="form-control-label">Course end date:</label>
-                                            <input type="date" id="course_end_date" name="course_end_date" placeholder="Zoom" class="input-sm form-control-sm form-control">
-                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a course end date</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="row form-group">
-                                    <div class="col col-sm-2">
-                                        <label for="input-small" class=" form-control-label">Add Student:</label>
-                                    </div>
-
-                                    <div class="col col-sm-8">
-                                        <select class="input-sm form-control-sm form-control" id="Amount">
-                                            @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
-                                            {
-                                                <option value="@std.Stud_id">@std.Stud_name</option>
-                                            }
-                                        </select>
-                                    </div>
-
-                                    <div class="col col-sm-2">
-                                        <a href="#" class="btn btn-success add" id="add">Add</a>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-lg-12">
-                                    <div class="table-responsive table--no-card m-b-30">
-                                        <table class="table table-borderless table-striped table-earning">
-                                            <thead>
-                                                <tr>
-                                                    <th>Students</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="details"></tbody>
-                                        </table>
-                                        <div id="orderItems">
-                                            <table class="table table-responsive" id="orderdetailsItems"></table>
-                                            <span id="orderItemError" style="color:red"></span>
-                                        </div>
+                                    <div class="col-md-4">
+                                        <label for="batch_name" class="control-label mb-1" style="visibility:hidden;">Course Name:</label>
+                                        <button id="fetch" class="btn btn-info btn-block">
+                                            <span>Fetch</span>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>S/No.</th>
+                                        <th>Student Name</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="std_details"></tbody>
+
+                            </table>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-md-3">
+
                 </div>
             </div>
             @Html.Partial("~/Views/Shared/Footer.cshtml")
         </div>
     </div>
 </div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#fetch').click(function (e) {
+            e.preventDefault();
+            allvalid = true;
+
+            if ($('#batch_name_list').val() == 0) {
+                allvalid = false;
+                $('#std_details').empty();
+                $('.batch_name_list .error').css('display', 'block');
+            }
+            else {
+                $('.batch_name_list .error').css('display', 'none');
+            }
+
+            if (allvalid) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/New_Attendance/get_att_data',
+                    data: {
+                        'batch_name': $('#batch_name_list').val(),
+                    },
+                    success: function (resp) {
+                        console.log(resp)
+                        $('#std_details').empty();
+                        $.each(resp, function (i, item) {
+                            i = i + 1;
+                            $('#std_details').append('<tr> <td>' + i + ' </td><td class="att_value collapse">' + item.Value + ' </td><td>' + item.Text + ' </td> <td> <label><input type="radio" name="att' + i + '" value="P">&nbsp;Present</label> </td> <td> <label><input type="radio" name="att' + i + '" value="A" checked >&nbsp;Abcent</label> </td> </tr>')
+
+                        });
+                    }
+
+                });
+            }
+        })
+
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if (isAllValid) {
+
+                var list = [];
+                $('#std_details tr').each(function (index, ele) {
+                    index = index + 1;
+                    var orderItem = {
+                        stud_id: $('.att_value', this).text(),
+                        Att_status: $('input[name="att' + index + '"]:checked', this).val(),
+                    }
+                    JSON.stringify(orderItem)
+                    list.push(orderItem);
+                })
+                if (list.length == 0) {
+                    $('#orderItemError').text('At least 1 record required.');
+                    isAllValid = false;
+                }
+
+                debugger
+                var data = {
+                    BH_id: $('#batch_name_list').val(),
+                    Attendance_dtl: list
+                    
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/New_Attendance/Index',
+                    data: {
+                        'BH_id': data.BH_id,
+                        'Attendance_dtl': data.Attendance_dtl,
+                    }
+                    //,
+                    //success: function (resp) {
+                    //    if (resp.status) {
+                    //        $('.message').delay(300).fadeIn();
+                    //        $('.message').delay(200).fadeOut();
+                    //        $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
+                    //        $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
+                    //    }
+                    //    else {
+                    //        alert('error');
+                    //    }
+                    //}
+
+                });
+
+            }
+        })
+
+    });
+</script>
