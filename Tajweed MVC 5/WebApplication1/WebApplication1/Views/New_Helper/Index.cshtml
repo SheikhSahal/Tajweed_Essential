@@ -14,10 +14,10 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">Create Helper</div>
                         <div class="card-body">
@@ -74,16 +74,16 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label for="Stud_id" style="visibility:hidden;" class="control-label mb-1">Student:</label>
-                                        <button class="btn btn-success" id="add">Add</button>
+                                        <button class="btn btn-success" id="add" type="button">Add</button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <table class="table table-borderless table-striped table-earning">
+                                        <table class="table table-borderless table-striped table-earning table-responsive">
                                             <tbody id="details"></tbody>
                                         </table>
                                         <div id="orderItems">
-                                            <table class="table table-responsive" id="orderdetailsItems"></table>
+                                            <table id="orderdetailsItems"></table>
                                             <span id="orderItemError" style="color:red"></span>
                                         </div>
                                     </div>
@@ -123,23 +123,23 @@
 <script>
     $(document).ready(function () {
 
+
         $('#List_name').change(function () {
-            alert('working');
             $('#Helper').empty();
             $.ajax({
                 type: 'POST',
-                url: '/New_Helper/Cascade_stud',
+                url: '/New_Helper/Cas_stud_id',
                 data: {
-                    'id': $('#Helper').val(),
-                    'flag': 'B',
+                    'id': $('#List_name').val(),
                 }
                 ,
                 success: function (resp) {
                     console.log(resp);
-                    $.each(resp, function (i, city) {
-                        $('#Helper').append('<option value"'
-                            + city.Value + '">'
-                            + city.Text + '</option>');
+                    $.each(resp, function (i, item) {
+                        $('#Helper').append($('<option>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
                     });
                 },
                 error: function (ex) {
@@ -147,7 +147,6 @@
                 }
             });
         })
-
 
         $('#batch_name').change(function () {
             $('#student').empty();
@@ -156,15 +155,14 @@
                 url: '/New_Helper/Cascade_stud',
                 data: {
                     'id': $('#batch_name').val(),
-                    'flag': 'A',
                 }
                 ,
                 success: function (resp) {
-                    console.log(resp);
-                    $.each(resp, function (i, city) {
-                        $('#student').append('<option value"'
-                            + city.Value + '">'
-                            + city.Text + '</option>');
+                    $.each(resp, function (i, item) {
+                        $('#student').append($('<option>', {
+                            value: item.Value,
+                            text: item.Text
+                        }));
                     });
                 },
                 error: function (ex) {
@@ -174,8 +172,125 @@
         })
 
 
-        
+        $('#add').click(function (e) {
+            e.preventDefault();
+            isAllValid = true;
 
+            if (($('#student').val().trim() == '') || $('#student option:selected').val() == 0) {
+                isAllValid = false;
+                $('.student .error').css('display', 'block');
+            }
+            else {
+                $('.student .error').css('display', 'none');
+            }
+
+            if (($('#Helper').val().trim() == '') || $('#Helper option:selected').val() == 0) {
+                isAllValid = false;
+                $('.Helper .error').css('display', 'block');
+            }
+            else {
+                $('.Helper .error').css('display', 'none');
+            }
+
+            if (isAllValid) {
+
+                //var Amount = $("select#student option").filter(":selected").val();
+                //    //$('#student').text();
+                //alert(Amount);
+                //var Amounttext = $('#student option:selected').text();
+                //var Amount_text = '<td>' + Amounttext + '</td>';
+                //var Amount_input = '<input type="text" id="at" class="at form-control" value=' + Amount + ' />';
+                //var remove_btn = '<td> <button type="button" data-dismiss=' + Amount + ' class="rm btn btn-danger">x</button> </td>';
+
+                //var detail_values = '<tr class="tr-row"><td>' + Amount_input + '</td> ' + Amount_text + remove_btn + '</tr>';
+                //$('#details').prepend(detail_values);
+                var student = $('#student :selected').val();
+                alert(student);
+                var studenttext = $('#student option:selected').text();
+                var std_text = '<td>' + studenttext + '</td>';
+                var std_input = '<input type="text" id="std_val" class="std_val form-control" value=' + student + ' />';
+
+                var helper = $('#Helper option:selected').val();
+                var helpertext = $('#Helper option:selected').text();
+                var helper_text = '<td>' + helpertext + '</td>';
+                var helper_input = '<input type="text" id="helper_val" class="helper_val form-control collapse" value=' + helper + ' />';
+
+                var remove_btn = '<td> <button type="button" class="rm btn btn-danger">x</button> </td>';
+
+                alert(std_input + ' ' + helper_input);
+                var detail_values = '<tr class="tr-row" style="border:1px solid red;">' + std_input + std_text + helper_input + helper_text + remove_btn + '</tr>';
+                $('#details').prepend(detail_values);
+
+                $('#orderItemError').text('');
+            }
+        });
+
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if ($('#batch_name option:selected').val() == 0) {
+                isAllValid = false;
+                $('.batch_name .error').css('display', 'block');
+            }
+            else {
+                $('.batch_name .error').css('display', 'none');
+            }
+
+            if ($('#List_name option:selected').val() == 0) {
+                isAllValid = false;
+                $('.List_name .error').css('display', 'block');
+            }
+            else {
+                $('.List_name .error').css('display', 'none');
+            }
+
+            var list = [];
+            $('#details tr').each(function (index, ele) {
+                var orderItem = {
+                    stud_id: $('.std_val', this).val(),
+                    hlp_stud_id: $('.helper_val', this).val(),
+                }
+                JSON.stringify(orderItem)
+                list.push(orderItem);
+            })
+            if (list.length == 0) {
+                $('#orderItemError').text('At least 1 record required.');
+                isAllValid = false;
+            }
+
+            if (isAllValid) {
+                var data = {
+                    bh_id: $('#batch_name').val(),
+                    list_id: $('#List_name').val(),
+                    Helper_dtl: list
+
+                }
+                debugger
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/New_Helper/Index',
+                    data: {
+                        'bh_id': data.bh_id,
+                        'list_id': data.list_id,
+                        'Helper_dtl': data.Helper_dtl,
+                    }
+                    //,
+                    //success: function (resp) {
+                    //    if (resp.status) {
+                    //        $('.message').delay(300).fadeIn();
+                    //        $('.message').delay(200).fadeOut();
+                    //        $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
+                    //        $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
+                    //    }
+                    //    else {
+                    //        alert('error');
+                    //    }
+                    //}
+                });
+            }
+        })
 
 
         //$('#save').click(function (e) {
@@ -261,4 +376,5 @@
         //    }
         //})
     });
+
 </script>

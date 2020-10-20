@@ -10,6 +10,7 @@ namespace WebApplication1.Models
         public int Hpl_id { get; set; }
         public int bh_id { get; set; }
         public int stu_id { get; set; }
+        public int list_id { get; set; }
         public string created_by{ get; set; }
         public DateTime created_date{ get; set; }
 

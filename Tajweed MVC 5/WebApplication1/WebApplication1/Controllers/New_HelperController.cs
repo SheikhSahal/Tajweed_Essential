@@ -29,30 +29,24 @@ namespace WebApplication1.Controllers
             return View(menudisplay);
         }
 
-        //public ActionResult Cas_stud_id(int id)
-        //{
-        //    List<Student> casc_std_list = db.get_Cascade_list_student(id);
-        //    return Json(new SelectList(casc_std_list, "Stud_id", "Stud_name"));
-        //}
+        [HttpPost]
+        public ActionResult Index(Helper_mst hm)
+        {
+            return View();
+        }
+
+        public ActionResult Cas_stud_id(int id)
+        {
+            List<Student> casc_std_list = db.get_Cascade_list_student(id);
+            return Json(new SelectList(casc_std_list, "Stud_id", "Stud_name"));
+        }
 
         public ActionResult Cascade_stud(int id, string flag)
         {
-            List<Student> Cas_stu = new List<Student>();
-            if(flag == "A")
-            {
-                List<Student> casc_std = db.get_Cascade_student(id);
-                Cas_stu = casc_std;
-            }
-            else
-            {
-                List<Student> casc_std_list = db.get_Cascade_list_student(id);
-                Cas_stu = casc_std_list;
-            }
-
-           
-            return Json( new SelectList(Cas_stu, "Stud_id", "Stud_name"));
+            List<Student> casc_std = db.get_Cascade_student(id);
+            return Json(new SelectList(casc_std, "Stud_id", "Stud_name"));
         }
 
-     
+
     }
 }

@@ -150,6 +150,7 @@
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\List_HeaderController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\New_AttendanceController.cs" />
     <Compile Include="Controllers\New_CourseController.cs" />
     <Compile Include="Controllers\New_HelperController.cs" />
     <Compile Include="Controllers\RegistorController.cs" />
@@ -210,6 +211,7 @@
     <Content Include="Views\New_Course\Index.cshtml" />
     <Content Include="Views\List_Header\Index.cshtml" />
     <Content Include="Views\New_Helper\Index.cshtml" />
+    <Content Include="Views\New_Attendance\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

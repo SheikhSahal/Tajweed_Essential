@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+            <span class="badge badge-pill badge-success">Success</span>
+            You successfully insert the record.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="col-md-3" style="float:right;">
+                                <a id="save" href="#" class="btn btn-lg btn-info btn-block">
+                                    <i class="fas fa-save"></i>&nbsp;
+                                    <span>Save</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h3 class="text-center title-2">Create Course</h3>
+                            </div>
+                            <hr>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group Batch_Name">
+                                            <label for="Batch_Name" class="form-control-label">Course Name:</label>
+                                            <input type="text" id="Batch_Name" name="Batch_Name" placeholder="Course Name" class="input-sm form-control-sm form-control">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group Teacher">
+                                            <label for="Teacher" class="form-control-label">Teacher:</label>
+                                            <select class="form-control" id="Teacher">
+                                                @foreach (var tech in ViewBag.Teachdropdown as List<WebApplication1.Models.Teacher>)
+                                                {
+                                                    <option value="@tech.Teach_id">@tech.Teach_name</option>
+                                                }
+                                            </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Teacher</span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-group Volunteer">
+                                            <label for="Volunteer" class="form-control-label">Volunteer:</label>
+                                            <select class="form-control" id="Volunteer">
+                                                @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
+                                                {
+                                                    <option value="@std.Stud_id">@std.Stud_name</option>
+                                                }
+                                            </select>
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Volunteer</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group Zoom">
+                                            <label for="Zoom" class="form-control-label">Zoom:</label>
+                                            <input type="text" id="Zoom" name="Zoom" placeholder="Zoom" class="input-sm form-control-sm form-control">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Zoom</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group course_end_date">
+                                            <label for="Zoom" class="form-control-label">Course end date:</label>
+                                            <input type="date" id="course_end_date" name="course_end_date" placeholder="Zoom" class="input-sm form-control-sm form-control">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a course end date</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group">
+                                    <div class="col col-sm-2">
+                                        <label for="input-small" class=" form-control-label">Add Student:</label>
+                                    </div>
+
+                                    <div class="col col-sm-8">
+                                        <select class="input-sm form-control-sm form-control" id="Amount">
+                                            @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
+                                            {
+                                                <option value="@std.Stud_id">@std.Stud_name</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col col-sm-2">
+                                        <a href="#" class="btn btn-success add" id="add">Add</a>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <div class="table-responsive table--no-card m-b-30">
+                                        <table class="table table-borderless table-striped table-earning">
+                                            <thead>
+                                                <tr>
+                                                    <th>Students</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="details"></tbody>
+                                        </table>
+                                        <div id="orderItems">
+                                            <table class="table table-responsive" id="orderdetailsItems"></table>
+                                            <span id="orderItemError" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.Partial("~/Views/Shared/Footer.cshtml")
+        </div>
+    </div>
+</div>
