@@ -24,8 +24,6 @@ namespace WebApplication1.Controllers
             List<Att_Report> Att_report = db.report_att_present(Batch_Name,From_Date,To_Date);
             ViewBag.att_report = Att_report;
 
-            List<Att_Report> Att_report_ab = db.report_att_abcent(Batch_Name);
-            ViewBag.att_report_ab = Att_report_ab;
 
 
             return View();

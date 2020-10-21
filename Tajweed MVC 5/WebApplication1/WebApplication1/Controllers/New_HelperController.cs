@@ -14,19 +14,26 @@ namespace WebApplication1.Controllers
         // GET: New_Helper
         public ActionResult Index()
         {
-            AP_Menu menu = new AP_Menu();
+            if (Session["User_id"] == null)
+            {
+                return RedirectToAction("Index", "login");
+            }
+            else
+            {
+                AP_Menu menu = new AP_Menu();
 
-            var Menulist = db.user_rights(1030);
-            List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
+                var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
+                List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            List<Batch_header> Course_dropdown = db.get_Course_dropdown();
-            ViewBag.course = Course_dropdown;
+                List<Batch_header> Course_dropdown = db.get_Course_dropdown();
+                ViewBag.course = Course_dropdown;
 
-            List<List_Header> List_dropdown = db.get_list_dropdown();
-            ViewBag.list = List_dropdown;
+                List<List_Header> List_dropdown = db.get_list_dropdown();
+                ViewBag.list = List_dropdown;
 
 
-            return View(menudisplay);
+                return View(menudisplay);
+            }
         }
 
         [HttpPost]
@@ -39,12 +46,12 @@ namespace WebApplication1.Controllers
             ViewBag.list = List_dropdown;
 
             bool status = false;
-            var hlper_id =db.AutoGenerate_Helperid();
+            var hlper_id = db.AutoGenerate_Helperid();
 
             hm.Hpl_id = hlper_id.Hpl_id;
             db.InsertHelpermst(hm);
 
-            foreach(var s in hm.Helper_dtl)
+            foreach (var s in hm.Helper_dtl)
             {
                 s.Hpl_id = hm.Hpl_id;
                 db.InsertHelperdtl(s);

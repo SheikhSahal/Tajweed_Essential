@@ -23,33 +23,32 @@
             <table class="table table-data2">
                 <thead>
                     <tr>
+                        <td><b>S/No.</b></td>
                         <td><b>Student ID</b></td>
+                        <td><b>Attendance Date</b></td>
                         <td><b>Student Name</b></td>
                         <td><b>Attendance Status</b></td>
                     </tr>
                 </thead>
                 <tbody>
+                    @{int indx = 1; }
                     @foreach (var s in ViewBag.Att_Report as List<WebApplication1.Models.Att_Report>)
                     {
                         <tr>
+                            <td>@indx</td>
                             <td>@s.stud_id</td>
+                            <td>@s.created_date.ToString("dd-MMM-yyyy")</td>
                             <td>@s.Stud_name</td>
                             @if (s.att_status == 'P'.ToString())
                             {
-                                <td>Present</td>
+                                <td style="color:green;">Present</td>
                             }
-                        </tr>
-                    }
-                    @foreach (var s in ViewBag.att_report_ab as List<WebApplication1.Models.Att_Report>)
-                    {
-                        <tr>
-                            <td>@s.stud_id</td>
-                            <td>@s.Stud_name</td>
-                            @if (s.att_status == 'A'.ToString())
+                            else
                             {
-                                <td>Absent</td>
+                                <td style="color:orangered;">Absent</td>
                             }
                         </tr>
+                        indx++;
                     }
                 </tbody>
             </table>

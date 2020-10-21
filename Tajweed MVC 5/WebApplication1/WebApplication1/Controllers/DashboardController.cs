@@ -17,29 +17,26 @@ namespace WebApplication1.Controllers
             var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            List<Attendance_data> att_data = db.Attendancefetchdetail(Convert.ToInt32(Session["User_id"]));
-            ViewBag.attendnce = att_data;
-
             Attendance_data count_user = db.Get_all_users();
             ViewBag.allusers = count_user.att_id;
 
-            Attendance_data courses = db.Get_all_courses();
-            ViewBag.allcourses = count_user.att_id;
+            Attendance_data courses = db.Get_Valid_Course();
+            ViewBag.allcourses = courses.att_id;
 
-            Attendance_data helpers = db.Get_all_helpers();
+            Attendance_data helpers = db.Get_Expired_Course();
             ViewBag.allhelper = helpers.att_id;
 
             Attendance_data attendance = db.Get_all_attendance();
             ViewBag.attendance = attendance.att_id;
-            string status = null;
-            if (Session["User_id"] == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            else
-            {
+            //string status = null;
+            //if (Session["User_id"] == null)
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
+            //else
+            //{
                 return View(menudisplay);
-            }
+            //}
 
 
         }

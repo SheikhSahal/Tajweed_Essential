@@ -10,5 +10,6 @@ namespace WebApplication1.Models
         public int stud_id { get; set; }
         public string Stud_name { get; set; }
         public string att_status { get; set; }
+        public DateTime created_date { get; set; }
     }
 }

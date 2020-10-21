@@ -741,7 +741,7 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@Future_Plan", r.Future_plan);
                     cmd.Parameters.AddWithValue("@recommended", r.recommended);
                     cmd.Parameters.AddWithValue("@bh_id", r.bh_id);
-                    
+
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -1024,43 +1024,7 @@ namespace WebApplication1.DB
             return employee;
         }
 
-        public List<Att_Report> report_att_present(int id, DateTime fromdate, DateTime todate)
-        {
-            List<Att_Report> DBase = new List<Att_Report>();
-            using (SqlConnection conn = new SqlConnection(connectString))
-            {
-                using (SqlCommand cmd = new SqlCommand("select ad.Stud_id , l.User_name stud_name, ad.att_status  from Attendance_details ad, Attendance ah, login l  where ah.created_date between @Fromdate and @todate and ad.att_id = ah.Att_id  and l.User_id = ad.stud_id  and ah.bh_id = @bh_id  and ISNULL(ah.Delete_flag,'N') <> 'Y'", conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@Fromdate", fromdate.Date);
-                    cmd.Parameters.AddWithValue("@todate", todate.Date);
-                    cmd.Parameters.AddWithValue("@bh_id", id);
 
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Att_Report emp = new Att_Report();
-
-                        if (reader["Stud_id"] != DBNull.Value)
-                        {
-                            emp.stud_id = Convert.ToInt32(reader["Stud_id"]);
-                        }
-                        if (reader["stud_name"] != DBNull.Value)
-                        {
-                            emp.Stud_name = Convert.ToString(reader["stud_name"]);
-                        }
-
-                        if (reader["att_status"] != DBNull.Value)
-                        {
-                            emp.att_status = Convert.ToString(reader["att_status"]);
-                        }
-                        DBase.Add(emp);
-
-                    }
-                }
-            }
-            return DBase;
-        }
 
         public List<Att_Report> report_att_abcent(int id)
         {
@@ -1145,43 +1109,43 @@ namespace WebApplication1.DB
             }
             return employee;
         }
-        public Attendance_data Get_all_courses()
+        public Attendance_data Get_Valid_Course()
         {
             Attendance_data employee = new Attendance_data();
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) courses from Batch_header bh where ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) valid_course from Batch_header b where b.bh_end_date >= Convert(varchar(10), GETDATE(),120) ", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     reader.Read();
 
-                    if (reader["courses"] != DBNull.Value)
+                    if (reader["valid_course"] != DBNull.Value)
                     {
-                        employee.att_id = Convert.ToInt32(reader["courses"]);
+                        employee.att_id = Convert.ToInt32(reader["valid_course"]);
                     }
                 }
             }
             return employee;
         }
-        public Attendance_data Get_all_helpers()
+        public Attendance_data Get_Expired_Course()
         {
             Attendance_data employee = new Attendance_data();
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) helpers from Hlp_header hh where ISNULL(hh.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) Expired_course from Batch_header b where b.bh_end_date < Convert(varchar(10), GETDATE(),120)", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     reader.Read();
 
-                    if (reader["helpers"] != DBNull.Value)
+                    if (reader["Expired_course"] != DBNull.Value)
                     {
-                        employee.att_id = Convert.ToInt32(reader["helpers"]);
+                        employee.att_id = Convert.ToInt32(reader["Expired_course"]);
                     }
                 }
             }
@@ -1193,7 +1157,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) Attendance from Attendance a where ISNULL(a.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) Attendance from Batch_header", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1208,7 +1172,7 @@ namespace WebApplication1.DB
             }
             return employee;
         }
-        
+
         //Requirement New
         public void InsertCourse(New_Course nc)
         {
@@ -1255,8 +1219,8 @@ namespace WebApplication1.DB
                         teach.BATCH_NAME = reader["BATCH_NAME"].ToString();
                         teach.Course_desc = reader["course_desc"].ToString();
                         teach.Teach_name = reader["Teach_name"].ToString();
-                        teach.bh_start_date = Convert.ToDateTime( reader["bh_start_date"]);
-                        teach.bh_end_date =Convert.ToDateTime(reader["bh_end_date"]);
+                        teach.bh_start_date = Convert.ToDateTime(reader["bh_start_date"]);
+                        teach.bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
 
 
                         DBase.Add(teach);
@@ -1472,7 +1436,7 @@ namespace WebApplication1.DB
             SqlDataReader reader = cmd.ExecuteReader();
             reader.Read();
 
-            bh.Hpl_id= Convert.ToInt16(reader["help_id"]);
+            bh.Hpl_id = Convert.ToInt16(reader["help_id"]);
 
             reader.Close();
             return bh;
@@ -1585,6 +1549,73 @@ namespace WebApplication1.DB
                 }
             }
         }
+
+        public Attendance_data attendance_valid(int id)
+        {
+            Attendance_data employee = new Attendance_data();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select count(*) att_valid from Attendance a where a.bh_id = @bh_id and a.created_date = Convert(varchar(10), GETDATE(),120)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["att_valid"] != DBNull.Value)
+                    {
+                        employee.att_id = Convert.ToInt32(reader["att_valid"]);
+                    }
+                }
+            }
+            return employee;
+        }
+
+        public List<Att_Report> report_att_present(int id, DateTime fromdate, DateTime todate)
+        {
+            List<Att_Report> DBase = new List<Att_Report>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select ad.Stud_id,a.created_date,l.User_name, ad.Att_status  from Attendance a , Attendance_details ad, login l where a.created_date between @Fromdate and @todate and a.Att_id = ad.Att_id and a.bh_id = @bh_id and l.User_id = ad.Stud_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Fromdate", fromdate.Date);
+                    cmd.Parameters.AddWithValue("@todate", todate.Date);
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Att_Report emp = new Att_Report();
+
+                        if (reader["created_date"] != DBNull.Value)
+                        {
+                            emp.created_date = Convert.ToDateTime(reader["created_date"]);
+                        }
+                        if (reader["Stud_id"] != DBNull.Value)
+                        {
+                            emp.stud_id = Convert.ToInt32(reader["Stud_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            emp.Stud_name = Convert.ToString(reader["User_name"]);
+                        }
+
+                        if (reader["Att_status"] != DBNull.Value)
+                        {
+                            emp.att_status = Convert.ToString(reader["Att_status"]);
+                        }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
     }
 }
 

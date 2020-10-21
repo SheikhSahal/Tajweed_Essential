@@ -5,6 +5,7 @@
 }
 <h2>@ViewBag.bh_id</h2>
 <div class="login-form">
+    <h1 class="reg_bh_id collapse">@TempData["Registor_bh_id"]</h1>
     <form>
         <div class="form-group Full_Name">
             <label>Full Name:</label>
@@ -267,6 +268,7 @@
 
             if (isAllValid) {
                 var data = {
+                    bh_id: $('.reg_bh_id').text(),
                     Full_Name: $('#Full_Name').val(),
                     DOB: $('#DOB').val(),
                     Marital_Status: $('#Marital_Status').val(),
@@ -288,6 +290,7 @@
                     type: 'POST',
                     url: '/Registor/Index',
                     data: {
+                        'bh_id': data.bh_id,
                         'Full_Name': data.Full_Name,
                         'DOB': data.DOB,
                         'Marital_Status': data.Marital_Status,

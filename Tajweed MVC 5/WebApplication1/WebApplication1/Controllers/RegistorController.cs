@@ -43,7 +43,14 @@ namespace WebApplication1.Controllers
             //else
             //{
 
-            r.bh_id = Convert.ToInt32(TempData["Registor_bh_id"]);
+            if(TempData["Registor_bh_id"] == null)
+            {
+                r.bh_id = r.bh_id;
+            }
+            else
+            {
+                r.bh_id = Convert.ToInt32(TempData["Registor_bh_id"]);
+            }
             db.Registration(r);
             status = "done";
             //}

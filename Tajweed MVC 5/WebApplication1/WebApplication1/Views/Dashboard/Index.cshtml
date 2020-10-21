@@ -21,8 +21,7 @@
                     </div>
                 </div>
             </div>
-            @if (Convert.ToInt32(Session["Role_id"]) == 1)
-            {
+           
 
                 <div class="row m-t-25">
                     <div class="col-sm-6 col-lg-3">
@@ -69,11 +68,11 @@
                                 <div class="overview-box clearfix">
                                     <div class="icon">
                                         @*<i class="fas fa-comment-dollar fa-6x" aria-hidden="true"></i>*@
-                                        <i class="fas fa-graduation-cap"></i>
+                                        <i class="fas fa-exclamation"></i>
                                     </div>
                                     <div class="text">
                                         <h2>@ViewBag.allhelper</h2>
-                                        <span>Helpers</span>
+                                        <span>Expired Courses</span>
                                     </div>
                                 </div>
                                 <div class="overview-chart">
@@ -91,7 +90,7 @@
                                     </div>
                                     <div class="text">
                                         <h2>@ViewBag.attendance</h2>
-                                        <span>Attendance</span>
+                                        <span>All Courses</span>
                                     </div>
                                 </div>
                                 <div class="overview-chart">
@@ -101,51 +100,8 @@
                         </div>
                     </div>
                 </div>
-            }
-            else
-            {
-                <div class="table-responsive table-responsive-data2">
-                    <table class="table table-data2">
-                        <thead>
-                            <tr>
-                                <th>S/No.</th>
-                                <th>Course</th>
-                                <th>Teacher</th>
-                                <th>Password</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{int idx = 1; }
-                            @{ var current_date = DateTime.Now.Date;}
-                            @foreach (var s in ViewBag.attendnce as List<WebApplication1.Models.Attendance_data>)
-                            {
-                                <tr>
-                                    <td>@idx</td>
-                                    <td class="att_id collapse">@s.att_id</td>
-                                    <td class="batch">@s.Batch_name</td>
-                                    <td>@s.Teach_name</td>
-                                    @if(s.att_created.Date == current_date)
-                                    {
-                                    <td class="password"><input type="password" id="pass" class="form-control pass"/><span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Attendance Password</span></td>
-                                    <td>
-                                        <button class="item btn btn-primary submit" data-toggle="tooltip" data-placement="top" id="submit">
-                                            Submit
-                                        </button>
-                                    </td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                        <td></td>
-                                    }
-                                </tr>
-                                idx++;
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                                }
+           
+                                
             @Html.Partial("~/Views/Shared/Footer.cshtml")
         </div>
     </div>
