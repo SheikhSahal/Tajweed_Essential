@@ -143,6 +143,7 @@
     <Compile Include="Controllers\AttandanceController.cs" />
     <Compile Include="Controllers\Attendance_listController.cs" />
     <Compile Include="Controllers\CoursesDetailsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Helper_ListController.cs" />
     <Compile Include="Controllers\Course_ListController.cs" />
     <Compile Include="Controllers\Create_courseController.cs" />
@@ -212,6 +213,7 @@
     <Content Include="Views\List_Header\Index.cshtml" />
     <Content Include="Views\New_Helper\Index.cshtml" />
     <Content Include="Views\New_Attendance\Index.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

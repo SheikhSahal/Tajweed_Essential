@@ -13,30 +13,31 @@ namespace WebApplication1.Controllers
         Database db = new Database();
         public ActionResult Index()
         {
-            AP_Menu menu = new AP_Menu();
-            var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
-            List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            Attendance_data count_user = db.Get_all_users();
-            ViewBag.allusers = count_user.att_id;
+            if (Session["User_id"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                AP_Menu menu = new AP_Menu();
+                var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
+                List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            Attendance_data courses = db.Get_Valid_Course();
-            ViewBag.allcourses = courses.att_id;
+                Attendance_data count_user = db.Get_all_users();
+                ViewBag.allusers = count_user.att_id;
 
-            Attendance_data helpers = db.Get_Expired_Course();
-            ViewBag.allhelper = helpers.att_id;
+                Attendance_data courses = db.Get_Valid_Course();
+                ViewBag.allcourses = courses.att_id;
 
-            Attendance_data attendance = db.Get_all_attendance();
-            ViewBag.attendance = attendance.att_id;
-            //string status = null;
-            //if (Session["User_id"] == null)
-            //{
-            //    return RedirectToAction("Index", "Login");
-            //}
-            //else
-            //{
+                Attendance_data helpers = db.Get_Expired_Course();
+                ViewBag.allhelper = helpers.att_id;
+
+                Attendance_data attendance = db.Get_all_attendance();
+                ViewBag.attendance = attendance.att_id;
+
                 return View(menudisplay);
-            //}
+            }
 
 
         }
