@@ -28,7 +28,24 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(Attendance_data ad)
         {
-            return View();
+            bool status = false;
+
+            List<Batch_header> Course_dropdown = db.get_Course_dropdown();
+            ViewBag.course = Course_dropdown;
+
+            var att_id= db.AutoGenerate_attendance_id();
+            ad.att_id = att_id.att_id;
+
+            db.Insert_attendance(ad);
+
+            foreach(var s in ad.Attendance_dtl)
+            {
+                s.att_id = att_id.att_id;
+                db.Insert_attendance_details(s);
+            }
+            status = true;
+
+            return new JsonResult { Data = new { status = status } };
         }
 
         

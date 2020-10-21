@@ -1537,6 +1537,54 @@ namespace WebApplication1.DB
             }
             return DBase;
         }
+
+        public Attendance_mst AutoGenerate_attendance_id()
+        {
+            Attendance_mst bh = new Attendance_mst();
+            SqlConnection con = new SqlConnection(connectString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select ISNULL(max(a.Att_id),0)+1 att_id from Attendance a";
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+
+            bh.att_id = Convert.ToInt16(reader["att_id"]);
+
+            reader.Close();
+            return bh;
+        }
+
+        public void Insert_attendance(Attendance_data nc)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Attendance(Att_id, bh_id, created_date) values(@Att_id, @bh_id, @created_date)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Att_id", nc.att_id);
+                    cmd.Parameters.AddWithValue("@bh_id", nc.BH_id);
+                    cmd.Parameters.AddWithValue("@created_date", DateTime.Now.Date);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Insert_attendance_details(Attendance_dtl nc)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Attendance_details (Att_id,Stud_id,Att_status) values(@Att_id,@Stud_id,@Att_status)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Att_id", nc.att_id);
+                    cmd.Parameters.AddWithValue("@Stud_id", nc.stud_id);
+                    cmd.Parameters.AddWithValue("@Att_status", nc.Att_status);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
 

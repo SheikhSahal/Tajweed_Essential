@@ -169,18 +169,18 @@
                         'BH_id': data.BH_id,
                         'Attendance_dtl': data.Attendance_dtl,
                     }
-                    //,
-                    //success: function (resp) {
-                    //    if (resp.status) {
-                    //        $('.message').delay(300).fadeIn();
-                    //        $('.message').delay(200).fadeOut();
-                    //        $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
-                    //        $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
-                    //    }
-                    //    else {
-                    //        alert('error');
-                    //    }
-                    //}
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#batch_name_list').val(0);
+                            $('#std_details').empty();
+                        }
+                        else {
+                            alert('error');
+                        }
+                    }
 
                 });
 
