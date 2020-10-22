@@ -157,6 +157,7 @@
     <Compile Include="Controllers\RegistorController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\Report_ParamController.cs" />
+    <Compile Include="Controllers\User_CreateController.cs" />
     <Compile Include="Controllers\User_StatusController.cs" />
     <Compile Include="Database_connecting.cs" />
     <Compile Include="DB\Database.cs" />
@@ -178,8 +179,10 @@
     <Compile Include="Models\List_Header.cs" />
     <Compile Include="Models\New_Course.cs" />
     <Compile Include="Models\Registor.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\User_Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +217,7 @@
     <Content Include="Views\New_Helper\Index.cshtml" />
     <Content Include="Views\New_Attendance\Index.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\User_Create\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

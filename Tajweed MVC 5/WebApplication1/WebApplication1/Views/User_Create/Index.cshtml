@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+            <span class="badge badge-pill badge-success">Success</span>
+            You successfully insert the record.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Create User</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group User_name">
+                                    <label for="User_name" class="control-label mb-1">User Name:</label>
+                                    <input id="User_name" name="User_name" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a User Name</span>
+                                </div>
+                                <div class="form-group Password">
+                                    <label for="Password" class="control-label mb-1">Password:</label>
+                                    <input id="Password" name="Password" type="password" class="form-control" aria-required="true" aria-invalid="false">
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Password</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group User_email">
+                                            <label for="User_email" class="control-label mb-1">E-mail:</label>
+                                            <input id="User_email" name="User_email" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a E-mail</span>
+                                            <span class="valid"><i class="fas fa-exclamation-circle"></i>&nbsp; This E-mail is not valid</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group Role_id">
+                                            <label for="Role_id" class="control-label mb-1">Role:</label>
+                                            <select class="form-control" id="Role_id">
+                                                <option value="0">--Select--</option>
+                                                @foreach (var tech in ViewBag.roledropdown as List<WebApplication1.Models.Role>)
+                                                {
+                                                    <option value="@tech.Role_id">@tech.Role_name</option>
+                                                }
+                                            </select>
+                                            
+                                            @*<input id="Role_id" name="Role_id" type="text" class="form-control" aria-required="true" aria-invalid="false">*@
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Role id</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button id="save" class="btn btn-lg btn-info btn-block">
+                                        <i class="fas fa-save"></i>&nbsp;
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+
+                </div>
+            </div>
+            @Html.Partial("~/Views/Shared/Footer.cshtml")
+        </div>
+    </div>
+</div>
+
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+     span.valid {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if (!($('#User_name').val().trim() != '')) {
+                isAllValid = false;
+                $('.User_name .error').css('display', 'block');
+            }
+            else {
+                $('.User_name .error').css('display', 'none');
+            }
+
+            if (!($('#Password').val().trim() != '')) {
+                isAllValid = false;
+                $('.Password .error').css('display', 'block');
+            }
+            else {
+                $('.Password .error').css('display', 'none');
+            }
+
+            if (!($('#User_email').val().trim() != '')) {
+                isAllValid = false;
+                $('.User_email .error').css('display', 'block');
+            }
+            else {
+                $('.User_email .error').css('display', 'none');
+            }
+
+            if (!($('#User_email').val().trim() != '')) {
+                isAllValid = false;
+                $('.User_email .error').css('display', 'block');
+                $('.User_email .valid').css('display', 'none');
+            }
+            else {
+                $('.User_email .error').css('display', 'none');
+                var User_emailReg = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+                var User_emailval = $('#User_email').val();
+
+                if (User_emailReg.test(User_emailval)) {
+                    $('.User_email .valid').css('display', 'none');
+                }
+                else {
+                    isAllValid = false;
+                    $('.User_email .valid').css('display', 'block');
+                }
+            }
+            
+            if ($('#Role_id option:selected').val() == 0){
+                isAllValid = false;
+                $('.Role_id .error').css('display', 'block');
+            }
+            else {
+                $('.Role_id .error').css('display', 'none');
+            }
+
+            if(isAllValid)
+            {
+                var data = {
+                    User_name: $('#User_name').val(),
+                    Password: $('#Password').val(),
+                    User_email: $('#User_email').val(),
+                    Role_id: $('#Role_id').val(),
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/User_Create/Index',
+                    data: {
+                        'User_name': data.User_name,
+                        'Password': data.Password,
+                        'User_email': data.User_email,
+                        'Role_id': data.Role_id,
+                    },
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#User_name,#Password,#User_email').val('');
+                            $('#Role_id').val(0);
+                        }
+                        else {
+                            alert('error');
+                        }
+                    }
+
+                });
+            }
+
+        });
+    });
+</script>

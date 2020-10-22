@@ -13,7 +13,7 @@ namespace WebApplication1.Models
         public string Marital_Status { get; set; }
         public string FH_name { get; set; }
         public string IDCardNo { get; set; }
-        public int M_W_no { get; set; }
+        public string M_W_no { get; set; }
         public string email { get; set; }
         public string pass { get; set; }
         public string Address { get; set; }

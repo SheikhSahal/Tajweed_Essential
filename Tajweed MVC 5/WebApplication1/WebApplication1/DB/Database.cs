@@ -723,7 +723,7 @@ namespace WebApplication1.DB
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_email,	User_contact,	DOB,	Martial_status,	F_H_name,	ID_Card,	Address,	Country,	Qualification,	Profession,	Q_A,	Future_Plan,	recommended, bh_id) values (@User_name,	@User_email,	@User_contact,	@DOB,	@Martial_status,	@F_H_name,	@ID_Card,	@Address,	@Country,	@Qualification,	@Profession,	@Q_A,	@Future_Plan,	@recommended,@bh_id)", conn))
+                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_email,	User_contact,	DOB,	Martial_status,	F_H_name,	ID_Card,	Address,	Country,	Qualification,	Profession,	Q_A,	Future_Plan,	recommended, bh_id,User_flag) values (@User_name,	@User_email,	@User_contact,	@DOB,	@Martial_status,	@F_H_name,	@ID_Card,	@Address,	@Country,	@Qualification,	@Profession,	@Q_A,	@Future_Plan,	@recommended,@bh_id,@User_flag)", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
@@ -741,6 +741,8 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@Future_Plan", r.Future_plan);
                     cmd.Parameters.AddWithValue("@recommended", r.recommended);
                     cmd.Parameters.AddWithValue("@bh_id", r.bh_id);
+                    cmd.Parameters.AddWithValue("@User_flag", "S");
+                    
 
                     cmd.ExecuteNonQuery();
                 }
@@ -854,7 +856,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id,l.User_name,l.User_email,l.Password,l.role_id from Login l where l.User_email = @user_email and l.Password = @user_password and ISNULL(l.User_status,'W') <> 'W'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id,l.User_name,l.User_email,l.Password,l.role_id from Login l where l.User_email = @user_email and l.Password = @user_password and l.user_flag = 'U'", conn))
                 {
 
                     conn.Open();
@@ -1606,6 +1608,54 @@ namespace WebApplication1.DB
                         if (reader["Att_status"] != DBNull.Value)
                         {
                             emp.att_status = Convert.ToString(reader["Att_status"]);
+                        }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public void Insert_User_login(User_Login ul)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into Login (User_name,Password,User_email,Role_id,User_flag) values(@User_name,@Password,@User_email,@Role_id,@User_flag)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@User_name", ul.User_name);
+                    cmd.Parameters.AddWithValue("@Password", ul.Password);
+                    cmd.Parameters.AddWithValue("@User_email", ul.User_email);
+                    cmd.Parameters.AddWithValue("@Role_id", ul.Role_id);
+                    cmd.Parameters.AddWithValue("@User_flag", "U");
+                    
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Role> Role_Dropdown()
+        {
+            List<Role> DBase = new List<Role>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select r.Role_id, r.Role_name from Role r where r.Role_Active <> 'N'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Role emp = new Role();
+
+                        if (reader["Role_id"] != DBNull.Value)
+                        {
+                            emp.Role_id = Convert.ToInt32(reader["Role_id"]);
+                        }
+                        if (reader["Role_name"] != DBNull.Value)
+                        {
+                            emp.Role_name = Convert.ToString(reader["Role_name"]);
                         }
                         DBase.Add(emp);
 

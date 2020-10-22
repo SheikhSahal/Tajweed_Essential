@@ -14,46 +14,51 @@ namespace WebApplication1.Controllers
 
         public ActionResult Index()
         {
-            List<Batch_list> bhlist = db.Batchfetchdetail();
-            ViewBag.batchlist = bhlist;
-
             AP_Menu menu = new AP_Menu();
 
             var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
+            return View(menudisplay);
+            //List<Batch_list> bhlist = db.Batchfetchdetail();
+            //ViewBag.batchlist = bhlist;
 
-            List<Batch_header> bh = db.Course_DropDown();
-            ViewBag.cordropdown = bh;
+            //AP_Menu menu = new AP_Menu();
 
-            string status = null;
-            if (Session["User_id"] == null)
-            {
-                status = "usernull";
-            }
-            else
-            {
-                if (Convert.ToInt32(Session["Role_id"]) == 1)
-                {
-                    status = "done";
-                }
-                else
-                {
-                    status = "usernotrole";
-                }
-            }
+            //var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
+            //List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            if (status == "usernull")
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            else if (status == "usernotrole")
-            {
-                return RedirectToAction("Index", "Dashboard");
-            }
-            else
-            {
-                return View(menudisplay);
-            }
+            //List<Batch_header> bh = db.Course_DropDown();
+            //ViewBag.cordropdown = bh;
+
+            //string status = null;
+            //if (Session["User_id"] == null)
+            //{
+            //    status = "usernull";
+            //}
+            //else
+            //{
+            //    if (Convert.ToInt32(Session["Role_id"]) == 1)
+            //    {
+            //        status = "done";
+            //    }
+            //    else
+            //    {
+            //        status = "usernotrole";
+            //    }
+            //}
+
+            //if (status == "usernull")
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
+            //else if (status == "usernotrole")
+            //{
+            //    return RedirectToAction("Index", "Dashboard");
+            //}
+            //else
+            //{
+            //    return View(menudisplay);
+            //}
         }
 
 
