@@ -18,9 +18,12 @@ namespace WebApplication1.Controllers
 
             var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
+
+            List<Batch_list> bhlist = db.Batchfetchdetail();
+            ViewBag.batchlist = bhlist;
+
             return View(menudisplay);
-            //List<Batch_list> bhlist = db.Batchfetchdetail();
-            //ViewBag.batchlist = bhlist;
+            
 
             //AP_Menu menu = new AP_Menu();
 
@@ -62,11 +65,11 @@ namespace WebApplication1.Controllers
         }
 
 
-        public ActionResult DeleteRecord(int id)
-        {
-            db.DeleteBatch(id);
-            return RedirectToAction("index", "Course_List");
-        }
+        //public ActionResult DeleteRecord(int id)
+        //{
+        //    db.DeleteBatch(id);
+        //    return RedirectToAction("index", "Course_List");
+        //}
 
         [HttpGet]
         public ActionResult updateCourse(int id)
@@ -150,6 +153,11 @@ namespace WebApplication1.Controllers
             status = true;
 
             return new JsonResult { Data = new { status = status } };
+        }
+
+        public ActionResult Hide(string hide)
+        {
+            return View();
         }
     }
 }

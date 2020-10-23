@@ -153,58 +153,7 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-        public List<Batch_list> Batchfetchdetail()
-        {
-            List<Batch_list> DBase = new List<Batch_list>();
-
-            using (SqlConnection conn = new SqlConnection(connectString))
-            {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, Count(*)as std_count, t.Teach_name , s.User_name, bh.bh_end_date from Batch_header bh , Batch_details bd , Teacher t , login s   where bh.BH_ID = bd.BH_ID   and t.Teach_id = bh.TEACHER_ID  and ISNull(bh.delete_flag,'N') <> 'Y'  and bh.VOLUNTEER_ID = s.User_id group by bh.BATCH_NAME , t.Teach_name,s.User_name,bh.BH_ID,bh.bh_end_date", conn))
-                {
-                    conn.Open();
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Batch_list emp = new Batch_list();
-
-
-                        if (reader["BH_ID"] != DBNull.Value)
-                        {
-                            emp.Bh_id = Convert.ToInt32(reader["BH_ID"]);
-                        }
-
-                        if (reader["BATCH_NAME"] != DBNull.Value)
-                        {
-                            emp.Batch_name = reader["BATCH_NAME"].ToString();
-                        }
-
-                        if (reader["std_count"] != DBNull.Value)
-                        {
-                            emp.Std_count = Convert.ToInt32(reader["std_count"]);
-                        }
-
-                        if (reader["Teach_name"] != DBNull.Value)
-                        {
-                            emp.Teach_name = reader["Teach_name"].ToString();
-                        }
-
-                        if (reader["User_name"] != DBNull.Value)
-                        {
-                            emp.Stud_name = reader["User_name"].ToString();
-                        }
-                        if (reader["bh_end_date"] != DBNull.Value)
-                        {
-                            emp.bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
-                        }
-                        DBase.Add(emp);
-
-                    }
-                }
-            }
-            return DBase;
-        }
+       
 
         public void DeleteBatch(int id)
         {
@@ -1657,6 +1606,55 @@ namespace WebApplication1.DB
                         {
                             emp.Role_name = Convert.ToString(reader["Role_name"]);
                         }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<Batch_list> Batchfetchdetail()
+        {
+            List<Batch_list> DBase = new List<Batch_list>();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, t.Teach_name, bh.bh_end_date , bh.Course_visible from Batch_header bh , Teacher t where bh.TEACHER_1 = t.Teach_id", conn))
+                {
+                    conn.Open();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Batch_list emp = new Batch_list();
+
+
+                        if (reader["BH_ID"] != DBNull.Value)
+                        {
+                            emp.Bh_id = Convert.ToInt32(reader["BH_ID"]);
+                        }
+
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            emp.Batch_name = reader["BATCH_NAME"].ToString();
+                        }
+
+                        if (reader["Teach_name"] != DBNull.Value)
+                        {
+                            emp.Teach_name = reader["Teach_name"].ToString();
+                        }
+
+                        if (reader["bh_end_date"] != DBNull.Value)
+                        {
+                            emp.bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        }
+                        if (reader["Course_visible"] != DBNull.Value)
+                        {
+                            emp.Course_visible = reader["Course_visible"].ToString();
+                        }
+                       
                         DBase.Add(emp);
 
                     }
