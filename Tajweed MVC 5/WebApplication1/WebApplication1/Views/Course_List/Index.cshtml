@@ -5,6 +5,14 @@
 }
 <div class="main-content">
     <div class="section__content section__content--p30">
+    <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+        <span id="alt-msge">
+            You have successfully Update the record.
+        </span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -55,13 +63,45 @@
                                 {
                                     <tr class="tr-shadow">
                                         <td>@index</td>
+                                        <td class="bh_id collapse">@s.Bh_id</td>
                                         <td>@s.Batch_name</td>
                                         <td>@s.Teach_name</td>
                                         <td>@s.bh_end_date.ToString("dd-MMM-yyyy")</td>
+                                        @if(s.Course_visible == 'Y'.ToString())
+                                        {
                                         <td>
                                             <label for="checkbox1" class="form-check-label ">
-                                                <input type="checkbox" id="hide" name="hide" value="Y" class="form-check-input">Hide
+                                                <input type="checkbox" id="hide" name="hide" checked class="form-check-input">Hide
                                             </label>
+                                        </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <label for="checkbox1" class="form-check-label ">
+                                                    <input type="checkbox" id="hide" name="hide" class="form-check-input">Hide
+                                                </label>
+                                            </td>
+                                        }
+                                        @*<td>
+                                            <div class="table-data-feature">
+                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Details" onclick="location.href='@Url.Action("Index", "User_Status", new { id = s.Bh_id })'">
+                                                    <i class="zmdi zmdi-info"></i>
+                                                </button>
+                                                <button class="item save" data-toggle="tooltip" data-placement="top" title="Save">
+                                                    <i class="zmdi zmdi-save"></i>
+                                                </button>
+                                            </div>
+                                        </td>*@
+                                        <td>
+                                            <button id="save" class="btn btn-sm btn-warning btn-block" onclick="location.href='@Url.Action("Index", "User_Status", new { id = s.Bh_id })'">
+                                                <i class="fas fa-info"></i>&nbsp;
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button id="save" class="btn btn-sm btn-info btn-block save">
+                                                <i class="fas fa-save"></i>&nbsp;
+                                            </button>
                                         </td>
                                        
                                         @*<td>
@@ -91,9 +131,54 @@
         </div>
     </div>
 </div>
+<style>
+ 
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        alert("working");
-    })
+        $('.save').click(function () {
+    
+            var row = $(this).parent().parent("tr");
+            var findval = row.find('input[type="checkbox"]');
+            var bh_val = row.find('.bh_id').text();
+
+            var checkboxvale = null;
+            if ((findval).is(":checked"))
+            {
+                checkboxvale = 'Y';
+            }
+            else {
+                checkboxvale = 'N';
+            }
+            debugger
+            $.ajax({
+                type: 'POST',
+                url: '/Course_List/Hide',
+                data: {
+                    'bh_id': bh_val,
+                    'hide': checkboxvale,
+                },
+                success: function (resp) {
+                    if (resp.status) {
+                        $('.message').delay(300).fadeIn();
+                        $('.message').delay(200).fadeOut();
+
+                    }
+                    else {
+                        alert('error');
+                    }
+                }
+            });
+            
+            
+        })
+
+    });
 </script>

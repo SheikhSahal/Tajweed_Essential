@@ -18,7 +18,8 @@
                                     <th>User Name</th>
                                     <th>E-mail</th>
                                     <th>Contact No.</th>
-                                    <th>Status</th>
+                                    <th>ID No.</th>
+                                    <th>User Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -30,17 +31,25 @@
                                     <td>@inde</td>
                                     <td>@userdata.Full_Name</td>
                                     <td>@userdata.email</td>
-                                    <td>@userdata.User_contact</td>
-                                    <td>@userdata.User_status</td>
+                                    <td>@userdata.M_W_no</td>
+                                    <td>@userdata.IDCardNo</td>
+                                    @if(userdata.User_status == "W")
+                                    {
+                                        <td>Waiting</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Approved</td>
+                                    }
                                     <td>
                                         <div class="table-data-feature">
-                                            @if(userdata.User_status == "Waiting")
+                                            @if(userdata.User_status == "W")
                                             {
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id})'">
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
                                                 <i class="zmdi zmdi-check"></i>
                                             </button>
                                             }
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id})'">
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
                                                 <i class="zmdi zmdi-delete"></i>
                                             </button>
                                         </div>
@@ -57,3 +66,5 @@
         </div>
     </div>
 </div>
+
+

@@ -211,13 +211,13 @@
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Shared\_Report.cshtml" />
     <Content Include="Views\Shared\Logo.cshtml" />
-    <Content Include="Views\CoursesDetails\Index.cshtml" />
     <Content Include="Views\New_Course\Index.cshtml" />
     <Content Include="Views\List_Header\Index.cshtml" />
     <Content Include="Views\New_Helper\Index.cshtml" />
     <Content Include="Views\New_Attendance\Index.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\User_Create\Index.cshtml" />
+    <Content Include="Views\CoursesDetails\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

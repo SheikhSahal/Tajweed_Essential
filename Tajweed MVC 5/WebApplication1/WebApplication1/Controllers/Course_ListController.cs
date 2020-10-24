@@ -155,9 +155,13 @@ namespace WebApplication1.Controllers
             return new JsonResult { Data = new { status = status } };
         }
 
-        public ActionResult Hide(string hide)
+        public ActionResult Hide(string hide, int bh_id)
         {
-            return View();
+            bool status = false;
+            db.HideCourse(bh_id,hide);
+            status = true;
+
+            return new JsonResult { Data = new { status = status } };
         }
     }
 }

@@ -17,7 +17,33 @@ namespace WebApplication1.Controllers
             List<New_Course> course_cart = db.Courses_Cart();
             ViewBag.courselist = course_cart;
 
+            List<Batch_header> Course_dropdown = db.get_Course_dropdown();
+            ViewBag.course = Course_dropdown;
+
             return View();
+        }
+
+
+        public ActionResult check_user_status(int bh_id,string IDCardno)
+        {
+            string status = null;
+            var user_status = db.user_check_status(bh_id, IDCardno);
+
+            if(user_status.User_status == "W")
+            {
+                status = "W";
+            }
+            else if (user_status.User_status == "A")
+            {
+                    status = "A";
+            }
+            else
+            {
+                status = "N";
+            }
+
+
+            return new JsonResult { Data = new { status = status } };
         }
     }
 }

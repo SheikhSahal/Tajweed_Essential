@@ -153,7 +153,7 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-       
+
 
         public void DeleteBatch(int id)
         {
@@ -691,7 +691,7 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@recommended", r.recommended);
                     cmd.Parameters.AddWithValue("@bh_id", r.bh_id);
                     cmd.Parameters.AddWithValue("@User_flag", "S");
-                    
+
 
                     cmd.ExecuteNonQuery();
                 }
@@ -786,13 +786,14 @@ namespace WebApplication1.DB
         }
 
 
-        public void DeleteUser(int id)
+        public void DeleteUser(int id, int bh_id)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("delete from login where User_id = @user_id", conn))
+                using (SqlCommand cmd = new SqlCommand("delete from login where Bh_id = @bh_id and User_id = @user_id", conn))
                 {
                     conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
                     cmd.Parameters.AddWithValue("@user_id", id);
                     cmd.ExecuteNonQuery();
                 }
@@ -1157,7 +1158,7 @@ namespace WebApplication1.DB
             List<New_Course> DBase = new List<New_Course>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,Upper( bh.BATCH_NAME)BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and ISNULL(bh.Delete_flag,'N') <> 'Y' order by bh.bh_id desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,Upper( bh.BATCH_NAME)BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and bh.Course_visible <> 'Y' and ISNULL(bh.Delete_flag,'N') <> 'Y' order by bh.bh_id desc", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1578,7 +1579,7 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@User_email", ul.User_email);
                     cmd.Parameters.AddWithValue("@Role_id", ul.Role_id);
                     cmd.Parameters.AddWithValue("@User_flag", "U");
-                    
+
 
                     cmd.ExecuteNonQuery();
                 }
@@ -1620,7 +1621,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, t.Teach_name, bh.bh_end_date , bh.Course_visible from Batch_header bh , Teacher t where bh.TEACHER_1 = t.Teach_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, t.Teach_name, bh.bh_end_date , bh.Course_visible from Batch_header bh , Teacher t where bh.TEACHER_1 = t.Teach_id order by bh.BH_ID desc", conn))
                 {
                     conn.Open();
 
@@ -1654,7 +1655,7 @@ namespace WebApplication1.DB
                         {
                             emp.Course_visible = reader["Course_visible"].ToString();
                         }
-                       
+
                         DBase.Add(emp);
 
                     }
@@ -1663,7 +1664,100 @@ namespace WebApplication1.DB
             return DBase;
         }
 
+        public void HideCourse(int id, string hide)
+        {
 
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update batch_header  set Course_visible =@hide  where BH_ID =@bh_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@hide", hide);
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Registor> fatch_students_list(int id)
+        {
+            List<Registor> DBase = new List<Registor>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,CONCAT(l.User_name, ' ',l.F_H_name) Full_name, l.User_email, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Registor teach = new Registor();
+
+                        if (reader["Bh_id"] != DBNull.Value)
+                        {
+                            teach.bh_id = Convert.ToInt32(reader["Bh_id"]);
+                        }
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.User_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["Full_name"] != DBNull.Value)
+                        {
+                            teach.Full_Name = reader["Full_name"].ToString();
+                        }
+
+                        if (reader["User_email"] != DBNull.Value)
+                        {
+                            teach.email = reader["User_email"].ToString();
+                        }
+                        if (reader["User_contact"] != DBNull.Value)
+                        {
+                            teach.M_W_no = reader["User_contact"].ToString();
+                        }
+
+                        if (reader["ID_Card"] != DBNull.Value)
+                        {
+                            teach.IDCardNo = reader["ID_Card"].ToString();
+                        }
+                        if (reader["User_status"] != DBNull.Value)
+                        {
+                            teach.User_status = reader["User_status"].ToString();
+                        }
+
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public Registor user_check_status(int bh_id, string IDcardno)
+        {
+            Registor employee = new Registor();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.ID_Card, l.User_status from Login l where l.Bh_id = @bh_id and l.ID_Card = @IDcardno", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
+                    cmd.Parameters.AddWithValue("@IDcardno", IDcardno);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        if (reader["User_status"] != DBNull.Value)
+                        {
+                            employee.User_status = Convert.ToString(reader["User_status"]);
+                        }
+                    }
+
+                }
+            }
+            return employee;
+        }
     }
 }
 
