@@ -3,8 +3,47 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Report.cshtml";
 }
+
+<div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+    <span id="alt-msge">
+        Your Request is Approved
+    </span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <div class="row">
-    <div class="col-md-12 text-right">
+    Check your verification
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group batch_name">
+                <select class="form-control" id="batch_name">
+                    <option value="0">--Course--</option>
+                    @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
+                    {
+                        <option value="@s.Bh_id">@s.Batch_Name</option>
+                    }
+                </select>
+                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
+            </div>
+
+                @*<input type="text" class="form-control" />*@
+            </div>
+
+            <div class="col-md-5 ID_cardno">
+                <input type="text" class="form-control" id="ID_cardno" placeholder="Enter ID Card No." />
+                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter ID Card No.</span>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" id="search">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 text-right">
         <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Login")'">login</button>
     </div>
 </div>
@@ -47,3 +86,80 @@
         </div>
                         }
 </div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#search').click(function (e) {
+            e.preventDefault();
+            isAllValid = true;
+
+            if ($('#batch_name option:selected').val() == 0) {
+                isAllValid = false;
+                $('.batch_name .error').css('display', 'block');
+            }
+            else {
+                $('.batch_name .error').css('display', 'none');
+            }
+
+            if ($('#ID_cardno').val() == '') {
+                isAllValid = false;
+                $('.ID_cardno .error').css('display', 'block');
+            }
+            else {
+                $('.ID_cardno .error').css('display', 'none');
+            }
+
+            if (isAllValid)
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: '/CoursesDetails/check_user_status',
+                    data: {
+                        'bh_id':$('#batch_name option:selected').val(),
+                        'IDCardno': $('#ID_cardno').val(),
+                    }
+                  ,
+                    success: function (resp) {
+                        if (resp.status == "W") {
+                            $('.message').delay(800).fadeIn();
+                            $('.message').delay(500).fadeOut();
+                            $('#message').removeClass('alert-danger alert-success').addClass('alert-warning');
+                            $('#alt-msge').text("Your Request is waiting");
+                        }
+                        else if (resp.status == "A") {
+                            $('.message').delay(800).fadeIn();
+                            $('.message').delay(500).fadeOut();
+                            $('#message').removeClass('alert-danger alert-warning').addClass('alert-success');
+                            $('#alt-msge').text("Your Request is Approved");
+                            
+                        }
+                        else {
+                            $('.message').delay(800).fadeIn();
+                            $('.message').delay(500).fadeOut();
+                            $('#alt-msge').text("Your Request is not found.");
+                            $('#message').removeClass('alert-success alert-warning').addClass('alert-danger');
+                        }
+                    }
+
+                });
+            }
+            
+        });
+    });
+</script>
