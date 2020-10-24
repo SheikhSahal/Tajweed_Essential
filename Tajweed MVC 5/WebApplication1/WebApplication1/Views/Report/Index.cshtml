@@ -43,9 +43,13 @@
                             {
                                 <td style="color:green;">Present</td>
                             }
-                            else
+                            else if (s.att_status == 'A'.ToString())
                             {
                                 <td style="color:orangered;">Absent</td>
+                            }
+                            else
+                            {
+                                <td style="color:coral;">Leave</td>
                             }
                         </tr>
                         indx++;

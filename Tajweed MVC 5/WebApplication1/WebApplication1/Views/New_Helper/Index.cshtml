@@ -23,6 +23,15 @@
                         <div class="card-body">
                             <form>
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group Helper_name">
+                                            <label for="Helper_name" class="control-label mb-1">Helper Name:</label>
+                                            <input type="text" class="form-control" id="Helper_name" />
+                                            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Helper Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group batch_name">
                                             <label for="batch_name" class="control-label mb-1">Course Name:</label>
@@ -218,6 +227,15 @@
             e.preventDefault();
             var isAllValid = true;
 
+            if (($('#Helper_name').val().trim() == '')) {
+                isAllValid = false;
+                $('.Helper_name .error').css('display', 'block');
+            }
+            else {
+                $('.Helper_name .error').css('display', 'none');
+            }
+
+
             if ($('#batch_name option:selected').val() == 0) {
                 isAllValid = false;
                 $('.batch_name .error').css('display', 'block');
@@ -250,6 +268,8 @@
 
             if (isAllValid) {
                 var data = {
+
+                    Helper_name:$('#Helper_name').val(),
                     bh_id: $('#batch_name').val(),
                     list_id: $('#List_name').val(),
                     Helper_dtl: list
@@ -261,6 +281,7 @@
                     type: 'POST',
                     url: '/New_Helper/Index',
                     data: {
+                        'Helper_name': data.Helper_name,
                         'bh_id': data.bh_id,
                         'list_id': data.list_id,
                         'Helper_dtl': data.Helper_dtl,
@@ -270,6 +291,7 @@
                         if (resp.status) {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
+                            $('#Helper_name').val();
                             $('#batch_name,#List_name').val(0);
                             $('#Teacher_1,#Teacher_2').val();
                             $('#Helper,#student').empty();

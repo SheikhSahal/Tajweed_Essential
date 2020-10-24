@@ -1187,7 +1187,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name   from login l , Batch_header bh  where l.Bh_id = bh.BH_ID and bh.bh_end_date <= GETDATE() and ISNULL(bh.Delete_flag,'N') <> 'Y'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name , bh.bh_end_date from login l , Batch_header bh   where l.Bh_id = bh.BH_ID  and bh.bh_end_date >= CONVERT(VARCHAR(10),GETDATE(),111) and l.User_status = 'A'  and l.User_flag = 'S'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1398,12 +1398,14 @@ namespace WebApplication1.DB
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("insert into Hlp_header (hlp_id , bh_id,List_id) values (@hlp_id , @bh_id,@List_id)", conn))
+                using (SqlCommand cmd = new SqlCommand("insert into Hlp_header (hlp_id , bh_id,List_id,Helper_name) values (@hlp_id , @bh_id,@List_id,@Helper_name)", conn))
                 {
                     conn.Open();
+                    
                     cmd.Parameters.AddWithValue("@hlp_id", ms.Hpl_id);
                     cmd.Parameters.AddWithValue("@bh_id", ms.bh_id);
                     cmd.Parameters.AddWithValue("@List_id", ms.list_id);
+                    cmd.Parameters.AddWithValue("@Helper_name", ms.Helper_name);
                     cmd.ExecuteNonQuery();
                 }
             }
