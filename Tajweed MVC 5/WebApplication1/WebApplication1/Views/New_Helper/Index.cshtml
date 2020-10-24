@@ -133,7 +133,13 @@
 
         $('#details').on('click', '.rm', function () {
             var row = $(this).parent().parent("tr");
+            row.css('border', '1px solid red');
+            var appd_val = row.find('.std_val').text();
+            var appd_txt = row.find('.std_txt').text();
+            
+            $('#student').append($('<option></option>').val(appd_val).html(appd_txt));
             row.remove();
+
         });
 
         $('#List_name').change(function () {
@@ -207,7 +213,7 @@
             if (isAllValid) {
                 var student = $('#student :selected').val();
                 var studenttext = $('#student option:selected').text();
-                var std_text = '<td>' + studenttext + '</td>';
+                var std_text = '<td class="std_txt">' + studenttext + '</td>';
                 var std_input = '<td class="std_val collapse">' + student + '</td>';
 
                 var helper = $('#Helper option:selected').val();
@@ -219,6 +225,8 @@
                 var detail_values = '<tr class="tr-row">' + std_input + std_text + helper_input + helper_text + remove_btn + '</tr>';
                 $('#details').prepend(detail_values);
 
+                $('#student option[value=' + student + ']').hide();
+                $('#student option:selected').val(0);
                 $('#orderItemError').text('');
             }
         });

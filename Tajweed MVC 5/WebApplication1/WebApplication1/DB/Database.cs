@@ -1321,7 +1321,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id and l.User_status = 'A' and l.User_flag = 'S'", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
