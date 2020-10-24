@@ -14,13 +14,20 @@ namespace WebApplication1.Controllers
         // GET: CoursesDetails
         public ActionResult Index()
         {
-            List<New_Course> course_cart = db.Courses_Cart();
-            ViewBag.courselist = course_cart;
+            if (Session["User_id"] == null)
+            {
+                return RedirectToAction("Index", "login");
+            }
+            else
+            {
+                List<New_Course> course_cart = db.Courses_Cart();
+                ViewBag.courselist = course_cart;
 
-            List<Batch_header> Course_dropdown = db.get_Course_dropdown();
-            ViewBag.course = Course_dropdown;
+                List<Batch_header> Course_dropdown = db.get_Course_dropdown();
+                ViewBag.course = Course_dropdown;
 
-            return View();
+                return View();
+            }
         }
 
 

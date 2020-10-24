@@ -14,15 +14,22 @@ namespace WebApplication1.Controllers
         // GET: List_Header
         public ActionResult Index()
         {
-            AP_Menu menu = new AP_Menu();
+            if (Session["User_id"] == null)
+            {
+                return RedirectToAction("Index", "login");
+            }
+            else
+            {
+                AP_Menu menu = new AP_Menu();
 
-            var Menulist = db.user_rights(1030);
-            List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
+                var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
+                List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            List<Student> Student_list = db.Get_student_list();
-            ViewBag.student = Student_list;
+                List<Student> Student_list = db.Get_student_list();
+                ViewBag.student = Student_list;
 
-            return View(menudisplay);
+                return View(menudisplay);
+            }
         }
 
         [HttpPost]

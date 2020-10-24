@@ -313,6 +313,9 @@
                             $('#message').removeClass('alert-danger').addClass('alert-success');
                             $('#alt-msge').text("You successfully insert the record.");
                             $('#Full_Name,	#DOB,	#pass,	#FH_name,	#IDCardNo,	#M_W_no,	#email,	#Address,	#Country,	#Qualification,	#Profession,	#Q_A,	#Future_plan,	#recommended').val('');
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("Index", "CoursesDetails")';
+                            }, 2000);
                         }
                         else {
                             $('.message').delay(300).fadeIn();
