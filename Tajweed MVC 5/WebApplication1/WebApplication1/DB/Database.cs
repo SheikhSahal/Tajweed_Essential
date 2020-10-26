@@ -1187,7 +1187,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name , bh.bh_end_date from login l , Batch_header bh   where l.Bh_id = bh.BH_ID  and bh.bh_end_date >= CONVERT(VARCHAR(10),GETDATE(),111) and l.User_status = 'A'  and l.User_flag = 'S'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id, CONCAT(l.User_name,' ',bh.BATCH_NAME)  Full_name ,  bh.bh_end_date from login l , Batch_header bh    where l.Bh_id = bh.BH_ID   and ISNULL(bh.Course_complete,'N') = 'Y' and l.User_status = 'A'   and l.User_flag = 'S'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1263,7 +1263,7 @@ namespace WebApplication1.DB
             List<Batch_header> DBase = new List<Batch_header>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME from Batch_header bh where bh.bh_end_date >= GETDATE()", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME from Batch_header bh  where ISNULL(bh.Course_complete,'N') = 'N'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1292,7 +1292,7 @@ namespace WebApplication1.DB
             List<List_Header> DBase = new List<List_Header>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select lh.List_id, lh.List_name from List_header lh", conn))
+                using (SqlCommand cmd = new SqlCommand("select lh.List_id, lh.List_name from List_header lh order by lh.id desc", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1623,7 +1623,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, t.Teach_name, bh.bh_end_date , bh.Course_visible from Batch_header bh , Teacher t where bh.TEACHER_1 = t.Teach_id order by bh.BH_ID desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,bh.BATCH_NAME, t.Teach_name, bh.bh_end_date , bh.Course_visible, ISNULL(bh.Course_complete,'N')Course_complete from Batch_header bh , Teacher t where bh.TEACHER_1 = t.Teach_id order by bh.BH_ID desc", conn))
                 {
                     conn.Open();
 
@@ -1658,6 +1658,13 @@ namespace WebApplication1.DB
                             emp.Course_visible = reader["Course_visible"].ToString();
                         }
 
+                        if (reader["Course_complete"] != DBNull.Value)
+                        {
+                            emp.Course_complete = reader["Course_complete"].ToString();
+                        }
+
+                        
+
                         DBase.Add(emp);
 
                     }
@@ -1666,14 +1673,16 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-        public void HideCourse(int id, string hide)
+        public void HideCourse(int id, string hide, string coursecomplete)
         {
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("update batch_header  set Course_visible =@hide  where BH_ID =@bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("update batch_header  set Course_visible =@hide, Course_complete = @Course_complete  where BH_ID =@bh_id", conn))
                 {
                     conn.Open();
+                    
+                    cmd.Parameters.AddWithValue("@Course_complete", coursecomplete);
                     cmd.Parameters.AddWithValue("@hide", hide);
                     cmd.Parameters.AddWithValue("@bh_id", id);
                     cmd.ExecuteNonQuery();
@@ -1686,7 +1695,7 @@ namespace WebApplication1.DB
             List<Registor> DBase = new List<Registor>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,CONCAT(l.User_name, ' ',l.F_H_name) Full_name, l.User_email, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,CONCAT(l.User_name, ' ',l.F_H_name) Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S'", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1709,9 +1718,9 @@ namespace WebApplication1.DB
                             teach.Full_Name = reader["Full_name"].ToString();
                         }
 
-                        if (reader["User_email"] != DBNull.Value)
+                        if (reader["recommended"] != DBNull.Value)
                         {
-                            teach.email = reader["User_email"].ToString();
+                            teach.email = reader["recommended"].ToString();
                         }
                         if (reader["User_contact"] != DBNull.Value)
                         {

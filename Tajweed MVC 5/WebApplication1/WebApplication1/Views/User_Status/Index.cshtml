@@ -7,6 +7,21 @@
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    
+                </div>
+
+                <div class="col-md-4">
+                    <div class="">
+                        <input type="text" id="Search" class="form-control" placeholder="Search" />
+                    </div>
+                </div>
+            </div>
+            
             <div class="row m-t-30">
                 <div class="col-md-12">
                     <!-- DATA TABLE-->
@@ -14,20 +29,33 @@
                         <table class="table table-borderless table-data3">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>S/No.</th>
                                     <th>User Name</th>
-                                    <th>E-mail</th>
+                                    <th>Recommended</th>
                                     <th>Contact No.</th>
                                     <th>ID No.</th>
                                     <th>User Status</th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             @{ int inde = 1;}
-                            <tbody>
+                            <tbody id="std_table">
                                 @foreach(var userdata in ViewBag.userdata as List<WebApplication1.Models.Registor>)
                                 {
                                 <tr>
+                                    <td>
+                                        <div class="table-data-feature">
+                                            @if (userdata.User_status == "W")
+                                            {
+                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
+                                                    <i class="zmdi zmdi-check"></i>
+                                                </button>
+                                            }
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                     <td>@inde</td>
                                     <td>@userdata.Full_Name</td>
                                     <td>@userdata.email</td>
@@ -41,19 +69,7 @@
                                     {
                                         <td>Approved</td>
                                     }
-                                    <td>
-                                        <div class="table-data-feature">
-                                            @if(userdata.User_status == "W")
-                                            {
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
-                                                <i class="zmdi zmdi-check"></i>
-                                            </button>
-                                            }
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
-                                                <i class="zmdi zmdi-delete"></i>
-                                            </button>
-                                        </div>
-                                    </td>
+                                   
                                 </tr>
                                     inde++;
                                 }
@@ -66,5 +82,14 @@
         </div>
     </div>
 </div>
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#Search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#std_table tr").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

@@ -161,10 +161,10 @@ namespace WebApplication1.Controllers
             return new JsonResult { Data = new { status = status } };
         }
 
-        public ActionResult Hide(string hide, int bh_id)
+        public ActionResult Hide(string hide, int bh_id, string coursecomplete)
         {
             bool status = false;
-            db.HideCourse(bh_id,hide);
+            db.HideCourse(bh_id,hide, coursecomplete);
             status = true;
 
             return new JsonResult { Data = new { status = status } };

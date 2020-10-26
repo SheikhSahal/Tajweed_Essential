@@ -83,6 +83,27 @@
                                                 </label>
                                             </td>
                                         }
+                                        @if (s.Course_complete == "Y")
+                                        { 
+                                            <td>
+                                                <label for="checkbox1" class="form-check-label ">
+                                                    <input type="checkbox" id="course_complete" checked name="course_complete" class="form-check-input">Course Complete
+                                                </label>
+                                            </td>
+
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <label for="checkbox1" class="form-check-label ">
+                                                    <input type="checkbox" id="course_complete" name="course_complete" class="form-check-input">Course Complete
+                                                </label>
+                                            </td>
+                                        }
+
+
+
+
                                         @*<td>
                                             <div class="table-data-feature">
                                                 <button class="item" data-toggle="tooltip" data-placement="top" title="Details" onclick="location.href='@Url.Action("Index", "User_Status", new { id = s.Bh_id })'">
@@ -146,7 +167,8 @@
         $('.save').click(function () {
     
             var row = $(this).parent().parent("tr");
-            var findval = row.find('input[type="checkbox"]');
+            var findval = row.find('input[name="hide"]');
+            var findcourse = row.find('input[name="course_complete"]');
             var bh_val = row.find('.bh_id').text();
 
             var checkboxvale = null;
@@ -157,6 +179,16 @@
             else {
                 checkboxvale = 'N';
             }
+
+            var checkboxcourse_complete = null;
+            if ((findcourse).is(":checked")) {
+                checkboxcourse_complete = 'Y';
+            }
+            else {
+                checkboxcourse_complete = 'N';
+            }
+
+            findcourse
             debugger
             $.ajax({
                 type: 'POST',
@@ -164,6 +196,7 @@
                 data: {
                     'bh_id': bh_val,
                     'hide': checkboxvale,
+                    'coursecomplete': checkboxcourse_complete,
                 },
                 success: function (resp) {
                     if (resp.status) {

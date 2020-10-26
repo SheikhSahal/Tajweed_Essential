@@ -14,5 +14,6 @@ namespace WebApplication1.Models
         public string Stud_name { get; set; }
         public DateTime bh_end_date { get; set; }
         public string Course_visible { get; set; }
+        public string Course_complete { get; set; }
     }
 }
