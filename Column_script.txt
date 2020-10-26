@@ -1,0 +1,2 @@
+ALTER TABLE Batch_header
+ADD Course_complete char(1);
