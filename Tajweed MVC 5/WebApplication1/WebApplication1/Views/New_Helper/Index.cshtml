@@ -133,11 +133,11 @@
 
         $('#details').on('click', '.rm', function () {
             var row = $(this).parent().parent("tr");
-            row.css('border', '1px solid red');
+            //row.css('border', '1px solid red');
             var appd_val = row.find('.std_val').text();
             var appd_txt = row.find('.std_txt').text();
             
-            $('#student').append($('<option></option>').val(appd_val).html(appd_txt));
+            $('#student').prepend($('<option></option>').val(appd_val).html(appd_txt));
             row.remove();
 
         });
@@ -227,6 +227,7 @@
 
                 $('#student option[value=' + student + ']').hide();
                 $('#student option:selected').val(0);
+                $('#student').focus();
                 $('#orderItemError').text('');
             }
         });

@@ -14,10 +14,10 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">Create List</div>
                         <div class="card-body">
@@ -113,20 +113,26 @@
 
                 var Amount = $('#Amount').val().trim();
                 var Amounttext = $('#Amount option:selected').text();
-                var Amount_text = '<td>' + Amounttext + '</td>';
+                var Amount_text = '<td class="std_txt">' + Amounttext + '</td>';
                 var Amount_input = '<input type="text" id="at" class="at form-control collapse" value=' + Amount + ' />';
                 var remove_btn = '<td> <button type="button" data-dismiss=' + Amount + ' class="rm btn btn-danger">x</button> </td>';
 
                 var detail_values = '<tr class="tr-row"><td class="">' + Amount_input + '</td> ' + Amount_text + remove_btn + '</tr>';
                 $('#details').prepend(detail_values);
 
-                $('#Amount').val(0)
+                $('#Amount option[value=' + Amount + ']').hide();
+                $('#Amount option:selected').val(0);
+                //$('#Amount').val(0)
                 $('#orderItemError').text('');
             }
         });
 
         $('#details').on('click', '.rm', function () {
             var row = $(this).parent().parent("tr");
+            var appd_val = row.find('.at').val();
+            var appd_txt = row.find('.std_txt').text();
+
+            $('#Amount').append($('<option></option>').val(appd_val).html(appd_txt));
             row.remove();
         });
 

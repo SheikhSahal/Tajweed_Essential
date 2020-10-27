@@ -1067,7 +1067,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) valid_course from Batch_header b where b.bh_end_date >= Convert(varchar(10), GETDATE(),120) ", conn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) valid_course  from Batch_header b where ISNULL(b.course_complete,'N') ='Y' ", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1088,7 +1088,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) Expired_course from Batch_header b where b.bh_end_date < Convert(varchar(10), GETDATE(),120)", conn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) Expired_course from Batch_header b where ISNULL(b.course_complete, 'N') = 'N'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1431,7 +1431,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name from Login l , Batch_header bh where l.Bh_id = bh.BH_ID and bh.bh_end_date >= GETDATE() and l.User_status = 'A' and bh.BH_ID = @bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name, ' ', l.recommended) User_name from Login l , Batch_header bh where l.Bh_id = bh.BH_ID  and ISNULL(bh.course_complete,'N') = 'N' and l.User_status = 'A' and bh.BH_ID = @bh_id", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1695,7 +1695,7 @@ namespace WebApplication1.DB
             List<Registor> DBase = new List<Registor>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,CONCAT(l.User_name, ' ',l.F_H_name) Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,CONCAT(l.User_name, ' ',l.F_H_name) Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S' order by l.user_status desc", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
