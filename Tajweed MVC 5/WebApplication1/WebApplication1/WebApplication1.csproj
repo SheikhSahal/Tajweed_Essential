@@ -149,7 +149,9 @@
     <Compile Include="Controllers\Create_courseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
+    <Compile Include="Controllers\List_detailsController.cs" />
     <Compile Include="Controllers\List_HeaderController.cs" />
+    <Compile Include="Controllers\List_Header_listController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\New_AttendanceController.cs" />
     <Compile Include="Controllers\New_CourseController.cs" />
@@ -218,6 +220,8 @@
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\User_Create\Index.cshtml" />
     <Content Include="Views\CoursesDetails\Index.cshtml" />
+    <Content Include="Views\List_Header_list\Index.cshtml" />
+    <Content Include="Views\List_details\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
