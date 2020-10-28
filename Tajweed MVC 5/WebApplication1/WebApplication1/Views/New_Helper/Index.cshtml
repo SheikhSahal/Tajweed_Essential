@@ -136,8 +136,12 @@
             //row.css('border', '1px solid red');
             var appd_val = row.find('.std_val').text();
             var appd_txt = row.find('.std_txt').text();
+
+            var apph_val = row.find('.helper_val').text();
+            var apph_txt = row.find('.helper_txt').text();
             
             $('#student').prepend($('<option></option>').val(appd_val).html(appd_txt));
+            $('#Helper').prepend($('<option></option>').val(apph_val).html(apph_txt));
             row.remove();
 
         });
@@ -218,7 +222,7 @@
 
                 var helper = $('#Helper option:selected').val();
                 var helpertext = $('#Helper option:selected').text();
-                var helper_text = '<td>' + helpertext + '</td>';
+                var helper_text = '<td class="helper_txt">' + helpertext + '</td>';
                 var helper_input = '<td class="helper_val collapse">' + helper + '</td>';
 
                 var remove_btn = '<td> <button type="button" class="rm btn btn-danger"><i class="fas fa-trash"></i></button> </td>';
@@ -227,6 +231,10 @@
 
                 $('#student option[value=' + student + ']').hide();
                 $('#student option:selected').val(0);
+
+                $('#Helper option[value=' + helper + ']').hide();
+                $('#Helper option:selected').val(0);
+
                 $('#student').focus();
                 $('#orderItemError').text('');
             }

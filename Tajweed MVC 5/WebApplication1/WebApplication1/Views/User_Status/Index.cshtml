@@ -84,7 +84,13 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
+    $(document).ready(function(){
+
+        
+        $('#users').DataTable();
+        
+
+
     $("#Search").on("keyup", function () {
     var value = $(this).val().toLowerCase();
     $("#std_table tr").filter(function () {

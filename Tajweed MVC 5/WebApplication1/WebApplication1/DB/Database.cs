@@ -1431,7 +1431,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name, ' ', l.recommended) User_name from Login l , Batch_header bh where l.Bh_id = bh.BH_ID  and ISNULL(bh.course_complete,'N') = 'N' and l.User_status = 'A' and bh.BH_ID = @bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name, ' ', ' (Ref.)',' ', l.recommended) User_name from Login l , Batch_header bh where l.Bh_id = bh.BH_ID  and ISNULL(bh.course_complete,'N') = 'N' and l.User_status = 'A' and bh.BH_ID = @bh_id", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1695,7 +1695,7 @@ namespace WebApplication1.DB
             List<Registor> DBase = new List<Registor>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,CONCAT(l.User_name, ' ',l.F_H_name) Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S' order by l.user_status desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,l.User_name Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_flag = 'S' order by l.user_status desc", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1860,6 +1860,158 @@ namespace WebApplication1.DB
 
                     cmd.ExecuteNonQuery();
 
+                }
+            }
+        }
+
+        public List<Registor> Fetch_all_students_details()
+        {
+            List<Registor> DBase = new List<Registor>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name,l.recommended,l.ID_card from login l where l.User_flag = 'S' and l.User_status = 'A'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Registor teach = new Registor();
+
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.User_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            teach.Full_Name = Convert.ToString(reader["User_name"]);
+                        }
+                        if (reader["recommended"] != DBNull.Value)
+                        {
+                            teach.recommended = Convert.ToString(reader["recommended"]);
+                        }
+
+                        if (reader["ID_card"] != DBNull.Value)
+                        {
+                            teach.IDCardNo = reader["ID_card"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public Registor Registor_get_stud_data(int id)
+        {
+            Registor employee = new Registor();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name, l.User_email, l.User_contact, l.DOB, RTRIM(Upper( l.Martial_status))Martial_status,l.F_H_name, l.ID_Card,l.Address, l.Country, l.Qualification, l.Profession,l.Q_A, l.Future_Plan, l.recommended from login l where l.User_id = @id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            employee.User_id = Convert.ToInt16(reader["User_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            employee.Full_Name = Convert.ToString(reader["User_name"]);
+                        }
+                        if (reader["User_email"] != DBNull.Value)
+                        {
+                            employee.email = Convert.ToString(reader["User_email"]);
+                        }
+                        if (reader["User_contact"] != DBNull.Value)
+                        {
+                            employee.User_contact = Convert.ToInt64(reader["User_contact"]);
+                        }
+                        if (reader["DOB"] != DBNull.Value)
+                        {
+                            employee.DOB = Convert.ToDateTime(reader["DOB"]);
+                        }
+                        if (reader["Martial_status"] != DBNull.Value)
+                        {
+                            employee.Marital_Status = Convert.ToString(reader["Martial_status"]);
+                        }
+                        if (reader["F_H_name"] != DBNull.Value)
+                        {
+                            employee.FH_name = Convert.ToString(reader["F_H_name"]);
+                        }
+                        if (reader["ID_Card"] != DBNull.Value)
+                        {
+                            employee.IDCardNo = Convert.ToString(reader["ID_Card"]);
+                        }
+                        if (reader["Address"] != DBNull.Value)
+                        {
+                            employee.Address = Convert.ToString(reader["Address"]);
+                        }
+                        if (reader["Country"] != DBNull.Value)
+                        {
+                            employee.Country = Convert.ToString(reader["Country"]);
+                        }
+                        if (reader["Qualification"] != DBNull.Value)
+                        {
+                            employee.Qualification = Convert.ToString(reader["Qualification"]);
+                        }
+
+                        if (reader["Profession"] != DBNull.Value)
+                        {
+                            employee.Profession = Convert.ToString(reader["Profession"]);
+                        }
+
+                        if (reader["Q_A"] != DBNull.Value)
+                        {
+                            employee.Q_A = Convert.ToString(reader["Q_A"]);
+                        }
+                        if (reader["Future_Plan"] != DBNull.Value)
+                        {
+                            employee.Future_plan = Convert.ToString(reader["Future_Plan"]);
+                        }
+                        if (reader["recommended"] != DBNull.Value)
+                        {
+                            employee.recommended = Convert.ToString(reader["recommended"]);
+                        }
+                    }
+
+                }
+            }
+            return employee;
+        }
+
+        public void RegistorUpdate(Registor r)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update login set User_name = @User_name, User_email = @User_email, User_contact = @User_contact,DOB = @DOB,Martial_status = @Martial_status,F_H_name = @F_H_name, ID_Card = @ID_Card,Address = @Address, Country =@Country, Qualification =@Qualification, Profession = @Profession,Q_A = @Q_A, Future_Plan = @Future_Plan, recommended = @recommended where User_id = @id", conn))
+                {
+
+
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@id",r.bh_id);
+                    cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
+                    cmd.Parameters.AddWithValue("@User_email", r.email);
+                    cmd.Parameters.AddWithValue("@User_contact", r.User_contact);
+                    cmd.Parameters.AddWithValue("@DOB", r.DOB);
+                    cmd.Parameters.AddWithValue("@Martial_status", r.Marital_Status);
+                    cmd.Parameters.AddWithValue("@F_H_name", r.FH_name);
+                    cmd.Parameters.AddWithValue("@ID_Card", r.IDCardNo);
+                    cmd.Parameters.AddWithValue("@Address", r.Address);
+                    cmd.Parameters.AddWithValue("@Country", r.Country);
+                    cmd.Parameters.AddWithValue("@Qualification", r.Qualification);
+                    cmd.Parameters.AddWithValue("@Profession", r.Profession);
+                    cmd.Parameters.AddWithValue("@Q_A", r.Q_A);
+                    cmd.Parameters.AddWithValue("@Future_Plan", r.Future_plan);
+                    cmd.Parameters.AddWithValue("@recommended", r.recommended);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

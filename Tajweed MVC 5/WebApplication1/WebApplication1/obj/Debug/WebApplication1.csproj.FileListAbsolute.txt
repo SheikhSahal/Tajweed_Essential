@@ -89,4 +89,3 @@ D:\Madarsa-20201016T054524Z-001\Madarsa\Tajweed MVC 5\WebApplication1\WebApplica
 D:\Madarsa-20201016T054524Z-001\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\bin\System.Web.Mvc.xml
 D:\Madarsa-20201016T054524Z-001\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 D:\Madarsa-20201016T054524Z-001\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
-D:\Madarsa-20201016T054524Z-001\Madarsa\Tajweed MVC 5\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
