@@ -2192,18 +2192,19 @@ namespace WebApplication1.DB
         }
 
 
-        public void attuserupdate(int usrid, string active)
+        public void attuserupdate(int bh_id, string active, int stud_id)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("update login set User_active = @user_active where User_id = @userid", conn))
+                using (SqlCommand cmd = new SqlCommand("update Attendance_details set Att_status = @Att_status where bh_id = @bh_id and Stud_id = @Stud_id", conn))
                 {
 
 
                     conn.Open();
 
-                    cmd.Parameters.AddWithValue("@userid", usrid);
-                    cmd.Parameters.AddWithValue("@user_active", active);
+                    cmd.Parameters.AddWithValue("@Att_status", active);
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
+                    cmd.Parameters.AddWithValue("@Stud_id", stud_id);
                     cmd.ExecuteNonQuery();
                 }
             }

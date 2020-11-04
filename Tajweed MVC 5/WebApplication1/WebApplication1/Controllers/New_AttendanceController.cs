@@ -40,8 +40,11 @@ namespace WebApplication1.Controllers
             var att_valid = db.attendance_valid(ad.BH_id);
             if (att_valid.att_id == 1)
             {
-
-                
+                foreach(var i in ad.Attendance_dtl)
+                {
+                    db.attuserupdate(ad.BH_id,i.Att_status,i.stud_id);
+                }
+                status = true;
             }
             else
             {
@@ -72,11 +75,12 @@ namespace WebApplication1.Controllers
             var att_valid = db.attendance_valid(batch_name);
             if (att_valid.att_id == 1)
             {
-                casc_std_list = db.all_get_att_students(batch_name);
+                casc_std_list = db.get_att_students(batch_name);
+                
             }
             else
             {
-                casc_std_list = db.get_att_students(batch_name);
+                casc_std_list = db.all_get_att_students(batch_name);
             }
 
             return Json(new SelectList(casc_std_list, "Stud_id", "Stud_name"));

@@ -21,6 +21,46 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row m-t-30" id="upper">
+                <div class="col-md-12">
+                    <!-- DATA TABLE-->
+                    <div class="table-responsive m-b-40">
+                        <table class="table table-borderless table-data3">
+                            <thead>
+                                <tr>
+                                    <th>S/No.</th>
+                                    <th>Course Name</th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            @{ int inde = 1;}
+                            <tbody id="std_table">
+                                @foreach (var userdata in ViewBag.incom_cour as List<WebApplication1.Models.Batch_header>)
+                                {
+                                    <tr>
+                                        @*<td>
+                                        <div class="table-data-feature">
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Update" onclick="location.href='@Url.Action("Index", "UsersData_Update", new { id =userdata.User_id})'">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>*@
+                                        <td>@inde</td>
+                                        <td>@userdata.Batch_Name</td>
+                                        <td>
+                                            <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Form</button>
+                                        </td>
+                                    </tr>
+                                    inde++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE-->
+                </div>
+            </div>
            
 
                 <div class="row m-t-25">
@@ -101,7 +141,7 @@
                     </div>
                 </div>
             
-            <div class="row m-t-30">
+            <div class="row m-t-30" id="buttom">
                 <div class="col-md-12">
                     <!-- DATA TABLE-->
                     <div class="table-responsive m-b-40">
@@ -114,7 +154,7 @@
 
                                 </tr>
                             </thead>
-                            @{ int inde = 1;}
+                            @*@{ int inde = 1;}*@
                             <tbody id="std_table">
                                 @foreach (var userdata in ViewBag.incom_cour as List<WebApplication1.Models.Batch_header>)
                                 {
@@ -155,6 +195,18 @@
     #message{
         display:none;
     }
+    #upper{
+                display:none;
+            }
+
+     @@media screen and (max-width: 987px) {
+            #upper{
+                display:block;
+            }
+            #buttom{
+                display:none;
+            }
+        }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
