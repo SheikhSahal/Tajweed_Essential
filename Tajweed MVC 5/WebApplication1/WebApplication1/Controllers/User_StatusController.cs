@@ -12,7 +12,7 @@ namespace WebApplication1.Controllers
     {
         Database db = new Database();
 
-        public ActionResult Index(int id)
+        public ActionResult Index(int id , string bh_name)
         {
 
             if (Session["User_id"] == null)
@@ -34,6 +34,7 @@ namespace WebApplication1.Controllers
                 List<Registor> Reg = db.fatch_students_list(id);
                 ViewBag.userdata = Reg;
 
+                ViewBag.Batch_name = bh_name;
 
 
                 return View(menudisplay);
@@ -71,17 +72,17 @@ namespace WebApplication1.Controllers
 
 
 
-        public ActionResult Approved(int id, int bh_id)
+        public ActionResult Approved(int id, int bh_id, string bh_name)
         {
             db.Approveduser(id);
-            return RedirectToAction("Index","User_status",new { id = bh_id });
+            return RedirectToAction("Index","User_status",new { id = bh_id , bh_name = bh_name });
         }
 
-        public ActionResult DeleteUser(int id, int bh_id)
+        public ActionResult DeleteUser(int id, int bh_id, string bh_name)
         {
-            db.DeleteUser(id, bh_id);
+            db.DeleteUser(id);
 
-            return RedirectToAction("Index", "User_status", new { id = bh_id });
+            return RedirectToAction("Index", "User_status", new { id = bh_id, bh_name = bh_name });
         }
     }
 }

@@ -68,11 +68,19 @@
             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Address</span>
         </div>
 
+        <div class="form-group City">
+            <label>City:</label>
+            <input class="au-input au-input--full City" id="City" type="text" name="City" placeholder="City">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter City</span>
+        </div>
+
         <div class="form-group Country">
             <label>Country:</label>
             <input class="au-input au-input--full Country" id="Country" type="text" name="Country" placeholder="Country">
             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Country</span>
         </div>
+
+        
 
         <div class="form-group Qualification">
             <label>Qualification:</label>
@@ -228,6 +236,16 @@
                 $('.Country .error').css('display', 'none');
             }
 
+            if (!($('#City').val().trim() != '')) {
+                isAllValid = false;
+                $('.City .error').css('display', 'block');
+            }
+            else {
+                $('.City .error').css('display', 'none');
+            }
+
+            
+
             if (!($('#Qualification').val().trim() != '')) {
                 isAllValid = false;
                 $('.Qualification .error').css('display', 'block');
@@ -285,7 +303,8 @@
                     Profession: $('#Profession').val(),
                     Q_A: $('#Q_A').val(),
                     Future_plan: $('#Future_plan').val(),
-                    recommended: $('#recommended').val()
+                    recommended: $('#recommended').val(),
+                    City: $('#City').val(),
                 }
                 debugger
                 $.ajax({
@@ -307,6 +326,7 @@
                         'Q_A': data.Q_A,
                         'Future_plan': data.Future_plan,
                         'recommended': data.recommended,
+                        'City': data.City,
                     }
                     ,
                     success: function (resp) {
@@ -315,7 +335,7 @@
                             $('.message').delay(200).fadeOut();
                             $('#message').removeClass('alert-danger').addClass('alert-success');
                             $('#alt-msge').text("You successfully insert the record.");
-                            $('#Full_Name,	#DOB,	#pass,	#FH_name,	#IDCardNo,	#M_W_no,	#email,	#Address,	#Country,	#Qualification,	#Profession,	#Q_A,	#Future_plan,	#recommended').val('');
+                            $('#Full_Name,	#DOB,	#pass,	#FH_name,	#IDCardNo,	#M_W_no,	#email,	#Address,	#Country,#City,	#Qualification,	#Profession,	#Q_A,	#Future_plan,	#recommended').val('');
                             setTimeout(function () {
                                 window.location.href = '@Url.Action("Index", "CoursesDetails")';
                             }, 2000);

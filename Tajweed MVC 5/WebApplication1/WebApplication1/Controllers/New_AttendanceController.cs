@@ -40,7 +40,8 @@ namespace WebApplication1.Controllers
             var att_valid = db.attendance_valid(ad.BH_id);
             if (att_valid.att_id == 1)
             {
-                status = false;
+
+                
             }
             else
             {
@@ -54,6 +55,7 @@ namespace WebApplication1.Controllers
 
                 foreach (var s in ad.Attendance_dtl)
                 {
+                    s.bh_id = ad.BH_id;
                     s.att_id = att_id.att_id;
                     db.Insert_attendance_details(s);
                 }
@@ -66,7 +68,17 @@ namespace WebApplication1.Controllers
 
         public ActionResult get_att_data(int batch_name)
         {
-            List<Student> casc_std_list = db.get_att_students(batch_name);
+            List<Student> casc_std_list = new List<Student>();
+            var att_valid = db.attendance_valid(batch_name);
+            if (att_valid.att_id == 1)
+            {
+                casc_std_list = db.all_get_att_students(batch_name);
+            }
+            else
+            {
+                casc_std_list = db.get_att_students(batch_name);
+            }
+
             return Json(new SelectList(casc_std_list, "Stud_id", "Stud_name"));
         }
     }

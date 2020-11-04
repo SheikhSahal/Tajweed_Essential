@@ -162,6 +162,7 @@
     <Compile Include="Controllers\UsersData_ListController.cs" />
     <Compile Include="Controllers\UsersData_UpdateController.cs" />
     <Compile Include="Controllers\User_CreateController.cs" />
+    <Compile Include="Controllers\User_Create_ListController.cs" />
     <Compile Include="Controllers\User_StatusController.cs" />
     <Compile Include="Database_connecting.cs" />
     <Compile Include="DB\Database.cs" />
@@ -226,6 +227,7 @@
     <Content Include="Views\List_details\Index.cshtml" />
     <Content Include="Views\UsersData_List\Index.cshtml" />
     <Content Include="Views\UsersData_Update\Index.cshtml" />
+    <Content Include="Views\User_Create_List\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

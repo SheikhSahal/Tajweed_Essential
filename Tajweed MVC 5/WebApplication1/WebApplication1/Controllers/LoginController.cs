@@ -43,7 +43,7 @@ namespace WebApplication1.Controllers
         public ActionResult Logout()
         {
             var sess = Convert.ToInt16(Session["User_id"]);
-            db.Logoutupdate(sess,"N");
+            //db.Logoutupdate(sess,"N");
 
             Session.Clear();
             Session.Abandon();

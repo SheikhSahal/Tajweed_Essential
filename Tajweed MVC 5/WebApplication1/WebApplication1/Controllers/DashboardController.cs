@@ -36,6 +36,8 @@ namespace WebApplication1.Controllers
                 Attendance_data attendance = db.Get_all_attendance();
                 ViewBag.attendance = attendance.att_id;
 
+                List<Batch_header> bh_hd = db.Incomplete_course();
+                ViewBag.incom_cour = bh_hd;
                 return View(menudisplay);
             }
 

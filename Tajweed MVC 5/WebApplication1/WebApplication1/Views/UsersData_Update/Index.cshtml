@@ -104,6 +104,12 @@
             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Address</span>
         </div>
 
+        <div class="form-group City">
+            <label>City:</label>
+            <input class="au-input au-input--full City" id="City" type="text" name="City" placeholder="City" value="@data.City">
+            <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter City</span>
+        </div>
+
         <div class="form-group Country">
             <label>Country:</label>
             <input class="au-input au-input--full Country" id="Country" type="text" name="Country" placeholder="Country" value="@data.Country">
@@ -257,6 +263,14 @@
                 $('.Address .error').css('display', 'none');
             }
 
+            if (!($('#City').val().trim() != '')) {
+                isAllValid = false;
+                $('.City .error').css('display', 'block');
+            }
+            else {
+                $('.City .error').css('display', 'none');
+            }
+
             if (!($('#Country').val().trim() != '')) {
                 isAllValid = false;
                 $('.Country .error').css('display', 'block');
@@ -264,6 +278,9 @@
             else {
                 $('.Country .error').css('display', 'none');
             }
+
+          
+            
 
             if (!($('#Qualification').val().trim() != '')) {
                 isAllValid = false;
@@ -288,14 +305,14 @@
             else {
                 $('.Q_A .error').css('display', 'none');
             }
-
-            if (!($('#Future_plan').val().trim() != '')) {
-                isAllValid = false;
-                $('.Future_plan .error').css('display', 'block');
-            }
-            else {
-                $('.Future_plan .error').css('display', 'none');
-            }
+            debugger
+            //if (!($('#Future_plan').val().trim() != '')) {
+            //    isAllValid = false;
+            //    $('.Future_plan .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.Future_plan .error').css('display', 'none');
+            //}
 
             if (!($('#recommended').val().trim() != '')) {
                 isAllValid = false;
@@ -318,6 +335,7 @@
                     email: $('#email').val(),
                     Address: $('#Address').val(),
                     Country: $('#Country').val(),
+                    City: $('#City').val(),
                     Qualification: $('#Qualification').val(),
                     Profession: $('#Profession').val(),
                     Q_A: $('#Q_A').val(),
@@ -339,6 +357,7 @@
                         'email': data.email,
                         'Address': data.Address,
                         'Country': data.Country,
+                        'City':data.City,
                         'Qualification': data.Qualification,
                         'Profession': data.Profession,
                         'Q_A': data.Q_A,

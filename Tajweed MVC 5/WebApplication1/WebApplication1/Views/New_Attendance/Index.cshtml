@@ -125,7 +125,7 @@
                         $('#std_details').empty();
                         $.each(resp, function (i, item) {
                             i = i + 1;
-                            $('#std_details').append('<tr> <td>' + i + ' </td><td class="att_value collapse">' + item.Value + ' </td><td>' + item.Text + ' </td> <td> <label><input type="radio" name="att' + i + '" value="P">&nbsp;Present</label> </td> <td> <label><input type="radio" name="att' + i + '" value="A" checked >&nbsp;Abcent</label> </td> <td> <label><input type="radio" name="att' + i + '" value="L">&nbsp;Leave</label> </td> </tr>')
+                            $('#std_details').append('<tr> <td>' + i + ' </td><td class="att_value collapse">' + item.Value + ' </td><td>' + item.Text + ' </td> <td> <button class="btn btn-success"> <label><input type="radio" name="att' + i + '" value="P">&nbsp;Present</label></button> </td> <td> <button class="btn btn-danger">  <label> <input type="radio" name="att' + i + '" value="A" checked >&nbsp;Abcent </label></button> </td> <td><button class="btn btn-warning"> <label><input type="radio" name="att' + i + '" value="L">&nbsp;Leave</label> </button></td> </tr>')
 
                         });
                     }

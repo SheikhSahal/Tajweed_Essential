@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="text">
                                         <h2>@ViewBag.allusers</h2>
-                                        <span>Users</span>
+                                        <span>Students</span>
                                     </div>
                                 </div>
                                 <div class="overview-chart">
@@ -100,7 +100,46 @@
                         </div>
                     </div>
                 </div>
-           
+            
+            <div class="row m-t-30">
+                <div class="col-md-12">
+                    <!-- DATA TABLE-->
+                    <div class="table-responsive m-b-40">
+                        <table class="table table-borderless table-data3">
+                            <thead>
+                                <tr>
+                                    <th>S/No.</th>
+                                    <th>Course Name</th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            @{ int inde = 1;}
+                            <tbody id="std_table">
+                                @foreach (var userdata in ViewBag.incom_cour as List<WebApplication1.Models.Batch_header>)
+                                {
+                                    <tr>
+                                        @*<td>
+                                            <div class="table-data-feature">
+                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Update" onclick="location.href='@Url.Action("Index", "UsersData_Update", new { id =userdata.User_id})'">
+                                                    <i class="zmdi zmdi-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>*@
+                                        <td>@inde</td>
+                                        <td>@userdata.Batch_Name</td>
+                                        <td>
+                                            <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Form</button>
+                                        </td>
+                                    </tr>
+                                    inde++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE-->
+                </div>
+            </div>
                                 
             @Html.Partial("~/Views/Shared/Footer.cshtml")
         </div>

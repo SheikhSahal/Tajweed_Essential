@@ -12,8 +12,8 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="row">
-    Check your verification
+<div class="row" style="margin-left:3px;">
+    Check your admission form request status.
 </div>
 <div class="row">
     <div class="col-md-6">
@@ -137,21 +137,21 @@
                   ,
                     success: function (resp) {
                         if (resp.status == "W") {
-                            $('.message').delay(800).fadeIn();
-                            $('.message').delay(500).fadeOut();
+                            $('.message').delay(100).fadeIn();
+                            $('.message').delay(10000).fadeOut();
                             $('#message').removeClass('alert-danger alert-success').addClass('alert-warning');
                             $('#alt-msge').text("Your Request is waiting");
                         }
                         else if (resp.status == "A") {
-                            $('.message').delay(800).fadeIn();
-                            $('.message').delay(500).fadeOut();
+                            $('.message').delay(100).fadeIn();
+                            $('.message').delay(10000).fadeOut();
                             $('#message').removeClass('alert-danger alert-warning').addClass('alert-success');
                             $('#alt-msge').text("Your Request is Approved");
                             
                         }
                         else {
-                            $('.message').delay(800).fadeIn();
-                            $('.message').delay(500).fadeOut();
+                            $('.message').delay(100).fadeIn();
+                            $('.message').delay(10000).fadeOut();
                             $('#alt-msge').text("Your Request is not found.");
                             $('#message').removeClass('alert-success alert-warning').addClass('alert-danger');
                         }

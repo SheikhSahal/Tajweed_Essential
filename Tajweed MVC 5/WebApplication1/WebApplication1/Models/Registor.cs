@@ -24,9 +24,12 @@ namespace WebApplication1.Models
         public string Future_plan { get; set; }
         public string recommended { get; set; }
         public string User_status { get; set; }
+        public string User_Active { get; set; }
         public long User_contact { get; set; }
         public int Role_id { get; set; }
         public int bh_id { get; set; }
-
+        public string Batch_name { get; set; }
+        public string City { get; set; }
+        public string Role_name { get; set; }
     }
 }

@@ -9,7 +9,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
-
+                    @*<h3>@ViewBag.Batch_name</h3>*@
+                    <h3>@ViewBag.Batch_name</h3>
                 </div>
                 <div class="col-md-4">
                     
@@ -31,11 +32,11 @@
                                 <tr>
                                     <th></th>
                                     <th>S/No.</th>
-                                    <th>User Name</th>
-                                    <th>Recommended</th>
+                                    <th>Student Name</th>
+                                    <th>Reference</th>
                                     <th>Contact No.</th>
-                                    <th>ID No.</th>
-                                    <th>User Status</th>
+                                    @*<th>ID No.</th>*@
+                                    @*<th>User Status</th>*@
                                 </tr>
                             </thead>
                             @{ int inde = 1;}
@@ -45,14 +46,19 @@
                                 <tr>
                                     <td>
                                         <div class="table-data-feature">
+                                                <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Update" onclick="location.href='@Url.Action("Index", "UsersData_Update", new { id =userdata.User_id, bh_name = ViewBag.Batch_name})'">
+                                                    Edit
+                                                </button>
+                                            &nbsp;
                                             @if (userdata.User_status == "W")
                                             {
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
-                                                    <i class="zmdi zmdi-check"></i>
+                                                <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'">
+                                                    Approve
                                                 </button>
                                             }
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id})'">
-                                                <i class="zmdi zmdi-delete"></i>
+                                            &nbsp;
+                                            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'">
+                                                Reject
                                             </button>
                                         </div>
                                     </td>
@@ -60,15 +66,15 @@
                                     <td>@userdata.Full_Name</td>
                                     <td>@userdata.email</td>
                                     <td>@userdata.M_W_no</td>
-                                    <td>@userdata.IDCardNo</td>
-                                    @if(userdata.User_status == "W")
+                                    @*<td>@userdata.IDCardNo</td>*@
+                                    @*@if(userdata.User_status == "W")
                                     {
                                         <td>Waiting</td>
                                     }
                                     else
                                     {
                                         <td>Approved</td>
-                                    }
+                                    }*@
                                    
                                 </tr>
                                     inde++;
@@ -87,10 +93,8 @@
     $(document).ready(function(){
 
         
-        $('#users').DataTable();
-        
-
-
+        //$('#users').DataTable();
+       
     $("#Search").on("keyup", function () {
     var value = $(this).val().toLowerCase();
     $("#std_table tr").filter(function () {
