@@ -31,7 +31,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>S/No.</th>
+                                    <th class="status-sn">S/No.</th>
                                     <th>Student Name</th>
                                     <th>Reference</th>
                                     <th>Contact No.</th>
@@ -47,7 +47,7 @@
                                     <td>
                                         <div class="table-data-feature">
                                                 <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Update" onclick="location.href='@Url.Action("Index", "UsersData_Update", new { id =userdata.User_id, bh_name = ViewBag.Batch_name})'">
-                                                    Edit
+                                                    Detail
                                                 </button>
                                             &nbsp;
                                             @if (userdata.User_status == "W")
@@ -57,12 +57,12 @@
                                                 </button>
                                             }
                                             &nbsp;
-                                            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'">
+                                            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="var r=confirm('Do you Really want to Delete this record?'); if(r == true){ location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'}">
                                                 Reject
                                             </button>
                                         </div>
                                     </td>
-                                    <td>@inde</td>
+                                    <td class="status-sn">@inde</td>
                                     <td>@userdata.Full_Name</td>
                                     <td>@userdata.email</td>
                                     <td>@userdata.M_W_no</td>
@@ -88,6 +88,13 @@
         </div>
     </div>
 </div>
+<style>
+     @@media screen and (max-width: 987px) {
+         .status-sn{
+             display:none;
+         }
+        }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function(){

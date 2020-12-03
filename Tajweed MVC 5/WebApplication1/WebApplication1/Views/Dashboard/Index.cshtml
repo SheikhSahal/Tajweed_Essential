@@ -14,7 +14,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="row">
+
+            <div class="row" id="overview">
                 <div class="col-md-12">
                     <div class="overview-wrap">
                         <h2 class="title-1">overview</h2>
@@ -50,7 +51,7 @@
                                         <td>@inde</td>
                                         <td>@userdata.Batch_Name</td>
                                         <td>
-                                            <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Form</button>
+                                            <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Student list</button>
                                         </td>
                                     </tr>
                                     inde++;
@@ -169,7 +170,7 @@
                                         <td>@inde</td>
                                         <td>@userdata.Batch_Name</td>
                                         <td>
-                                            <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Form</button>
+                                            <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Student list</button>
                                         </td>
                                     </tr>
                                     inde++;
@@ -204,6 +205,9 @@
                 display:block;
             }
             #buttom{
+                display:none;
+            }
+            #overview{
                 display:none;
             }
         }

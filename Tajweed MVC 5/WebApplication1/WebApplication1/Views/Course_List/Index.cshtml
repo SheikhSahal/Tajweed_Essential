@@ -5,106 +5,89 @@
 }
 <div class="main-content">
     <div class="section__content section__content--p30">
-    <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
-        <span id="alt-msge">
-            You have successfully Update the record.
-        </span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+        <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+            <span id="alt-msge">
+                You have successfully Update the record.
+            </span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
-                    <!-- DATA TABLE -->
+                <div class="col-md-4">
                     <h3 class="title-5 m-b-35">All courses</h3>
-                    <div class="table-data__tool">
-                        <div class="table-data__tool-left" style="visibility:hidden;">
-                            <div class="rs-select2--light rs-select2--md">
-                                <select class="js-select2" name="property">
-                                    <option selected="selected">All Properties</option>
-                                    <option value="">Option 1</option>
-                                    <option value="">Option 2</option>
-                                </select>
-                                <div class="dropDownSelect2"></div>
-                            </div>
-                            <div class="rs-select2--light rs-select2--sm">
-                                <select class="js-select2" name="time">
-                                    <option selected="selected">Today</option>
-                                    <option value="">3 Days</option>
-                                    <option value="">1 Week</option>
-                                </select>
-                                <div class="dropDownSelect2"></div>
-                            </div>
-                            <button class="au-btn-filter">
-                                <i class="zmdi zmdi-filter-list"></i>filters
-                            </button>
-                        </div>
-                        <div class="table-data__tool-right">
-                            <a href="@Url.Action("Index","New_Course")" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i>Add course
-                            </a>
-                        </div>
+                </div>
+                <!-- DATA TABLE -->
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    <div class="table-data__tool-right" style="float:right;">
+                        <a href="@Url.Action("Index","New_Course")" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            <i class="zmdi zmdi-plus"></i>Add course
+                        </a>
                     </div>
-                    <div class="table-responsive table-responsive-data2">
-                        <table class="table table-data2">
-                            <thead>
-                                <tr>
-                                    <th>S/No.</th>
-                                    <th>Course Name</th>
-                                    <th>Teacher Name</th>
-                                    <th>End Date</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{int index = 1;}
-                                @foreach (var s in ViewBag.batchlist as List<WebApplication1.Models.Batch_list>)
-                                {
-                                    <tr class="tr-shadow">
-                                        <td>@index</td>
-                                        <td class="bh_id collapse">@s.Bh_id</td>
-                                        <td>@s.Batch_name</td>
-                                        <td>@s.Teach_name</td>
-                                        <td>@s.bh_end_date.ToString("dd-MMM-yyyy")</td>
-                                        @if(s.Course_visible == 'Y'.ToString())
-                                        {
+                </div>
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2">
+                        <thead>
+                            <tr>
+                                <th class="courses-content">S/No.</th>
+                                <th>Course Name</th>
+                                <th class="courses-content">Teacher Name</th>
+                                <th>End Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int index = 1;}
+                            @foreach (var s in ViewBag.batchlist as List<WebApplication1.Models.Batch_list>)
+                            {
+                                <tr class="tr-shadow">
+                                    <td class="courses-content">@index</td>
+                                    <td class="bh_id collapse">@s.Bh_id</td>
+                                    <td>@s.Batch_name</td>
+                                    <td class="courses-content">@s.Teach_name</td>
+                                    <td>@s.bh_end_date.ToString("dd-MMM-yyyy")</td>
+                                    @if (s.Course_visible == 'Y'.ToString())
+                                    {
                                         <td>
                                             <label for="checkbox1" class="form-check-label ">
                                                 <input type="checkbox" id="hide" name="hide" checked class="form-check-input">Hide
                                             </label>
                                         </td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <label for="checkbox1" class="form-check-label ">
-                                                    <input type="checkbox" id="hide" name="hide" class="form-check-input">Hide Course
-                                                </label>
-                                            </td>
-                                        }
-                                        @if (s.Course_complete == "Y")
-                                        { 
-                                            <td>
-                                                <label for="checkbox1" class="form-check-label ">
-                                                    <input type="checkbox" id="course_complete" checked name="course_complete" class="form-check-input">Course Complete
-                                                </label>
-                                            </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <label for="checkbox1" class="form-check-label ">
+                                                <input type="checkbox" id="hide" name="hide" class="form-check-input">Hide Course
+                                            </label>
+                                        </td>
+                                    }
+                                    @if (s.Course_complete == "Y")
+                                    {
+                                        <td>
+                                            <label for="checkbox1" class="form-check-label ">
+                                                <input type="checkbox" id="course_complete" checked name="course_complete" class="form-check-input">Course Complete
+                                            </label>
+                                        </td>
 
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <label for="checkbox1" class="form-check-label ">
-                                                    <input type="checkbox" id="course_complete" name="course_complete" class="form-check-input">Course Complete
-                                                </label>
-                                            </td>
-                                        }
-
-
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <label for="checkbox1" class="form-check-label ">
+                                                <input type="checkbox" id="course_complete" name="course_complete" class="form-check-input">Course Complete
+                                            </label>
+                                        </td>
+                                    }
 
 
-                                        @*<td>
+
+
+                                    @*<td>
                                             <div class="table-data-feature">
                                                 <button class="item" data-toggle="tooltip" data-placement="top" title="Details" onclick="location.href='@Url.Action("Index", "User_Status", new { id = s.Bh_id })'">
                                                     <i class="zmdi zmdi-info"></i>
@@ -114,66 +97,69 @@
                                                 </button>
                                             </div>
                                         </td>*@
-                                        <td>
-                                            <button id="save" class="btn btn-sm btn-warning btn-block" onclick="location.href='@Url.Action("Index", "User_Status", new { id = s.Bh_id })'">
-                                                Form
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button id="save" class="btn btn-sm btn-info btn-block save">
-                                                <i class="fas fa-save"></i>&nbsp;
-                                            </button>
-                                        </td>
-                                       
-                                        @*<td>
-                                                @{ var current_date = DateTime.Now.Date;}
-                                                @if (s.bh_end_date.Date >= current_date)
-                                                {
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateCourse", "Course_List", new { id = s.Bh_id })'">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteRecord", "Course_List", new { id = s.Bh_id })'">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button>
-                                                    </div>
-                                                }
-                                            </td>*@
-                                        
-                                    </tr>
-                                    index++;
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- END DATA TABLE -->
+                                    <td>
+                                        <button id="save" class="btn btn-sm btn-warning btn-block" onclick="location.href='@Url.Action("Index", "User_Status", new { id = s.Bh_id })'">
+                                            Student list
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button id="save" class="btn btn-sm btn-info btn-block save">
+                                            <i class="fas fa-save"></i>&nbsp;
+                                        </button>
+                                    </td>
+
+                                    @*<td>
+                                            @{ var current_date = DateTime.Now.Date;}
+                                            @if (s.bh_end_date.Date >= current_date)
+                                            {
+                                                <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("updateCourse", "Course_List", new { id = s.Bh_id })'">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("DeleteRecord", "Course_List", new { id = s.Bh_id })'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
+                                                </div>
+                                            }
+                                        </td>*@
+
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
                 </div>
+                <!-- END DATA TABLE -->
             </div>
         </div>
     </div>
 </div>
+</div>
 <style>
- 
     .message {
         display: none;
         position: fixed;
         z-index: 1;
         left: 40%;
     }
+     @@media screen and (max-width: 987px) {
+         .courses-content{
+             display:none;
+         }
+        }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.save').click(function () {
-    
+
             var row = $(this).parent().parent("tr");
             var findval = row.find('input[name="hide"]');
             var findcourse = row.find('input[name="course_complete"]');
             var bh_val = row.find('.bh_id').text();
 
             var checkboxvale = null;
-            if ((findval).is(":checked"))
-            {
+            if ((findval).is(":checked")) {
                 checkboxvale = 'Y';
             }
             else {
@@ -209,8 +195,8 @@
                     }
                 }
             });
-            
-            
+
+
         })
 
     });

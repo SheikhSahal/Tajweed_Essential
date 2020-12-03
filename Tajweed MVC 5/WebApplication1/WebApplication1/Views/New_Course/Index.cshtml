@@ -122,20 +122,21 @@
     </div>
 </div>
 
-    <style>
-        span.error {
-            display: none;
-            color: #d93025;
-            font-size: 80%;
-            margin-top: 3px;
-        }
-        .message {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 40%;
-        }
-    </style>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -211,8 +212,11 @@
                         if (resp.status) {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
-                            $('#batch_name,#Course_desc,#Start_date,#End_date').val('');
-                            $('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
+                            setTimeout(function () {
+                                location.href = '@Url.Action("Index", "Course_List")';
+                            }, 3000);
+                            //$('#batch_name,#Course_desc,#Start_date,#End_date').val('');
+                            //$('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
                         }
                         else {
                             alert('error');

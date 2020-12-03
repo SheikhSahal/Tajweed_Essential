@@ -12,7 +12,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-        </div> 
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2">
@@ -61,9 +61,13 @@
                             <table class="table table-responsive">
                                 <thead>
                                     <tr>
-                                        <th>S/No.</th>
+                                        @*<th class="">S/No.</th>*@
                                         <th>Student Name</th>
-                                        <th></th>
+                                        <th colspan="3">
+                                            <div>
+                                                <input type="text" id="Search" class="form-control" placeholder="Search" />
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="std_details"></tbody>
@@ -95,10 +99,20 @@
         z-index: 1;
         left: 40%;
     }
+    #Search{
+        display:none;
+    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
+
+        $("#Search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#std_details tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
 
         $('#fetch').click(function (e) {
             e.preventDefault();
@@ -107,6 +121,7 @@
             if ($('#batch_name_list').val() == 0) {
                 allvalid = false;
                 $('#std_details').empty();
+                $('#Search').css('display', 'none');
                 $('.batch_name_list .error').css('display', 'block');
             }
             else {
@@ -121,11 +136,13 @@
                         'batch_name': $('#batch_name_list').val(),
                     },
                     success: function (resp) {
-                        console.log(resp)
                         $('#std_details').empty();
+                        $('#Search').css('display', 'none');
                         $.each(resp, function (i, item) {
                             i = i + 1;
-                            $('#std_details').append('<tr> <td>' + i + ' </td><td class="att_value collapse">' + item.Value + ' </td><td>' + item.Text + ' </td> <td> <button class="btn btn-success"> <label><input type="radio" name="att' + i + '" value="P">&nbsp;Present</label></button> </td> <td> <button class="btn btn-danger">  <label> <input type="radio" name="att' + i + '" value="A" checked >&nbsp;Abcent </label></button> </td> <td><button class="btn btn-warning"> <label><input type="radio" name="att' + i + '" value="L">&nbsp;Leave</label> </button></td> </tr>')
+                            //<tr> <td>' + i + ' </td> serial number generate
+                            $('#std_details').append('<tr><td class="att_value collapse">' + item.Value + ' </td><td>' + item.Text + ' </td> <td> <button class="btn btn-success"> <label><input type="radio" name="att' + i + '" value="P">&nbsp;Present</label></button> </td> <td> <button class="btn btn-danger">  <label> <input type="radio" name="att' + i + '" value="A" checked >&nbsp;Abcent </label></button> </td> <td><button class="btn btn-warning"> <label><input type="radio" name="att' + i + '" value="L">&nbsp;Leave</label> </button></td> </tr>')
+                            $('#Search').css('display', 'block');
 
                         });
                     }
@@ -159,7 +176,7 @@
                 var data = {
                     BH_id: $('#batch_name_list').val(),
                     Attendance_dtl: list
-                    
+
                 }
                 debugger
 
