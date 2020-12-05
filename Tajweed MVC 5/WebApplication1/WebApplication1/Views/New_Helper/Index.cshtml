@@ -60,11 +60,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                @*<div class="row">
                                     <div class="col-md-5">
                                         <div class="form-group student">
                                             <label for="student" class="control-label mb-1">Student:</label>
-                                            @*<input id="student" name="student" type="text" class="form-control" aria-required="true" aria-invalid="false">*@
+                                            <input id="student" name="student" type="text" class="form-control" aria-required="true" aria-invalid="false">
                                             <select class="form-control" id="student">
                                                 <option value="0">--Select--</option>
                                             </select>
@@ -84,10 +84,10 @@
                                         <label for="Stud_id" style="visibility:hidden;" class="control-label mb-1">Student:</label>
                                         <button class="btn btn-success" id="add" type="button">Add</button>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <table class="table table-borderless table-striped table-earning table-responsive">
+                                        <table class="table table-borderless table-responsive">
                                             <tbody id="details"></tbody>
                                         </table>
                                         <div id="orderItems">
@@ -139,7 +139,7 @@
 
             //var apph_val = row.find('.helper_val').text();
             //var apph_txt = row.find('.helper_txt').text();
-            
+
             $('#student').prepend($('<option></option>').val(appd_val).html(appd_txt));
             //$('#Helper').prepend($('<option></option>').val(apph_val).html(apph_txt));
             row.remove();
@@ -172,6 +172,7 @@
 
         $('#batch_name').change(function () {
             $('#student').empty();
+            $('#details').empty();
             $.ajax({
                 type: 'POST',
                 url: '/New_Helper/Cascade_stud',
@@ -181,10 +182,15 @@
                 ,
                 success: function (resp) {
                     $.each(resp, function (i, item) {
-                        $('#student').append($('<option>', {
-                            value: item.Value,
-                            text: item.Text
-                        }));
+                        //$('#student').append($('<option>', {
+                        //    value: item.Value,
+                        //    text: item.Text
+                        //}));
+                        var std_value = '<td class="collapse">' + item.Value + '</td>';
+                        var std_txt = '<td>' + item.Text + '</td>';
+                        var drop_listname = '<td><select class="form-control"><option>--Select--</option></select></td>';
+                        var detail_values = '<tr class="tr-row">' + std_value + std_txt + drop_listname + '</tr>';
+                        $('#details').prepend(detail_values);
                     });
                 },
                 error: function (ex) {
@@ -286,7 +292,7 @@
             if (isAllValid) {
                 var data = {
 
-                    Helper_name:$('#Helper_name').val(),
+                    Helper_name: $('#Helper_name').val(),
                     bh_id: $('#batch_name').val(),
                     list_id: $('#List_name').val(),
                     Helper_dtl: list
