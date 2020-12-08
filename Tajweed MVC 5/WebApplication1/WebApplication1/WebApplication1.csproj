@@ -228,6 +228,7 @@
     <Content Include="Views\UsersData_List\Index.cshtml" />
     <Content Include="Views\UsersData_Update\Index.cshtml" />
     <Content Include="Views\User_Create_List\Index.cshtml" />
+    <Content Include="Views\List_Header_list\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

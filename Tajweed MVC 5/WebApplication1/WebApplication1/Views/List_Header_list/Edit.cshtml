@@ -1,7 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/Dashboard.cshtml";
+    var data = ViewBag.getHeader as WebApplication1.Models.List_Header;
 }
 <div class="main-content">
     <div class="section__content section__content--p30">
@@ -26,7 +27,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group List_name">
                                             <label for="List_name" class="control-label mb-1">List Name:</label>
-                                            <input id="List_name" name="List_name" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                                            <input id="List_name" name="List_name" type="text" class="form-control" aria-required="true" aria-invalid="false" value="@data.List_name">
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a List Name</span>
                                         </div>
                                     </div>
@@ -53,10 +54,27 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-borderless table-striped table-earning">
-                                            <tbody id="details"></tbody>
+                                            <tbody id="details">
+                                            </tbody>
                                         </table>
-                                        <div id="orderItems">
-                                            <table class="table table-responsive" id="orderdetailsItems"></table>
+                                        <div>
+                                            <table class="table table-responsive table-borderless table-striped table-earning" id="orderdetailsItems">
+                                                <tbody id="orderItems">
+                                                    @foreach(var s in ViewBag.getdtllist as List<WebApplication1.Models.List_Details>)
+                                                    {
+                                                        <tr>
+                                                            <td class="db-id collapse">@s.id</td>
+                                                            <td class="std_id collapse">@s.Stud_id</td>
+                                                            <td class="std_name">@s.Stud_name</td>
+                                                            <td>
+                                                                <button class="btn btn-danger rm">
+                                                                    x
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
                                             <span id="orderItemError" style="color:red"></span>
                                         </div>
                                     </div>
@@ -73,7 +91,7 @@
                     </div>
                 </div>
 
-               
+
             </div>
             @Html.Partial("~/Views/Shared/Footer.cshtml")
         </div>
@@ -101,13 +119,13 @@
         $('#add').click(function (e) {
             e.preventDefault();
             var AllValid = true;
-            if ($('#Amount option:selected').val() == 0) {
-                AllValid = false;
-                $('.Amount .error').css('display', 'block');
-            }
-            else {
-                $('.Amount .error').css('display', 'none');
-            }
+            //if ($('#Amount option:selected').val() == 0) {
+            //    AllValid = false;
+            //    $('.Amount .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.Amount .error').css('display', 'none');
+            //}
 
             if (AllValid) {
 
@@ -128,13 +146,39 @@
             }
         });
 
-        $('#details').on('click', '.rm', function () {
+
+        $('#orderItems').on('click', '.rm', function (e) {
+            e.preventDefault();
             var row = $(this).parent().parent("tr");
-            var appd_val = row.find('.at').val();
-            var appd_txt = row.find('.std_txt').text();
+            var row2 = row.find('.db-id').text();
+
+            var appd_val = row.find('.std_id').text();
+            var appd_txt = row.find('.std_name').text();
+
+            //alert(row.find('.db-id').text());
 
             $('#Amount').append($('<option></option>').val(appd_val).html(appd_txt));
-            row.remove();
+
+                
+
+            $.ajax({
+                type: 'POST',
+                url: '/List_Header_list/Dle_list',
+                data: {
+                    'id': row2,
+                }
+                    ,
+                success: function (resp) {
+                    if (resp.status) {
+                        row.remove();
+                    }
+                    else {
+                        alert('error');
+                    }
+                }
+
+            });
+
         });
 
         $('#save').click(function (e) {
@@ -157,13 +201,14 @@
                 JSON.stringify(orderItem)
                 list.push(orderItem);
             })
-            if (list.length == 0) {
-                $('#orderItemError').text('At least 1 record required.');
-                isAllValid = false;
-            }
+            //if (list.length == 0) {
+            //    $('#orderItemError').text('At least 1 record required.');
+            //    isAllValid = false;
+            //}
 
             if (isAllValid) {
                 var data = {
+                    List_id: '@ViewBag.id',
                     List_name: $('#List_name').val(),
                     List_Details: list
                 }
@@ -171,8 +216,9 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/List_header/Index',
+                    url: '/List_Header_list/Edit',
                     data: {
+                        'List_id': data.List_id,
                         'List_name': data.List_name,
                         'List_Details': data.List_Details,
                     }
@@ -181,12 +227,6 @@
                         if (resp.status) {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
-                            $("#List_name").val('');
-                            $("#details").empty();
-                            setTimeout(function () {
-                                window.location.href = '@Url.Action("Index", "List_Header")';
-                            }, 2000);
-
                             if (list.length > 0) {
                                 $('#orderItemError').text('');
                             }

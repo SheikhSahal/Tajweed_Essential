@@ -45,8 +45,12 @@
                                         <td>@s.stud_count</td>
                                         <td>
                                             <div class="table-data-feature">
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Info" onclick="location.href='@Url.Action("Index", "List_details", new { id =s.List_id})'">
-                                                    <i class="zmdi zmdi-info"></i>
+                                                <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("Edit", "List_Header_list", new { id =s.List_id})'">
+                                                    Edit
+                                                </button>
+                                                &nbsp;
+                                                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("Delete_bulk", "List_Header_list", new { id =s.List_id})'">
+                                                    Delete
                                                 </button>
                                             </div>
                                         </td>

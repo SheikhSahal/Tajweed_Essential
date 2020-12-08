@@ -7,6 +7,7 @@ namespace WebApplication1.Models
 {
     public class List_Header
     {
+        public int id { get; set; }
         public int List_id { get; set; }
         public string List_name { get; set; }
         public string stud_count { get; set; }

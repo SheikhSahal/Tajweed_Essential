@@ -1806,7 +1806,7 @@ namespace WebApplication1.DB
             List<List_Header> DBase = new List<List_Header>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select lh.list_id, lh.list_name, count(*) std from list_header lh, list_details ld where lh.list_id = ld.list_id group by lh.list_name,lh.list_id order by lh.list_id desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select lh.list_id, lh.list_name, case count(*) when '1' then 0 else count(*) end std from list_header lh FULL OUTER JOIN list_details ld  on lh.list_id = ld.list_id  group by lh.list_name,lh.list_id  order by lh.list_id desc", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -2206,6 +2206,173 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@bh_id", bh_id);
                     cmd.Parameters.AddWithValue("@Stud_id", stud_id);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public List_Header list_get_Headerdata(int id)
+        {
+            List_Header employee = new List_Header();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select * from List_header lh where lh.List_id = @list_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@list_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["id"] != DBNull.Value)
+                    {
+                        employee.id = Convert.ToInt32(reader["id"]);
+                    }
+                    if (reader["list_id"] != DBNull.Value)
+                    {
+                        employee.List_id = Convert.ToInt32(reader["list_id"]);
+                    }
+                    if (reader["list_name"] != DBNull.Value)
+                    {
+                        employee.List_name = Convert.ToString(reader["list_name"]);
+                    }
+                }
+            }
+            return employee;
+        }
+
+        public List<List_Details> List_get_detaildata(int bh_id)
+        {
+            List<List_Details> DBase = new List<List_Details>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select ld.id,ld.List_id,ld.Stud_id, l.User_name std_name from List_details ld , login l where ld.Stud_id = l.User_id and ld.List_id = @list_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@list_id", bh_id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        List_Details teach = new List_Details();
+
+                        if (reader["id"] != DBNull.Value)
+                        {
+                            teach.id = Convert.ToInt32(reader["id"]);
+                        }
+                        if (reader["List_id"] != DBNull.Value)
+                        {
+                            teach.List_id = Convert.ToInt32(reader["List_id"]);
+                        }
+                        if (reader["Stud_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["Stud_id"]);
+                        }
+                        if (reader["std_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = Convert.ToString(reader["std_name"]);
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public void delteList_dtl(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from List_details where id = @id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public List<Student> Get_edit_student_list(int id)
+        {
+            List<Student> DBase = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id, CONCAT(l.User_name,' ',bh.BATCH_NAME)  Full_name ,  bh.bh_end_date  from login l , Batch_header bh where l.Bh_id = bh.BH_ID and ISNULL(bh.Course_complete,'N') = 'Y' and l.User_id not in(select ld.stud_id from List_details ld where List_id = @list_id) and l.User_status = 'A' and l.User_flag = 'S'", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@list_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Student teach = new Student();
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["Full_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = reader["Full_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public void update_listName(string list_name, int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update List_header  set List_name = @List_name where List_id = @id", conn))
+                { 
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@List_name", list_name);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public void listMstdelete(int list_id)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from List_header where list_id = @list_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@list_id", list_id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+        }
+
+        public void listDtlmstdelete(int list_id)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from List_details where list_id = @list_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@list_id", list_id);
+
+                    cmd.ExecuteNonQuery();
+
                 }
             }
         }
