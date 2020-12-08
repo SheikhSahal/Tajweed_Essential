@@ -15,7 +15,7 @@
                 </button>
             </div>
 
-            <div class="row" id="overview">
+            <div class="row overview">
                 <div class="col-md-12">
                     <div class="overview-wrap">
                         <h2 class="title-1">overview</h2>
@@ -30,7 +30,7 @@
                         <table class="table table-borderless table-data3">
                             <thead>
                                 <tr>
-                                    <th>S/No.</th>
+                                    <th class="overview">S/No.</th>
                                     <th>Course Name</th>
                                     <th></th>
 
@@ -48,7 +48,7 @@
                                             </button>
                                         </div>
                                     </td>*@
-                                        <td>@inde</td>
+                                        <td class="overview">@inde</td>
                                         <td>@userdata.Batch_Name</td>
                                         <td>
                                             <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Student list</button>
@@ -167,7 +167,7 @@
                                                 </button>
                                             </div>
                                         </td>*@
-                                        <td>@inde</td>
+                                        <td class="overview">@inde</td>
                                         <td>@userdata.Batch_Name</td>
                                         <td>
                                             <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "User_Status", new { id = userdata.Bh_id, bh_name = userdata.Batch_Name })'">Student list</button>
@@ -207,7 +207,7 @@
             #buttom{
                 display:none;
             }
-            #overview{
+            .overview{
                 display:none;
             }
         }

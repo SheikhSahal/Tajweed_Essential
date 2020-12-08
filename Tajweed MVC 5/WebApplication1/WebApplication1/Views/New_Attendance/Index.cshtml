@@ -99,8 +99,9 @@
         z-index: 1;
         left: 40%;
     }
-    #Search{
-        display:none;
+
+    #Search {
+        display: none;
     }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -118,6 +119,7 @@
             e.preventDefault();
             allvalid = true;
 
+
             if ($('#batch_name_list').val() == 0) {
                 allvalid = false;
                 $('#std_details').empty();
@@ -127,8 +129,9 @@
             else {
                 $('.batch_name_list .error').css('display', 'none');
             }
-            debugger
+
             if (allvalid) {
+                
                 $.ajax({
                     type: 'POST',
                     url: '/New_Attendance/get_att_data',

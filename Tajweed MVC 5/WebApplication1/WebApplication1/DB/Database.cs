@@ -1431,7 +1431,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name, ' ', ' (Ref.)',' ', l.recommended) User_name  from Login l , Batch_header bh , Attendance_details ad where l.Bh_id = bh.BH_ID  and ad.Stud_id = l.User_id and ISNULL(bh.course_complete,'N') = 'N'  and l.user_flag = 'S' and l.User_status = 'A' and ad.Att_status not in('P','L') and bh.BH_ID = @bh_id order by ad.User_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name  from Login l , Batch_header bh , Attendance_details ad where l.Bh_id = bh.BH_ID  and ad.Stud_id = l.User_id and ISNULL(bh.course_complete,'N') = 'N'  and l.user_flag = 'S' and l.User_status = 'A' and ad.Att_status not in('P','L') and bh.BH_ID = @bh_id order by ad.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1461,7 +1461,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name, ' ', ' (Ref.)',' ', l.recommended) User_name  from Login l , Batch_header bh  where l.Bh_id = bh.BH_ID   and ISNULL(bh.course_complete,'N') = 'N'   and l.user_flag = 'S' and l.User_status = 'A'  and bh.BH_ID = @bh_id order by ad.User_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name  from Login l , Batch_header bh  where l.Bh_id = bh.BH_ID   and ISNULL(bh.course_complete,'N') = 'N'   and l.user_flag = 'S' and l.User_status = 'A'  and bh.BH_ID = @bh_id order by ad.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);

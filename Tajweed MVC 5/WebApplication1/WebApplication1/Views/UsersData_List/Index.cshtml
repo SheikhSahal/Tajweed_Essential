@@ -30,7 +30,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">User Info.</th>
-                                    <th>S/No.</th>
+                                    <th class="overview">S/No.</th>
                                     <th>Student Name</th>
                                     <th>Reference</th>
                                     <th>Course Name</th>
@@ -51,7 +51,7 @@
                                                 </button>
                                             </div>
                                         </td>
-                                        <td>@inde</td>
+                                        <td class="overview">@inde</td>
                                         <td>@userdata.Full_Name</td>
                                         <td>@userdata.recommended</td>
                                         <td>@userdata.Batch_name</td>
@@ -70,6 +70,14 @@
         </div>
     </div>
 </div>
+
+<style>
+     @@media screen and (max-width: 987px) {
+            .overview{
+                display:none;
+            }
+        }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){

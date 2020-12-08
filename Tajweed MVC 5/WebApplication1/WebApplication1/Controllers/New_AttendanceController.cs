@@ -69,6 +69,8 @@ namespace WebApplication1.Controllers
         }
 
 
+     
+
         public ActionResult get_att_data(int batch_name)
         {
             List<Student> casc_std_list = new List<Student>();
