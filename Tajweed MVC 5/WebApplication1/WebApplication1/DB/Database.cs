@@ -1321,7 +1321,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, CONCAT(l.User_name,' ',l.F_H_name) Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id and l.User_status = 'A' and l.User_flag = 'S'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id and l.User_status = 'A' and l.User_flag = 'S'", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1351,7 +1351,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select ld.Stud_id, CONCAT( l.User_name, ' ',l.F_H_name) stud_name from List_header lh,List_details ld, login l where lh.List_id = ld.List_id and ld.Stud_id = l.User_id and lh.List_id =@bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select ld.Stud_id, l.User_name stud_name from List_header lh,List_details ld, login l where lh.List_id = ld.List_id and ld.Stud_id = l.User_id and lh.List_id =@bh_id", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -2375,6 +2375,27 @@ namespace WebApplication1.DB
 
                 }
             }
+        }
+
+
+        public void oldstudentRegistration(Registor r)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_contact,	ID_Card, BH_id ,User_flag) values (@User_name,	@User_contact,	@ID_Card,@bh_id,@User_flag)", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
+                    cmd.Parameters.AddWithValue("@User_contact", r.M_W_no);
+                    cmd.Parameters.AddWithValue("@ID_Card", r.IDCardNo);
+                    cmd.Parameters.AddWithValue("@bh_id", r.bh_id);
+                    cmd.Parameters.AddWithValue("@User_flag", "S");
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
         }
     }
 }

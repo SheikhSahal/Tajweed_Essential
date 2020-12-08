@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<h2>@ViewBag.bh_id</h2>
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
+            <span class="badge badge-pill badge-success">Success</span>
+            You successfully insert the record.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Create User</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group batch_name">
+                                    <label>Course:</label>
+                                    <select class="form-control" id="batch_name">
+                                        <option value="0">--Course--</option>
+                                        @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
+                                        {
+                                            <option value="@s.Bh_id">@s.Batch_Name</option>
+                                        }
+                                    </select>
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
+                                </div>
+
+
+                                <div class="form-group Full_Name">
+                                    <label>Full Name:</label>
+                                    <input class="au-input au-input--full Full_Name" type="text" id="Full_Name" name="Full_Name" placeholder="Full Name">
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Full Name</span>
+                                </div>
+
+                                <div class="form-group IDCardNo">
+                                    <label>ID Card No.:</label>
+                                    <input class="au-input au-input--full IDCardNo" id="IDCardNo" type="text" name="IDCardNo" placeholder="ID Card No.">
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter ID Card No.</span>
+                                </div>
+
+                                <div class="form-group M_W_no">
+                                    <label>Mobile / Whatsapp No.:</label>
+                                    <input class="au-input au-input--full M_W_no" id="M_W_no" type="number" name="M_W_no" placeholder="Mobile / Whatsapp No.">
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter Mobile / Whatsapp No.</span>
+                                </div>
+                                <div>
+                                    <button id="save" class="btn btn-lg btn-info btn-block">
+                                        <i class="fas fa-save"></i>&nbsp;
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+
+                </div>
+            </div>
+            @Html.Partial("~/Views/Shared/Footer.cshtml")
+        </div>
+    </div>
+</div>
+<style>
+    span.error {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    span.valid {
+        display: none;
+        color: #d93025;
+        font-size: 80%;
+        margin-top: 3px;
+    }
+
+    .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+
+    .page-content--bge5 {
+        background: #e5e5e5;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#save').click(function (e) {
+            e.preventDefault();
+            var isAllValid = true;
+
+            if ($('#batch_name option:selected').val() == 0) {
+                isAllValid = false;
+                $('.batch_name .error').css('display', 'block');
+            }
+            else {
+                $('.batch_name .error').css('display', 'none');
+            }
+
+            if (!($('#Full_Name').val().trim() != '')) {
+                isAllValid = false;
+                $('.Full_Name .error').css('display', 'block');
+            }
+            else {
+                $('.Full_Name .error').css('display', 'none');
+            }
+
+            if (!($('#IDCardNo').val().trim() != '')) {
+                isAllValid = false;
+                $('.IDCardNo .error').css('display', 'block');
+            }
+            else {
+                $('.IDCardNo .error').css('display', 'none');
+            }
+
+            if (!($('#M_W_no').val().trim() != '')) {
+                isAllValid = false;
+                $('.M_W_no .error').css('display', 'block');
+            }
+            else {
+                $('.M_W_no .error').css('display', 'none');
+            }
+
+           
+
+
+            if (isAllValid) {
+                var data = {
+                    bh_id: $('#batch_name').val(),
+                    Full_Name: $('#Full_Name').val(),
+                    IDCardNo: $('#IDCardNo').val(),
+                    M_W_no: $('#M_W_no').val()
+                }
+                debugger
+                $.ajax({
+                    type: 'POST',
+                    url: '/OldstudentAdd/Index',
+                    data: {
+                        'bh_id': data.bh_id,
+                        'Full_Name': data.Full_Name,
+                        'IDCardNo': data.IDCardNo,
+                        'M_W_no': data.M_W_no,
+                    }
+                    ,
+                    success: function (resp) {
+                        if (resp.status) {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-danger').addClass('alert-success');
+                            $('#alt-msge').text("You successfully insert the record.");
+                            $('#batch_name').val(0);
+                            $('#Full_Name,	#IDCardNo,	#M_W_no').val('');
+                        }
+                        else {
+                            $('.message').delay(300).fadeIn();
+                            $('.message').delay(200).fadeOut();
+                            $('#message').removeClass('alert-success').addClass('alert-danger');
+                            $('#alt-msge').text("Something went wrong");
+                        }
+                    }
+                });
+            }
+        })
+    });
+</script>
