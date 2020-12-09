@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
             {
                 status = "W";
             }
-            else if (user_status.User_status == "A")
+            else if (user_status.Usr_stat_intview == "Y" && user_status.Usr_stat_Group == "Y" && user_status.Usr_stat_pur_books == "Y")
             {
                     status = "A";
             }

@@ -14,14 +14,21 @@ namespace WebApplication1.Controllers
         Database db = new Database();
         public ActionResult Index()
         {
-            AP_Menu menu = new AP_Menu();
-            var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
-            List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
+            if (Session["User_id"] == null)
+            {
+                return RedirectToAction("Index", "login");
+            }
+            else
+            {
+                AP_Menu menu = new AP_Menu();
+                var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
+                List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
-            List<Batch_header> Course_dropdown = db.get_Course_dropdown();
-            ViewBag.course = Course_dropdown;
+                List<Batch_header> Course_dropdown = db.get_Course_dropdown();
+                ViewBag.course = Course_dropdown;
 
-            return View(menudisplay);
+                return View(menudisplay);
+            }
         }
 
         [HttpPost]

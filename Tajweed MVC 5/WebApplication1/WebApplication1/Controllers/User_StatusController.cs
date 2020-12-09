@@ -72,17 +72,44 @@ namespace WebApplication1.Controllers
 
 
 
-        public ActionResult Approved(int id, int bh_id, string bh_name)
-        {
-            db.Approveduser(id);
-            return RedirectToAction("Index","User_status",new { id = bh_id , bh_name = bh_name });
-        }
+        //public ActionResult Approved(int id, int bh_id, string bh_name)
+        //{
+        //    db.Approveduser(id);
+        //    return RedirectToAction("Index","User_status",new { id = bh_id , bh_name = bh_name });
+        //}
 
         public ActionResult DeleteUser(int id, int bh_id, string bh_name)
         {
             db.DeleteUser(id);
 
             return RedirectToAction("Index", "User_status", new { id = bh_id, bh_name = bh_name });
+        }
+
+        public ActionResult Interview(int Userid,string Interview)
+        {
+            bool status = false;
+            db.User_interview(Userid, Interview);
+            status = true;
+
+            return new JsonResult { Data = new { status = status } };
+        }
+
+        public ActionResult Books(int Userid, string Books)
+        {
+            bool status = false;
+            db.Usr_stat_pur_books(Userid, Books);
+            status = true;
+
+            return new JsonResult { Data = new { status = status } };
+        }
+
+        public ActionResult Group(int Userid, string Group)
+        {
+            bool status = false;
+            db.Usr_stat_Group(Userid, Group);
+            status = true;
+
+            return new JsonResult { Data = new { status = status } };
         }
     }
 }

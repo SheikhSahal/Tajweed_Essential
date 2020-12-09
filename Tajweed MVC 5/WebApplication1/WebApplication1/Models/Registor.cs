@@ -31,5 +31,8 @@ namespace WebApplication1.Models
         public string Batch_name { get; set; }
         public string City { get; set; }
         public string Role_name { get; set; }
+        public string Usr_stat_intview { get; set; }
+        public string Usr_stat_pur_books { get; set; }
+        public string Usr_stat_Group { get; set; }
     }
 }

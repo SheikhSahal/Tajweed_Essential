@@ -18,7 +18,7 @@ namespace WebApplication1.DB
             List<AP_Menu> DBase = new List<AP_Menu>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select m.Menu_id ,m.Menu_name , m.Menu_parent_id ,m.Menu_URL from Login l , role r , user_privilege u , Menu m where l.Role_id = r.Role_id and r.Role_id = u.role_id and u.menu_id = m.Menu_id and l.User_id = @user_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select m.Menu_id ,m.Menu_name , m.Menu_parent_id ,m.Menu_URL from Login l , role r , user_privilege u , Menu m where l.Role_id = r.Role_id and r.Role_id = u.role_id and u.menu_id = m.Menu_id and l.User_id = @user_id order by Menu_id", conn))
                 {
                     conn.Open();
                     SqlParameter user = cmd.Parameters.AddWithValue("@user_id", user_id);
@@ -1046,7 +1046,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) Students from Login l  where l.User_flag = 'S' and l.User_status = 'A'", conn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) Students from Login l   where l.User_flag = 'S'  and ISNULL(l.Usr_stat_intview,'N') = 'Y'   and ISNULL(l.Usr_stat_pur_books,'N') = 'Y'   and ISNULL(l.Usr_stat_Group,'N') = 'Y'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1187,7 +1187,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id, CONCAT(l.User_name,' ',bh.BATCH_NAME)  Full_name ,  bh.bh_end_date from login l , Batch_header bh    where l.Bh_id = bh.BH_ID   and ISNULL(bh.Course_complete,'N') = 'Y' and l.User_status = 'A'   and l.User_flag = 'S'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id, CONCAT(l.User_name,' ',bh.BATCH_NAME)  Full_name ,  bh.bh_end_date  from login l , Batch_header bh     where l.Bh_id = bh.BH_ID   and  ISNULL(bh.Course_complete,'N') = 'Y'  and ISNULL(l.Usr_stat_intview,'N') = 'Y' and ISNULL(l.Usr_stat_pur_books,'N') = 'Y' and ISNULL(l.Usr_stat_Group,'N') = 'Y' and l.User_flag = 'S'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1431,7 +1431,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name  from Login l , Batch_header bh , Attendance_details ad where l.Bh_id = bh.BH_ID  and ad.Stud_id = l.User_id and ISNULL(bh.course_complete,'N') = 'N'  and l.user_flag = 'S' and l.User_status = 'A' and ad.Att_status not in('P','L') and bh.BH_ID = @bh_id order by ad.User_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name   from Login l , Batch_header bh , Attendance_details ad  where l.Bh_id = bh.BH_ID   and ad.Stud_id = l.User_id  and ISNULL(bh.course_complete,'N') = 'N'   and l.user_flag = 'S'  and ISNULL(l.Usr_stat_intview,'N') = 'Y'    and ISNULL(l.Usr_stat_pur_books,'N') = 'Y'    and ISNULL(l.Usr_stat_Group,'N') = 'Y' and ad.Att_status not in('P','L')  and bh.BH_ID = @bh_id order by l.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1461,7 +1461,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name  from Login l , Batch_header bh  where l.Bh_id = bh.BH_ID   and ISNULL(bh.course_complete,'N') = 'N'   and l.user_flag = 'S' and l.User_status = 'A'  and bh.BH_ID = @bh_id order by ad.User_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name   from Login l , Batch_header bh   where l.Bh_id = bh.BH_ID    and ISNULL(bh.course_complete,'N') = 'N'    and l.user_flag = 'S'  and ISNULL(l.Usr_stat_intview,'N') = 'Y'    and ISNULL(l.Usr_stat_pur_books,'N') = 'Y'    and ISNULL(l.Usr_stat_Group,'N') = 'Y' and bh.BH_ID = @bh_id order by l.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1726,7 +1726,7 @@ namespace WebApplication1.DB
             List<Registor> DBase = new List<Registor>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,l.User_name Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status  from Login l where l.Bh_id = @bh_id and l.User_status <> 'R' and  l.User_flag = 'S' order by l.user_status desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.Bh_id, l.User_id,l.User_name Full_name, l.recommended, l.User_contact,l.ID_Card, l.User_status,ISNULL(l.Usr_stat_intview,'N')Usr_stat_intview, ISNULL(l.Usr_stat_pur_books,'N')Usr_stat_pur_books, ISNULL(l.Usr_stat_Group,'N')Usr_stat_Group  from Login l where l.Bh_id = @bh_id and l.User_status <> 'R' and  l.User_flag = 'S' order by l.user_status desc", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1766,6 +1766,18 @@ namespace WebApplication1.DB
                         {
                             teach.User_status = reader["User_status"].ToString();
                         }
+                        if (reader["Usr_stat_intview"] != DBNull.Value)
+                        {
+                            teach.Usr_stat_intview = reader["Usr_stat_intview"].ToString();
+                        }
+                        if (reader["Usr_stat_pur_books"] != DBNull.Value)
+                        {
+                            teach.Usr_stat_pur_books = reader["Usr_stat_pur_books"].ToString();
+                        }
+                        if (reader["Usr_stat_Group"] != DBNull.Value)
+                        {
+                            teach.Usr_stat_Group = reader["Usr_stat_Group"].ToString();
+                        }
 
                         DBase.Add(teach);
 
@@ -1781,7 +1793,7 @@ namespace WebApplication1.DB
 
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.ID_Card, l.User_status from Login l where l.Bh_id = @bh_id and l.ID_Card = @IDcardno", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.ID_Card, l.User_status, ISNULL(l.Usr_stat_intview,'N') Usr_stat_intview, ISNULL(l.Usr_stat_pur_books,'N') Usr_stat_pur_books ,ISNULL(l.Usr_stat_Group,'N')Usr_stat_Group from Login l  where l.Bh_id = @bh_id and l.ID_Card = @IDcardno", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", bh_id);
@@ -1793,6 +1805,18 @@ namespace WebApplication1.DB
                         if (reader["User_status"] != DBNull.Value)
                         {
                             employee.User_status = Convert.ToString(reader["User_status"]);
+                        }
+                        if (reader["Usr_stat_intview"] != DBNull.Value)
+                        {
+                            employee.Usr_stat_intview = Convert.ToString(reader["Usr_stat_intview"]);
+                        }
+                        if (reader["Usr_stat_pur_books"] != DBNull.Value)
+                        {
+                            employee.Usr_stat_pur_books = Convert.ToString(reader["Usr_stat_pur_books"]);
+                        }
+                        if (reader["Usr_stat_Group"] != DBNull.Value)
+                        {
+                            employee.Usr_stat_Group = Convert.ToString(reader["Usr_stat_Group"]);
                         }
                     }
 
@@ -1900,7 +1924,7 @@ namespace WebApplication1.DB
             List<Registor> DBase = new List<Registor>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name,l.recommended,l.ID_card , bh.BATCH_NAME , l.City from login l , Batch_header bh where l.Bh_id = bh.BH_ID and l.User_flag = 'S'and l.User_status = 'A'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name,l.recommended,l.ID_card , bh.BATCH_NAME , l.City  from login l , Batch_header bh  where l.Bh_id = bh.BH_ID  and l.User_flag = 'S' and ISNULL(l.Usr_stat_intview,'N') = 'Y'  and ISNULL(l.Usr_stat_pur_books,'N') = 'Y'  and ISNULL(l.Usr_stat_Group,'N') = 'Y'", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -2191,6 +2215,48 @@ namespace WebApplication1.DB
             return DBase;
         }
 
+
+        public void User_interview(int Userid, string Interview)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update login set Usr_stat_intview = @Usr_stat_intview where User_id = @User_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Usr_stat_intview", Interview);
+                    cmd.Parameters.AddWithValue("@User_id", Userid);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Usr_stat_pur_books(int Userid, string books)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update login set Usr_stat_pur_books = @Usr_stat_pur_books where User_id = @User_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Usr_stat_pur_books", books);
+                    cmd.Parameters.AddWithValue("@User_id", Userid);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Usr_stat_Group(int Userid, string group)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update login set Usr_stat_Group = @Usr_stat_Group where User_id = @User_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Usr_stat_Group", group);
+                    cmd.Parameters.AddWithValue("@User_id", Userid);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         public void attuserupdate(int bh_id, string active, int stud_id)
         {
