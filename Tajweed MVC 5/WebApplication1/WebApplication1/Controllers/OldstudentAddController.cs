@@ -25,10 +25,10 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Registor r)
+        public ActionResult Index(int bh_id, string Full_Name, string IDCardNo, string M_W_no)
         {
             bool status = false;
-            db.oldstudentRegistration(r);
+            db.oldstudentRegistration(bh_id, Full_Name, IDCardNo, M_W_no);
             status = true;
 
             return new JsonResult { Data = new { status = status } };

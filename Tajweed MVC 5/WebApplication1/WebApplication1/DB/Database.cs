@@ -2378,17 +2378,17 @@ namespace WebApplication1.DB
         }
 
 
-        public void oldstudentRegistration(Registor r)
+        public void oldstudentRegistration(int bh_id, string Full_Name, string IDCardNo, string M_W_no)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
                 using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_contact,	ID_Card, BH_id ,User_flag) values (@User_name,	@User_contact,	@ID_Card,@bh_id,@User_flag)", conn))
                 {
                     conn.Open();
-                    cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
-                    cmd.Parameters.AddWithValue("@User_contact", r.M_W_no);
-                    cmd.Parameters.AddWithValue("@ID_Card", r.IDCardNo);
-                    cmd.Parameters.AddWithValue("@bh_id", r.bh_id);
+                    cmd.Parameters.AddWithValue("@User_name",Full_Name);
+                    cmd.Parameters.AddWithValue("@User_contact", M_W_no);
+                    cmd.Parameters.AddWithValue("@ID_Card", IDCardNo);
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
                     cmd.Parameters.AddWithValue("@User_flag", "S");
 
 
