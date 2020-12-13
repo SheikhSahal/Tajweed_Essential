@@ -9,30 +9,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- DATA TABLE -->
-                    <h3 class="title-5 m-b-35">Report</h3>
-                    <div class="table-data__tool">
-                        <div class="table-data__tool-left" style="visibility:hidden;">
-                            <div class="rs-select2--light rs-select2--md">
-                                <select class="js-select2" name="property">
-                                    <option selected="selected">All Properties</option>
-                                    <option value="">Option 1</option>
-                                    <option value="">Option 2</option>
-                                </select>
-                                <div class="dropDownSelect2"></div>
-                            </div>
-                            <div class="rs-select2--light rs-select2--sm">
-                                <select class="js-select2" name="time">
-                                    <option selected="selected">Today</option>
-                                    <option value="">3 Days</option>
-                                    <option value="">1 Week</option>
-                                </select>
-                                <div class="dropDownSelect2"></div>
-                            </div>
-                            <button class="au-btn-filter">
-                                <i class="zmdi zmdi-filter-list"></i>filters
-                            </button>
-                        </div>
-                    </div>
+                    <h3 class="title-5 m-b-35">Student Attendance Report</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="text-right">
@@ -43,7 +20,7 @@
                                     </a>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="row">
@@ -68,6 +45,7 @@
                             <div class="form-group Batch_Name">
                                 <label for="Batch_Name" class="form-control-label">Course Name:</label>
                                 <select class="form-control" id="Batch_Name">
+                                    <option value="0">-Course-</option>
                                     @foreach (var std in ViewBag.cordropdown as List<WebApplication1.Models.Batch_header>)
                                     {
                                         <option value="@std.Bh_id">@std.Batch_Name</option>
@@ -76,6 +54,23 @@
                                 </select>
                             </div>
                         </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group student">
+                                <label for="Batch_Name" class="form-control-label">Student:</label>
+                                <select class="form-control" id="student">
+                                    <option value="0">-Student-</option>
+                                    @foreach (var std in ViewBag.stddropdown as List<WebApplication1.Models.Student>)
+                                    {
+                                        <option value="@std.Stud_id">@std.Stud_name</option>
+                                    }
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Batch Name</span>
+                                </select>
+                            </div>
+                        </div>
+
+
 
                     </div>
 
@@ -97,42 +92,46 @@
 <script>
     $(document).ready(function () {
 
+        $('#Batch_Name').val(0);
+        $('#student').val(0);
+
         $('#save').click(function () {
             var isAllValid = true;
 
-            if (!($('#From_Date').val().trim() != '')) {
-                isAllValid = false;
-                $('.From_Date .error').css('display', 'block');
-            }
-            else {
-                $('.From_Date .error').css('display', 'none');
-            }
+            //if (!($('#From_Date').val().trim() != '')) {
+            //    isAllValid = false;
+            //    $('.From_Date .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.From_Date .error').css('display', 'none');
+            //}
 
-            if (!($('#To_Date').val().trim() != '')) {
-                isAllValid = false;
-                $('.To_Date .error').css('display', 'block');
-            }
-            else {
-                $('.To_Date .error').css('display', 'none');
-            }
+            //if (!($('#To_Date').val().trim() != '')) {
+            //    isAllValid = false;
+            //    $('.To_Date .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.To_Date .error').css('display', 'none');
+            //}
 
-            if (!($('#Batch_Name').val().trim() != '')) {
-                isAllValid = false;
-                $('.Batch_Name .error').css('display', 'block');
-            }
-            else {
-                $('.Batch_Name .error').css('display', 'none');
-            }
+            //if (!($('#Batch_Name').val().trim() != '')) {
+            //    isAllValid = false;
+            //    $('.Batch_Name .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.Batch_Name .error').css('display', 'none');
+            //}
 
             if(isAllValid)
             {
                 var from_date = $('#From_Date').val();
                 var to_date = $('#To_Date').val();
                 var Batch_Name = $('#Batch_Name').val();
-                window.open('/Report/Index?From_Date=' + from_date + '&To_Date=' + to_date + '&Batch_Name=' + Batch_Name + '', '_blank')
+                var Stud = $('#student').val();
+                window.open('/Report/Index?From_Date=' + from_date + '&To_Date=' + to_date + '&Batch_Name=' + Batch_Name + '&stud_id=' + Stud + '', '_blank')
             }
 
-         
+
             //if (isAllValid) {
             //    var data = {
 

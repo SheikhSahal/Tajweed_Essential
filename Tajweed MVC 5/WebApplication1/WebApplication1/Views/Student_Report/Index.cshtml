@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Report.cshtml";
+}
+<h2 class="text-center">Tajweed Essential</h2>
+<div class="card" id="reportscrn">
+    <div class="card-header text-center">
+        <strong class="card-title">
+            @*From Date : @ViewBag.From_date.ToString("dd-MM-yyyy") &nbsp;&nbsp; To Date: @ViewBag.to_date.ToString("dd-MM-yyyy") <br />*@
+            Student Report
+        </strong>
+        <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
+    </div>
+
+    <div class="card-body">
+        <div class="typo-headers">
+            <h4 class="pb-2 display-5">
+                Course Name : @ViewBag.course
+            </h4>
+
+
+
+        </div>
+        <div class="table table-responsive-data2">
+            <table class="table-responsive table table-data2">
+                <thead>
+                    <tr>
+                        <td><b>S/No.</b></td>
+                        <td><b>Student Name</b></td>
+                        <td><b>E-mail</b></td>
+                        <td><b>Contact</b></td>
+                        <td><b>Date of Birth</b></td>
+                        <td><b>ID Card</b></td>
+                        <td><b>Recommended</b></td>
+                        <td><b>Country</b></td>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int indx = 1; }
+                    @foreach (var s in ViewBag.reg as List<WebApplication1.Models.Registor>)
+                    {
+                        <tr>
+                            <td>@indx</td>
+                            <td>@s.Full_Name</td>
+                            <td>@s.email</td>
+                            <td>@s.contact</td>
+                            <td>@s.DOB</td>
+                            <td>@s.IDCardNo</td>
+                            <td>@s.recommended</td>
+                            <td>@s.Country</td>
+                        </tr>
+                        indx++;
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+</div>

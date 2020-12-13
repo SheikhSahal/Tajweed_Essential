@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- DATA TABLE -->
+                    <h3 class="title-5 m-b-35">Student Report</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                <div class="col-md-3" style="float:right;">
+                                    <a id="save" href="#" class="btn btn-lg btn-info btn-block">
+                                        <i class="fas fa-file-alt"></i>&nbsp;
+                                        <span>Run</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group Courses">
+                                <label for="Batch_Name" class="form-control-label">Courses:</label>
+                                <select class="form-control" id="Courses">
+                                    <option value="0">-Courses-</option>
+                                    @foreach (var std in ViewBag.bthdropdown as List<WebApplication1.Models.Batch_header>)
+                                    {
+                                        <option value="@std.Bh_id">@std.Batch_Name</option>
+                                    }
+                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Batch Name</span>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group Students">
+                                <label for="Batch_Name" class="form-control-label">Students:</label>
+                                <select class="form-control" id="Students">
+                                    <option value="0">-Students-</option>
+                                    <option value="A">Approved Students</option>
+                                    <option value="W">Waiting Students</option>
+                                    <option value="I">Interview</option>
+                                    <option value="B">Books</option>
+                                    <option value="G">Group</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- END DATA TABLE -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#Courses').val(0);
+        $('#Students').val(0);
+
+        $('#save').click(function () {
+            var isAllValid = true;
+
+            if(isAllValid)
+            {
+                var Course = $('#Courses').val();
+                var Student = $('#Students').val();
+                var CourseName = $('#Students option:selected').text();
+
+                window.open('/Student_Report/Index?Courses=' + Course + '&Student=' + Student + '&Coursesname=' + CourseName + '', '_blank')
+            }
+        })
+    });
+</script>
+
+

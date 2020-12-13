@@ -27,10 +27,11 @@
                                     <label>Course:</label>
                                     <select class="form-control" id="batch_name">
                                         <option value="0">--Course--</option>
-                                        @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
+                                        <option value="5">Old students</option>
+                                        @*@foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
                                         {
                                             <option value="@s.Bh_id">@s.Batch_Name</option>
-                                        }
+                                        }*@
                                     </select>
                                     <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
                                 </div>
@@ -102,6 +103,7 @@
 <script>
     $(document).ready(function () {
 
+        $('#batch_name').val(5);
         $('#save').click(function (e) {
             e.preventDefault();
             var isAllValid = true;
@@ -122,21 +124,21 @@
                 $('.Full_Name .error').css('display', 'none');
             }
 
-            if (!($('#IDCardNo').val().trim() != '')) {
-                isAllValid = false;
-                $('.IDCardNo .error').css('display', 'block');
-            }
-            else {
-                $('.IDCardNo .error').css('display', 'none');
-            }
+            //if (!($('#IDCardNo').val().trim() != '')) {
+            //    isAllValid = false;
+            //    $('.IDCardNo .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.IDCardNo .error').css('display', 'none');
+            //}
 
-            if (!($('#M_W_no').val().trim() != '')) {
-                isAllValid = false;
-                $('.M_W_no .error').css('display', 'block');
-            }
-            else {
-                $('.M_W_no .error').css('display', 'none');
-            }
+            //if (!($('#M_W_no').val().trim() != '')) {
+            //    isAllValid = false;
+            //    $('.M_W_no .error').css('display', 'block');
+            //}
+            //else {
+            //    $('.M_W_no .error').css('display', 'none');
+            //}
 
            
 

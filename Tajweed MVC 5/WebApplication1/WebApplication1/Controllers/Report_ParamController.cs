@@ -27,6 +27,10 @@ namespace WebApplication1.Controllers
                 List<Batch_header> bh = db.Course_DropDown();
                 ViewBag.cordropdown = bh;
 
+                List<Student> std = db.Approved_student_list();
+                ViewBag.stddropdown = std;
+
+
                 return View(menudisplay);
             }
         }

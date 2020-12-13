@@ -9,18 +9,34 @@
     <div class="card-header text-center">
         <strong class="card-title">
             From Date : @ViewBag.From_date.ToString("dd-MM-yyyy") &nbsp;&nbsp; To Date: @ViewBag.to_date.ToString("dd-MM-yyyy") <br />
-            Attendance Report
+            &nbsp;&nbsp;  Attendance Report
         </strong>
+        @*<button id="exclbtn" class="btn btn-success" style="float:right;">Excel</button>*@
+        <a href="@Url.Action("ExportToExcel", "Report", new { From_Date = ViewBag.From_date, To_Date= ViewBag.to_date, Batch_Name = ViewBag.Batch_Name, stud_id = ViewBag.stud_id })" class="btn btn-success" style="float:right;">Excel</a>
         <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
     </div>
 
     <div class="card-body">
         <div class="typo-headers">
-            <h4 class="pb-2 display-5">Course Name : @ViewBag.att_report_batch_name &nbsp;&nbsp;&nbsp; Course Expired: @ViewBag.att_report_ed_date.ToString("dd-MM-yyyy")</h4>
-            
+            <h4 class="pb-2 display-5">
+                Course Name : @ViewBag.att_report_batch_name
+                @*&nbsp;&nbsp;&nbsp; Course Expired:
+                    @if (ViewBag.att_report_ed_date == "ALL")
+                    {
+                        @ViewBag.att_report_ed_date
+                    }
+                    else
+                    {
+                        @ViewBag.att_report_ed_date.ToString("dd-MM-yyyy")
+
+                    }*@
+            </h4>
+
+
+
         </div>
         <div class="table-responsive table-responsive-data2">
-            <table class="table table-data2">
+            <table class="table table-data2 table2excel" id="att_tbl">
                 <thead>
                     <tr>
                         <td><b>S/No.</b></td>

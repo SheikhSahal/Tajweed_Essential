@@ -1014,7 +1014,7 @@ namespace WebApplication1.DB
             return DBase;
         }
 
-        public Attendance_data Get_report_header(int id)
+        public Attendance_data Get_report_header(string id)
         {
             Attendance_data employee = new Attendance_data();
 
@@ -1026,16 +1026,19 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@bh_id", id);
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    reader.Read();
+                    if (reader.Read())
+                    {
 
-                    if (reader["BATCH_NAME"] != DBNull.Value)
-                    {
-                        employee.Batch_name = Convert.ToString(reader["BATCH_NAME"]);
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            employee.Batch_name = Convert.ToString(reader["BATCH_NAME"]);
+                        }
+                        if (reader["bh_end_date"] != DBNull.Value)
+                        {
+                            employee.Bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        }
                     }
-                    if (reader["bh_end_date"] != DBNull.Value)
-                    {
-                        employee.Bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
-                    }
+
                 }
             }
             return employee;
@@ -1558,18 +1561,40 @@ namespace WebApplication1.DB
             return employee;
         }
 
-        public List<Att_Report> report_att_present(int id, DateTime fromdate, DateTime todate)
+        public List<Att_Report> report_att_present(string id, DateTime? fromdate, DateTime? todate)
         {
             List<Att_Report> DBase = new List<Att_Report>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select ad.Stud_id,a.created_date,l.User_name, ad.Att_status  from Attendance a , Attendance_details ad, login l where a.created_date between @Fromdate and @todate and a.Att_id = ad.Att_id and a.bh_id = @bh_id and l.User_id = ad.Stud_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE())) and l.User_id = ad.Stud_id and a.Att_id = ad.Att_id and ad.bh_id like ISNULL(@bh_id,'%')", conn))
                 {
                     conn.Open();
-                    cmd.Parameters.AddWithValue("@Fromdate", fromdate.Date);
-                    cmd.Parameters.AddWithValue("@todate", todate.Date);
-                    cmd.Parameters.AddWithValue("@bh_id", id);
+                    if (fromdate == null)
+                    {
+                        cmd.Parameters.AddWithValue("@Fromdate", DateTime.Now.Date);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Fromdate", fromdate);
+                    }
 
+                    if (todate == null)
+                    {
+                        cmd.Parameters.AddWithValue("@todate", DateTime.Now.Date);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@todate", todate);
+                    }
+                    if (id == null)
+                    {
+                        cmd.Parameters.AddWithValue("@bh_id", DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@bh_id", id);
+                    }
+            
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -1961,7 +1986,7 @@ namespace WebApplication1.DB
                             teach.City = reader["City"].ToString();
                         }
 
-                        
+
 
 
 
@@ -2053,7 +2078,7 @@ namespace WebApplication1.DB
                         {
                             employee.City = Convert.ToString(reader["City"]);
                         }
-                        
+
                     }
 
                 }
@@ -2071,7 +2096,7 @@ namespace WebApplication1.DB
 
                     conn.Open();
 
-                    cmd.Parameters.AddWithValue("@id",r.bh_id);
+                    cmd.Parameters.AddWithValue("@id", r.bh_id);
                     cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
                     cmd.Parameters.AddWithValue("@User_email", r.email);
                     cmd.Parameters.AddWithValue("@User_contact", r.User_contact);
@@ -2170,7 +2195,7 @@ namespace WebApplication1.DB
         }
 
 
-        public void Userupdate(int usrid,string active)
+        public void Userupdate(int usrid, string active)
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
@@ -2398,11 +2423,11 @@ namespace WebApplication1.DB
             using (SqlConnection conn = new SqlConnection(connectString))
             {
                 using (SqlCommand cmd = new SqlCommand("update List_header  set List_name = @List_name where List_id = @id", conn))
-                { 
+                {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@List_name", list_name);
                     cmd.Parameters.AddWithValue("@id", id);
-                    
+
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -2448,20 +2473,280 @@ namespace WebApplication1.DB
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_contact,	ID_Card, BH_id ,User_flag) values (@User_name,	@User_contact,	@ID_Card,@bh_id,@User_flag)", conn))
+                using (SqlCommand cmd = new SqlCommand("insert into login (User_name,	User_contact,	ID_Card, BH_id ,User_flag,Usr_stat_intview, Usr_stat_pur_books,Usr_stat_Group) values (@User_name,	@User_contact,	@ID_Card,@bh_id,@User_flag,@Usr_stat_intview, @Usr_stat_pur_books,@Usr_stat_Group)", conn))
                 {
                     conn.Open();
-                    cmd.Parameters.AddWithValue("@User_name",Full_Name);
+                    cmd.Parameters.AddWithValue("@User_name", Full_Name);
                     cmd.Parameters.AddWithValue("@User_contact", M_W_no);
                     cmd.Parameters.AddWithValue("@ID_Card", IDCardNo);
                     cmd.Parameters.AddWithValue("@bh_id", bh_id);
                     cmd.Parameters.AddWithValue("@User_flag", "S");
-
+                    cmd.Parameters.AddWithValue("@Usr_stat_intview", "Y");
+                    cmd.Parameters.AddWithValue("@Usr_stat_pur_books", "Y");
+                    cmd.Parameters.AddWithValue("@Usr_stat_Group", "Y");
+                    
+                    
 
                     cmd.ExecuteNonQuery();
                 }
             }
 
         }
+
+        public List<Student> Approved_student_list()
+        {
+            List<Student> DBase = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name from login l where l.User_flag = 'S' and ISNULL(l.Usr_stat_intview,'N') = 'Y' and ISNULL(l.Usr_stat_pur_books,'N') = 'Y' and ISNULL(l.Usr_stat_Group,'N') = 'Y'", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Student teach = new Student();
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.Stud_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            teach.Stud_name = reader["User_name"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public List<Att_Report> report_att_present(string id, DateTime? fromdate, DateTime? todate, string stud_id)
+        {
+            List<Att_Report> DBase = new List<Att_Report>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%')", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Fromdate", fromdate);
+                    cmd.Parameters.AddWithValue("@todate", todate);
+                    cmd.Parameters.AddWithValue("@Stud_id", stud_id);
+                    cmd.Parameters.AddWithValue("@bh_id", id);
+
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Att_Report emp = new Att_Report();
+
+                        if (reader["created_date"] != DBNull.Value)
+                        {
+                            emp.created_date = Convert.ToDateTime(reader["created_date"]);
+                        }
+                        if (reader["Stud_id"] != DBNull.Value)
+                        {
+                            emp.stud_id = Convert.ToInt32(reader["Stud_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            emp.Stud_name = Convert.ToString(reader["User_name"]);
+                        }
+
+                        if (reader["Att_status"] != DBNull.Value)
+                        {
+                            emp.att_status = Convert.ToString(reader["Att_status"]);
+                        }
+                        DBase.Add(emp);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<Batch_header> Report_Courses_list()
+        {
+            List<Batch_header> DBase = new List<Batch_header>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID, bh.BATCH_NAME from Batch_header bh", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Batch_header teach = new Batch_header();
+                        if (reader["BH_ID"] != DBNull.Value)
+                        {
+                            teach.Bh_id = Convert.ToInt32(reader["BH_ID"]);
+                        }
+                        if (reader["BATCH_NAME"] != DBNull.Value)
+                        {
+                            teach.Batch_Name = reader["BATCH_NAME"].ToString();
+                        }
+                        DBase.Add(teach);
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public List<Registor> Student_Report(string intview, string books, string group, string bh_id)
+        {
+            List<Registor> DBase = new List<Registor>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select * from login l where ISNULL(l.Usr_stat_intview,'N') like @Usr_stat_intview and ISNULL(l.Usr_stat_pur_books,'N') like @Usr_stat_pur_books and ISNULL(l.Usr_stat_Group,'N') like @Usr_stat_Group and l.User_flag = 'S' and l.Bh_id like @Bh_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@Usr_stat_intview", intview);
+                    cmd.Parameters.AddWithValue("@Usr_stat_pur_books", books);
+                    cmd.Parameters.AddWithValue("@Usr_stat_Group", group);
+                    cmd.Parameters.AddWithValue("@Bh_id", bh_id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Registor teach = new Registor();
+                        if (reader["User_id"] != DBNull.Value)
+                        {
+                            teach.User_id = Convert.ToInt32(reader["User_id"]);
+                        }
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            teach.Full_Name = reader["User_name"].ToString();
+                        }
+
+                        if (reader["User_email"] != DBNull.Value)
+                        {
+                            teach.email = reader["User_email"].ToString();
+                        }
+
+                        if (reader["User_contact"] != DBNull.Value)
+                        {
+                            teach.contact = Convert.ToString(reader["User_contact"]);
+                        }
+
+                        if (reader["DOB"] != DBNull.Value)
+                        {
+                            teach.DOB = Convert.ToDateTime(reader["DOB"]);
+                        }
+
+                        if (reader["Martial_status"] != DBNull.Value)
+                        {
+                            teach.Marital_Status = Convert.ToString(reader["Martial_status"]);
+                        }
+
+                        if (reader["ID_Card"] != DBNull.Value)
+                        {
+                            teach.IDCardNo = Convert.ToString(reader["ID_Card"]);
+                        }
+
+                        if (reader["recommended"] != DBNull.Value)
+                        {
+                            teach.recommended = Convert.ToString(reader["recommended"]);
+                        }
+
+                        if (reader["Country"] != DBNull.Value)
+                        {
+                            teach.Country = Convert.ToString(reader["Country"]);
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public List<Helper_mst> Report_Helper_list()
+        {
+            List<Helper_mst> DBase = new List<Helper_mst>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.Helper_name from hlp_header hh", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_mst teach = new Helper_mst();
+                        if (reader["hlp_id"] != DBNull.Value)
+                        {
+                            teach.Hpl_id = Convert.ToInt32(reader["hlp_id"]);
+                        }
+                        if (reader["Helper_name"] != DBNull.Value)
+                        {
+                            teach.Helper_name = reader["Helper_name"].ToString();
+                        }
+                        DBase.Add(teach);
+                    }
+                }
+            }
+            return DBase;
+        }
+
+        public List<Helper_dtl> Report_Helper_details(string hlp_id, string bh_id)
+        {
+            List<Helper_dtl> DBase = new List<Helper_dtl>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select hd.stud_id,  (select l.User_Name from login l where l.User_id = hd.stud_id) stud_name,  (select l.User_contact from login l where l.User_id = hd.stud_id) stud_contact,  hd.hlp_stud_id, (select l.User_Name from login l where l.User_id = hd.hlp_stud_id) Helper_name, (select l.User_contact from login l where l.User_id = hd.hlp_stud_id) Helper_contact from hlp_header hh, hlp_details hd where hh.hlp_id = hd.hpl_id  and hh.hlp_id like ISNULL(@hlp_id,'%') and hh.bh_id like ISNULL(@bh_id,'%')", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_id", hlp_id);
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_dtl teach = new Helper_dtl();
+                        if (reader["stud_id"] != DBNull.Value)
+                        {
+                            teach.stud_id = Convert.ToInt32(reader["stud_id"]);
+                        }
+                        if (reader["stud_name"] != DBNull.Value)
+                        {
+                            teach.stud_name = reader["stud_name"].ToString();
+                        }
+
+                        if (reader["stud_contact"] != DBNull.Value)
+                        {
+                            teach.stud_contact = reader["stud_contact"].ToString();
+                        }
+
+                        if (reader["hlp_stud_id"] != DBNull.Value)
+                        {
+                            teach.hlp_stud_id = Convert.ToInt32(reader["hlp_stud_id"]);
+                        }
+
+                        if (reader["Helper_name"] != DBNull.Value)
+                        {
+                            teach.Hlper_name = Convert.ToString(reader["Helper_name"]);
+                        }
+
+                        if (reader["Helper_contact"] != DBNull.Value)
+                        {
+                            teach.hlper_contact = Convert.ToString(reader["Helper_contact"]);
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
     }
+
+
+
 }

@@ -8,8 +8,17 @@ namespace WebApplication1.Models
     public class Helper_dtl
     {
         public int Hpl_id { get; set; }
+
         public int stud_id { get; set; }
-        public int hlp_stud_id { get; set; }
+
         public string stud_name { get; set; }
+
+        public string stud_contact { get; set; }
+
+        public int hlp_stud_id { get; set; }
+
+        public string Hlper_name { get; set; }
+
+        public string hlper_contact { get; set; }
     }
 }

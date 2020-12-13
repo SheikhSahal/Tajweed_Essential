@@ -20,15 +20,15 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="form-group batch_name">
-                <select class="form-control" id="batch_name">
-                    <option value="0">--Course--</option>
-                    @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
-                    {
-                        <option value="@s.Bh_id">@s.Batch_Name</option>
-                    }
-                </select>
-                <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
-            </div>
+                    <select class="form-control" id="batch_name">
+                        <option value="0">--Course--</option>
+                        @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
+                        {
+                            <option value="@s.Bh_id">@s.Batch_Name</option>
+                        }
+                    </select>
+                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
+                </div>
 
                 @*<input type="text" class="form-control" />*@
             </div>
@@ -58,6 +58,16 @@
                 </div>
                 <div class="card-body">
                     <div class="mx-auto d-block">
+
+                        @*<div class="relative">
+                                <img src="https://wallpapercave.com/wp/wp2646303.jpg" />
+                                <div class="absolute">
+                                    <div class="location text-sm-center">
+
+
+                                    </div>
+                                </div>
+                            </div>*@
                         <div class="location text-sm-center">
                             @s.Course_desc
                         </div>
@@ -99,6 +109,22 @@
         position: fixed;
         z-index: 1;
         left: 40%;
+    }
+
+    div.relative {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border: 3px solid #73AD21;
+        /*height:300px;*/
+    }
+
+    div.absolute {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        border: 3px solid #73AD21;
     }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -147,7 +173,7 @@
                             $('.message').delay(10000).fadeOut();
                             $('#message').removeClass('alert-danger alert-warning').addClass('alert-success');
                             $('#alt-msge').text("Your Request is Approved");
-                            
+
                         }
                         else {
                             $('.message').delay(100).fadeIn();
@@ -159,7 +185,7 @@
 
                 });
             }
-            
+
         });
     });
 </script>
