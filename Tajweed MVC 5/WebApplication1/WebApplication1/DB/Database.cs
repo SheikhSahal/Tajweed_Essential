@@ -1434,7 +1434,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name   from Login l , Batch_header bh , Attendance_details ad  where l.Bh_id = bh.BH_ID   and ad.Stud_id = l.User_id  and ISNULL(bh.course_complete,'N') = 'N'   and l.user_flag = 'S'  and ISNULL(l.Usr_stat_intview,'N') = 'Y'    and ISNULL(l.Usr_stat_pur_books,'N') = 'Y'    and ISNULL(l.Usr_stat_Group,'N') = 'Y' and ad.Att_status not in('P','L')  and bh.BH_ID = @bh_id order by l.User_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name User_name  from Login l , Batch_header bh , Attendance_details ad  , Attendance a where l.Bh_id = bh.BH_ID    and ad.att_id = a.att_id and ad.Stud_id = l.User_id   and ISNULL(bh.course_complete,'N') = 'N'    and l.user_flag = 'S'   and ISNULL(l.Usr_stat_intview,'N') = 'Y'     and ISNULL(l.Usr_stat_pur_books,'N') = 'Y'     and ISNULL(l.Usr_stat_Group,'N') = 'Y'  and ad.Att_status not in('P','L')   and a.created_date = CONVERT (date, SYSDATETIME())  and bh.BH_ID = @bh_id order by l.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
