@@ -35,5 +35,9 @@ namespace WebApplication1.Models
         public string Usr_stat_pur_books { get; set; }
         public string contact { get; set; }
         public string Usr_stat_Group { get; set; }
+        public string Days { get; set; }
+        public string Present { get; set; }
+        public string Abcent { get; set; }
+        public string Leave { get; set; }
     }
 }

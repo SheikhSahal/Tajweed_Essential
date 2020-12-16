@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Report.cshtml";
+}
+
+<h2 class="text-center">Tajweed Essential</h2>
+<div class="card" id="reportscrn">
+    <div class="card-header text-center">
+        <strong class="card-title">
+            From Date : @ViewBag.From_date &nbsp;&nbsp; To Date: @ViewBag.to_date <br />
+            Attendance Report Month Wise
+        </strong>
+        <a href="@Url.Action("ExportToExcel", "MonthReport_Report", new { From_Date = ViewBag.From_date, To_Date= ViewBag.to_date, Batch_id = ViewBag.bh_id,batch =ViewBag.courses_nm})" class="btn btn-success" style="float:right;">Excel</a>
+        @*<button id="Exlbtn" class="btn btn-success" style="float:right;">Excel</button>*@
+        <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
+    </div>
+
+    <div class="card-body">
+        <div class="typo-headers">
+            <h4 class="pb-2 display-5">
+                Course Name : @ViewBag.courses_nm
+                @*&nbsp;&nbsp;&nbsp; Course Expired:
+                    @if (ViewBag.att_report_ed_date == "ALL")
+                    {
+                        @ViewBag.att_report_ed_date
+                    }
+                    else
+                    {
+                        @ViewBag.att_report_ed_date.ToString("dd-MM-yyyy")
+
+                    }*@
+            </h4>
+
+
+
+        </div>
+        <div class="table-responsive table-responsive-data2">
+            <table class="table table-data2">
+                <thead>
+                    <tr>
+                        <td><b>S/No.</b></td>
+                        <td><b>Student ID</b></td>
+                        <td><b>Student Name</b></td>
+                        <td><b>Days</b></td>
+                        <td><b>Present</b></td>
+                        <td><b>Abcent</b></td>
+                        <td><b>Leave</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int indx = 1; }
+                    @foreach (var s in ViewBag.Month as List<WebApplication1.Models.Registor>)
+                    {
+                        <tr>
+                            <td>@indx</td>
+                            <td>@s.User_id</td>
+                            <td>@s.Full_Name</td>
+                            <td>@s.Days</td>
+                            <td>@s.Present</td>
+                            <td>@s.Abcent</td>
+                            <td>@s.Leave</td>
+                        </tr>
+                        indx++;
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+</div>

@@ -129,6 +129,7 @@
     <Content Include="Content\Excel\jquery.table2excel.js" />
     <Content Include="Content\Excel\jquery.table2excel.min.js" />
     <Content Include="Content\Logo\logo.jpeg" />
+    <Content Include="Content\Logo\main-bg.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -164,6 +165,8 @@
     <Compile Include="Controllers\List_HeaderController.cs" />
     <Compile Include="Controllers\List_Header_listController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MonthReport_ParamController.cs" />
+    <Compile Include="Controllers\MonthReport_ReportController.cs" />
     <Compile Include="Controllers\New_AttendanceController.cs" />
     <Compile Include="Controllers\New_CourseController.cs" />
     <Compile Include="Controllers\New_HelperController.cs" />
@@ -248,6 +251,9 @@
     <Content Include="Views\Student_Report\Index.cshtml" />
     <Content Include="Views\Helper_Report\Index.cshtml" />
     <Content Include="Views\Helper_Param\Index.cshtml" />
+    <Content Include="Views\MonthReport_Param\Index.cshtml" />
+    <Content Include="Views\MonthReport_Report\Index.cshtml" />
+    <Content Include="Views\Shared\_Main_Page.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

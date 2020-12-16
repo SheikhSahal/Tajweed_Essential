@@ -78,10 +78,6 @@ namespace WebApplication1.Controllers
             ws.Cells["A3"].Value = "Course:";
             ws.Cells["B3"].Value = batch;
 
-
-
-
-
             ws.Cells["A6"].Value = "S/No.";
             ws.Cells["B6"].Value = "Student ID";
             ws.Cells["C6"].Value = "Attendance Date";

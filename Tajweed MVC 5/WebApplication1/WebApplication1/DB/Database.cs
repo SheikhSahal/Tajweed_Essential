@@ -2745,6 +2745,65 @@ namespace WebApplication1.DB
             }
             return DBase;
         }
+
+
+        public List<Registor> Month_wise_report(string bh_id, string Fromdate, string Todate)
+        {
+            List<Registor> DBase = new List<Registor>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("MonthwiseReport", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@From_date", Fromdate);
+                    cmd.Parameters.AddWithValue("@To_date", Todate);
+                    cmd.Parameters.AddWithValue("@bh_id", bh_id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Registor teach = new Registor();
+
+                        if (reader["user_id"] != DBNull.Value)
+                        {
+                            teach.User_id = Convert.ToInt32(reader["user_id"]);
+                        }
+
+                        if (reader["User_name"] != DBNull.Value)
+                        {
+                            teach.Full_Name = reader["User_name"].ToString();
+                        }
+
+                        if (reader["Days"] != DBNull.Value)
+                        {
+                            teach.Days = reader["Days"].ToString();
+                        }
+
+                        if (reader["Present"] != DBNull.Value)
+                        {
+                            teach.Present = reader["Present"].ToString();
+                        }
+                        if (reader["Abcent"] != DBNull.Value)
+                        {
+                            teach.Abcent = reader["Abcent"].ToString();
+                        }
+                        if (reader["Leave"] != DBNull.Value)
+                        {
+                            teach.Leave = reader["Leave"].ToString();
+                        }
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+
     }
 
 

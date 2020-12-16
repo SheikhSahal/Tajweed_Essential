@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Report.cshtml";
+    Layout = "~/Views/Shared/_Main_Page.cshtml";
 }
 
 <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
@@ -24,7 +24,7 @@
                         <option value="0">--Course--</option>
                         @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
                         {
-                            <option value="@s.Bh_id">@s.Batch_Name</option>
+                        <option value="@s.Bh_id">@s.Batch_Name</option>
                         }
                     </select>
                     <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Course Name</span>
@@ -48,6 +48,49 @@
     </div>
 </div>
 <br />
+@*<div class="row">
+    <div class="col-md-4">
+        <div class="header">
+            <b>Hellow world</b>
+        </div>
+        <div class="caption">
+            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg" class="img-full-width" alt="" />
+            <h3>
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+            </h3>
+            
+        </div>
+        <div class="bottom">
+            <b>Hellow world</b>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="header">
+            <b>Hellow world</b>
+        </div>
+        <div class="caption">
+            <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg" class="img-full-width alt="" />
+            <h3>
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+                My Caption Goes Here My Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes HereMy Caption Goes Here
+            </h3>
+
+        </div>
+        <div class="bottom">
+            <b>Hellow world</b>
+        </div>
+    </div>
+
+</div>*@
+
+
 <div class="row">
     @foreach (var s in ViewBag.courselist as List<WebApplication1.Models.New_Course>)
     {
@@ -58,7 +101,6 @@
                 </div>
                 <div class="card-body">
                     <div class="mx-auto d-block">
-                        @*<img src="https://wallpapercave.com/wp/wp2646303.jpg" />*@
                         <div class="location text-sm-center">
                             @s.Course_desc
                         </div>
@@ -87,6 +129,8 @@
         </div>
                         }
 </div>
+
+
 <style>
     span.error {
         display: none;
@@ -102,21 +146,63 @@
         left: 40%;
     }
 
-    div.relative {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        border: 3px solid #73AD21;
-        /*height:300px;*/
-    }
+   
+     .img-full-width {
+            width: 100%;
+            height: auto;
+        }
 
-    div.absolute {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        border: 3px solid #73AD21;
-    }
+        .caption {
+            position: relative;
+            margin-bottom: 2%;
+        }
+
+        .caption h3 {
+            margin: 0;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            /* background: rgba(41, 82, 123, .8); */
+            font-size: 15px;
+        }
+
+
+        .caption-2 {
+            position: relative;
+            margin-bottom: 2%;
+        }
+
+        .caption-2 h3 {
+            margin: -1px 0 0 0;
+            color: #fff;
+            padding: 10px;
+            /* background: rgba(41, 82, 123, 1); */
+            font-size: 15px;
+        }
+
+        @@media (min-width:500px) {
+            .caption-2 h3 {
+                margin: 0;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(41, 82, 123, .8);
+            }
+        }
+        .header{
+            /*border: 1px solid red;*/
+            padding: 10px;
+            background-color:#f7f7f7;
+        }
+        .bottom{
+            margin-top:-10px;
+            padding: 10px;
+            background-color:#f7f7f7;
+        }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
