@@ -21,5 +21,8 @@ namespace WebApplication1.Models
         public int Teacher_5 { get; set; }
         public string Course_desc { get; set; }
         public string Teach_name { get; set; }
+
+        public HttpPostedFileBase file { get; set; }
+        public string img { get; set; }
     }
 }

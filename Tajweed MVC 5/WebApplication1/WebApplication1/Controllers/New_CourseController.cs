@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
 using WebApplication1.DB;
+using System.IO;
 
 namespace WebApplication1.Controllers
 {
@@ -32,16 +33,46 @@ namespace WebApplication1.Controllers
             }
            
         }
+
         [HttpPost]
         public ActionResult Index(New_Course nc)
         {
 
-            bool status = false;
+            string status = "";
             List<Teacher> tdp = db.Teacher_DropDown();
             ViewBag.Teachdropdown = tdp;
 
-            db.InsertCourse(nc);
-            status = true;
+            var path = "";
+            var files = nc.file;
+
+            if (nc.file != null)
+            {
+                if (files.ContentLength > 0)
+                {
+                    if (Path.GetExtension(files.FileName).ToLower() == ".jpg")
+                    {
+                        path = Path.Combine(Server.MapPath("~/Content/Images"), files.FileName);
+                        files.SaveAs(path);
+                        nc.img = "~/Content/Images/" + files.FileName;
+                        status = "Done";
+                    }
+                    else
+                    {
+                        status = "Format";
+                    }
+                }
+            }
+            else
+            {
+                nc.img = "N";
+            }
+
+            if (status == "Done")
+            {
+                db.InsertCourse(nc);
+            }
+
+
             return new JsonResult { Data = new { status = status } };
         }
     }

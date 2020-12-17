@@ -1133,7 +1133,7 @@ namespace WebApplication1.DB
         {
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("insert into Batch_header(BATCH_NAME,	Teacher_1,	CREATED_BY,	CREATED_DATE,	Delete_flag,	bh_end_date,	bh_start_date,	Teacher_2,	Teacher_3,	Teacher_4,	Teacher_5,	Course_desc) values (@BATCH_NAME,	@Teacher_1,	@CREATED_BY,	@CREATED_DATE,	@Delete_flag,	@bh_end_date,	@bh_start_date,	@Teacher_2,	@Teacher_3,	@Teacher_4,	@Teacher_5,	@Course_desc)", conn))
+                using (SqlCommand cmd = new SqlCommand("insert into Batch_header(BATCH_NAME,	Teacher_1,	CREATED_BY,	CREATED_DATE,	Delete_flag,	bh_end_date,	bh_start_date,	Teacher_2,	Teacher_3,	Teacher_4,	Teacher_5,	Course_desc,BG_Img) values (@BATCH_NAME,	@Teacher_1,	@CREATED_BY,	@CREATED_DATE,	@Delete_flag,	@bh_end_date,	@bh_start_date,	@Teacher_2,	@Teacher_3,	@Teacher_4,	@Teacher_5,	@Course_desc,@BG_Img)", conn))
                 {
 
                     conn.Open();
@@ -1150,6 +1150,8 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@Teacher_4", nc.Teacher_4);
                     cmd.Parameters.AddWithValue("@Teacher_5", nc.Teacher_5);
                     cmd.Parameters.AddWithValue("@Course_desc", nc.Course_desc);
+                    cmd.Parameters.AddWithValue("@BG_Img", nc.img);
+
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -1161,7 +1163,7 @@ namespace WebApplication1.DB
             List<New_Course> DBase = new List<New_Course>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,Upper( bh.BATCH_NAME)BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and bh.Course_visible <> 'Y' and ISNULL(bh.Delete_flag,'N') <> 'Y' order by bh.bh_id desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select bh.BH_ID,Upper( bh.BATCH_NAME)BATCH_NAME,bh.course_desc,t.Teach_name, bh.bh_start_date,bh.bh_end_date,case when ISNULL(BG_Img,'N') = 'N' then '~/Content/Images/defeault.jpg' else BG_Img end BG_Img from batch_header bh, Teacher t where bh.TEACHER_1 = t.Teach_id and bh.Course_visible <> 'Y' and ISNULL(bh.Delete_flag,'N') <> 'Y' order by bh.bh_id desc", conn))
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1176,6 +1178,8 @@ namespace WebApplication1.DB
                         teach.Teach_name = reader["Teach_name"].ToString();
                         teach.bh_start_date = Convert.ToDateTime(reader["bh_start_date"]);
                         teach.bh_end_date = Convert.ToDateTime(reader["bh_end_date"]);
+                        teach.img = Convert.ToString(reader["BG_Img"]);
+                        
 
 
                         DBase.Add(teach);

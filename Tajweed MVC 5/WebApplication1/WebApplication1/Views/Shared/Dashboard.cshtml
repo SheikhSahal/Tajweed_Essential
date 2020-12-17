@@ -166,17 +166,17 @@ foreach (var s in menuList)
         <li class="@(s.List.Any()?"dropdown":"") active has-sub">
             @if (s.List.Any())
             {
-                <a class="js-arrow" href="#">
+                <a class="js-arrow" href="#" style="color:#8dcb51 !important">
                     @s.Menu_name <span class="arrow"><i class="fas fa-angle-down"></i></span>
                 </a>
 
-                <ul class="list-unstyled navbar__sub-list js-sub-list">
+                <ul class="list-unstyled navbar__sub-list js-sub-list" style="color:#fe620a !important">
                     @ShowMenu(s.List)
                 </ul>
             }
             else
             {
-                <a href="http://202.69.45.69/@s.Menu_URL">
+                <a href="http://202.69.45.69/@s.Menu_URL" style="color:#ef136c !important">
                     @s.Menu_name
                 </a>
             }

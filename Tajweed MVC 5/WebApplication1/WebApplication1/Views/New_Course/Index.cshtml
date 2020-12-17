@@ -13,6 +13,14 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+
+        <div id="error" class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+            <span class="badge badge-pill badge-danger">Danger</span>
+            File Format is not support. Please Use .jpg Format.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-3">
@@ -22,7 +30,7 @@
                     <div class="card">
                         <div class="card-header">Create Course</div>
                         <div class="card-body">
-                            <form>
+                            <form action="/New_Course/index" method="post" enctype="multipart/form-data">
                                 <div class="form-group batch_name">
                                     <label for="batch_name" class="control-label mb-1">Course Name:</label>
                                     <input id="batch_name" name="batch_name" type="text" class="form-control" aria-required="true" aria-invalid="false">
@@ -101,6 +109,16 @@
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a End Date</span>
                                         </div>
                                     </div>
+
+
+                                    <div class="col-6">
+                                        <div class="form-group End_date">
+                                            <label for="End_date" class="control-label mb-1">Back-Ground Image:</label>
+                                            <input type="file" id="file" class="" name="files" value="Browse" />
+                                        </div>
+                                    </div>
+
+
                                 </div>
                                 <div>
                                     <button id="save" class="btn btn-lg btn-info btn-block">
@@ -131,6 +149,13 @@
     }
 
     .message {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 40%;
+    }
+
+    #error {
         display: none;
         position: fixed;
         z-index: 1;
@@ -181,35 +206,48 @@
             else {
                 $('.End_date .error').css('display', 'none');
             }
+
+            var fileData = new FormData();
+            var files = $("#file").get(0).files;
+
             if (isAllValid) {
-                var data = {
-                    batch_name: $('#batch_name').val(),
-                    Course_desc: $('#Course_desc').val(),
-                    Teacher_1: $('#Teacher_1').val(),
-                    Teacher_2: $('#Teacher_2').val(),
-                    Teacher_3: $('#Teacher_3').val(),
-                    Teacher_4: $('#Teacher_4').val(),
-                    bh_start_date: $('#Start_date').val(),
-                    bh_end_date: $('#End_date').val(),
+
+
+                fileData.append("batch_name", $('#batch_name').val().trim());
+                fileData.append("Course_desc", $('#Course_desc').val().trim());
+                fileData.append("Teacher_1", $('#Teacher_1').val().trim());
+                fileData.append("Teacher_2", $('#Teacher_2').val().trim());
+                fileData.append("Teacher_3", $('#Teacher_3').val().trim());
+                fileData.append("Teacher_4", $('#Teacher_4').val().trim());
+                fileData.append("bh_start_date", $('#Start_date').val().trim());
+                fileData.append("bh_end_date", $('#End_date').val().trim());
+
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append("file", files[i]);
                 }
+
+
+                //var data = {
+                //    batch_name: $('#batch_name').val(),
+                //    Course_desc: $('#Course_desc').val(),
+                //    Teacher_1: $('#Teacher_1').val(),
+                //    Teacher_2: $('#Teacher_2').val(),
+                //    Teacher_3: $('#Teacher_3').val(),
+                //    Teacher_4: $('#Teacher_4').val(),
+                //    bh_start_date: $('#Start_date').val(),
+                //    bh_end_date: $('#End_date').val(),
+                //}
                 debugger
 
                 $.ajax({
-                    type: 'POST',
                     url: '/New_Course/Index',
-                    data: {
-                        'batch_name': data.batch_name,
-                        'Course_desc': data.Course_desc,
-                        'Teacher_1': data.Teacher_1,
-                        'Teacher_2': data.Teacher_2,
-                        'Teacher_3': data.Teacher_3,
-                        'Teacher_4': data.Teacher_4,
-                        'bh_start_date': data.bh_start_date,
-                        'bh_end_date': data.bh_end_date,
-                    }
-                    ,
+                    type: "POST",
+                    data: fileData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
                     success: function (resp) {
-                        if (resp.status) {
+                        if (resp.status == "Done") {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
                             setTimeout(function () {
@@ -217,6 +255,11 @@
                             }, 3000);
                             //$('#batch_name,#Course_desc,#Start_date,#End_date').val('');
                             //$('#Teacher_1,#Teacher_2,#Teacher_3,#Teacher_4,#Teacher_5').val(0);
+                        }
+                        else if (resp.status == "Format")
+                        {
+                            $('#error').delay(300).fadeIn();
+                            $('#error').delay(200).fadeOut();
                         }
                         else {
                             alert('error');
