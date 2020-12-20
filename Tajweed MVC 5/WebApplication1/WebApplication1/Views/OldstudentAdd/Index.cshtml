@@ -27,7 +27,7 @@
                                     <label>Course:</label>
                                     <select class="form-control" id="batch_name">
                                         <option value="0">--Course--</option>
-                                        <option value="5">Old students</option>
+                                        <option value="1">Old students</option>
                                         @*@foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
                                         {
                                             <option value="@s.Bh_id">@s.Batch_Name</option>
@@ -103,7 +103,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#batch_name').val(5);
+        $('#batch_name').val(1);
         $('#save').click(function (e) {
             e.preventDefault();
             var isAllValid = true;

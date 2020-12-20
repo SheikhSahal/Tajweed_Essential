@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Main_Page.cshtml";
+    Layout = "~/Views/Shared/_Main_page.cshtml";
 }
 
 <div id="message" class="sufee-alert alert with-close alert-success alert-dismissible fade show message">
@@ -12,7 +12,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="row" style="margin-left:3px;">
+<div class="row header-font" style="margin-left:3px;">
     Check your admission form request status.
 </div>
 <div class="row">
@@ -49,29 +49,29 @@
 </div>
 <br />
 <div class="row">
-    
+
 
     @foreach (var s in ViewBag.courselist as List<WebApplication1.Models.New_Course>)
     {
         <div class="col-md-4">
-            <div class="header">
+            <div class="header header-font">
                 <b>@s.BATCH_NAME</b>
             </div>
             <div class="caption">
-                <img src="@Url.Content(@s.img)" class="img-full-width" alt="" />
-                <h3>
+                <img src="@Url.Content(@s.img)" class="img-full-width" alt="" data-toggle="modal" data-target="#myModal" />
+                @*<h3>
                     @s.Course_desc
-                </h3>
+                </h3>*@
 
             </div>
 
-            <div class="bottom">
+            <div class="bottom header-font">
                 @{ var current_date = DateTime.Now.Date;}
                 @if (s.bh_end_date.Date >= current_date)
                 {
                     <p>
                         Last Date :   @s.bh_end_date.ToString("dd-MM-yyyy")
-                            <button class="btn btn-info" onclick="location.href='@Url.Action("Index", "Registor", new { id = s.bh_id , end_date = s.bh_end_date })'">Registor</button>
+                        <button class="btn btn-info" onclick="location.href='@Url.Action("Index", "Registor", new { id = s.bh_id , end_date = s.bh_end_date })'">Registor</button>
                     </p>
                 }
                 else
@@ -83,9 +83,10 @@
             </div>
         </div>
 
+       
 
-    }
-    
+
+                    }
 
 </div>
 
@@ -138,6 +139,11 @@
         margin-top: 3px;
     }
 
+    .wht-color {
+        color: white;
+    }
+  
+
     .message {
         display: none;
         position: fixed;
@@ -160,7 +166,7 @@
             margin: 0;
             color: #000;
             position: absolute;
-            top:0;
+            top: 0;
             bottom: 0;
             left: 0;
             right: 0;
@@ -192,30 +198,65 @@
             right: 0;
             background: rgba(41, 82, 123, .8);
         }
-        
+
         .header {
-        margin-top:10px;
-        padding: 10px;
-        background-color: #f7f7f7;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ff9801;
+            color: black;
+        }
+
+        .bottom {
+            margin-top: -10px;
+            padding: 10px;
+            background-color: #ff9801;
+            margin-bottom: 10px;
+            color: black;
+        }
+        
     }
-         .bottom {
-        margin-top: -10px;
-        padding: 10px;
-        background-color: #f7f7f7;
-        margin-bottom:10px;
-    }
+
+    @@media screen and (max-width: 600px) {
+         .caption-2 h3 {
+            margin: 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(41, 82, 123, .8);
+        }
+
+        .header {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ff9801;
+            color: black;
+        }
+
+        .bottom {
+            margin-top: -10px;
+            padding: 10px;
+            background-color: #ff9801;
+            margin-bottom: 10px;
+            color: black;
+        }
     }
 
     .header {
         /*border: 1px solid red;*/
         padding: 10px;
-        background-color: #f7f7f7;
+        background-color: #addbe7;
+        color: black;
     }
 
     .bottom {
         margin-top: -10px;
         padding: 10px;
-        background-color: #f7f7f7;
+        background-color: #addbe7;
+        color: black;
+    }
+    .header-font{
+        font-family: 'Pacifico', cursive;
     }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

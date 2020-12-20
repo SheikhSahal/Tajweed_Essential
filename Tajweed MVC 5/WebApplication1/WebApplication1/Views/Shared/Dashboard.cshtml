@@ -97,7 +97,7 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         @ShowMenu(Model)
                         <li>
-                            <button class="item" data-toggle="tooltip" data-placement="top" onclick="location.href='@Url.Action("logout", "Login")'">
+                            <button class="item" style="color:#007aff !important" data-toggle="tooltip" data-placement="top" onclick="location.href='@Url.Action("logout", "Login")'">
                                 <i class="zmdi zmdi-logout"></i> logout
                             </button>
                         </li>
@@ -166,17 +166,17 @@ foreach (var s in menuList)
         <li class="@(s.List.Any()?"dropdown":"") active has-sub">
             @if (s.List.Any())
             {
-                <a class="js-arrow" href="#" style="color:#8dcb51 !important">
+                <a class="js-arrow" href="#" style="color:#007aff !important">
                     @s.Menu_name <span class="arrow"><i class="fas fa-angle-down"></i></span>
                 </a>
 
-                <ul class="list-unstyled navbar__sub-list js-sub-list" style="color:#fe620a !important">
+                <ul class="list-unstyled navbar__sub-list js-sub-list" style="color:#007aff !important">
                     @ShowMenu(s.List)
                 </ul>
             }
             else
             {
-                <a href="http://202.69.45.69/@s.Menu_URL" style="color:#ef136c !important">
+                <a href="http://202.69.45.69/@s.Menu_URL" style="color:#007aff !important">
                     @s.Menu_name
                 </a>
             }
