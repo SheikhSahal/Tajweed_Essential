@@ -2030,7 +2030,7 @@ namespace WebApplication1.DB
                         }
                         if (reader["User_contact"] != DBNull.Value)
                         {
-                            employee.User_contact = Convert.ToInt64(reader["User_contact"]);
+                            employee.contact = Convert.ToString(reader["User_contact"]);
                         }
                         if (reader["DOB"] != DBNull.Value)
                         {
@@ -2103,7 +2103,7 @@ namespace WebApplication1.DB
                     cmd.Parameters.AddWithValue("@id", r.bh_id);
                     cmd.Parameters.AddWithValue("@User_name", r.Full_Name);
                     cmd.Parameters.AddWithValue("@User_email", r.email);
-                    cmd.Parameters.AddWithValue("@User_contact", r.User_contact);
+                    cmd.Parameters.AddWithValue("@User_contact", r.M_W_no);
                     cmd.Parameters.AddWithValue("@DOB", r.DOB);
                     cmd.Parameters.AddWithValue("@Martial_status", r.Marital_Status);
                     cmd.Parameters.AddWithValue("@F_H_name", r.FH_name);
@@ -2532,7 +2532,7 @@ namespace WebApplication1.DB
             List<Att_Report> DBase = new List<Att_Report>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%')", conn))
+                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%') order by ad.Att_status desc", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@Fromdate", fromdate);

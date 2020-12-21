@@ -11,6 +11,8 @@
             @*From Date : @ViewBag.From_date.ToString("dd-MM-yyyy") &nbsp;&nbsp; To Date: @ViewBag.to_date.ToString("dd-MM-yyyy") <br />*@
             Helper Report
         </strong>
+        @*string bh_id, string hlp_id, string Courses_text*@
+        <a href="@Url.Action("ExportToExcel", "Helper_Param", new { bh_id = ViewBag.bh_id, hlp_id= ViewBag.hlp_id, Courses_text = ViewBag.Courses_text})" class="btn btn-success" style="float:right;">Excel</a>
         <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
     </div>
 

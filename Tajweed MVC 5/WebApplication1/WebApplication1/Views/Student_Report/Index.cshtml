@@ -10,20 +10,18 @@
             @*From Date : @ViewBag.From_date.ToString("dd-MM-yyyy") &nbsp;&nbsp; To Date: @ViewBag.to_date.ToString("dd-MM-yyyy") <br />*@
             Student Report
         </strong>
+        <a href="@Url.Action("ExportToExcel", "Student_Report", new { Courses = ViewBag.courses, Student= ViewBag.Student , Coursesname = ViewBag.Coursesname })" class="btn btn-success" style="float:right;">Excel</a>
         <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
     </div>
 
     <div class="card-body">
         <div class="typo-headers">
             <h4 class="pb-2 display-5">
-                Course Name : @ViewBag.course
+                Course Name : @ViewBag.course 
             </h4>
-
-
-
         </div>
-        <div class="table table-responsive-data2">
-            <table class="table-responsive table table-data2">
+        <div class="">
+            <table class="table-responsive table">
                 <thead>
                     <tr>
                         <td><b>S/No.</b></td>

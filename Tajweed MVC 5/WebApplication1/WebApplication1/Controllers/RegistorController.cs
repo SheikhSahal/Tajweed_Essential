@@ -14,6 +14,7 @@ namespace WebApplication1.Controllers
 
         public ActionResult Index(int id, DateTime end_date)
         {
+           end_date= end_date.AddDays(1);
             var current_date = DateTime.Now.Date;
 
             if (end_date.Date <= current_date)
