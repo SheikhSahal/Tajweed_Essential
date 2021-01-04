@@ -1328,7 +1328,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id and l.User_status = 'A' and l.User_flag = 'S'", conn))
+                using (SqlCommand cmd = new SqlCommand("select l.User_id, l.User_name Full_name from Login l, Batch_header bh where l.Bh_id = bh.BH_ID and bh.BH_ID =@bh_id and l.User_status = 'A' and l.User_flag = 'S' order by l.User_name desc", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -1358,7 +1358,7 @@ namespace WebApplication1.DB
             List<Student> DBase = new List<Student>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select ld.Stud_id, l.User_name stud_name from List_header lh,List_details ld, login l where lh.List_id = ld.List_id and ld.Stud_id = l.User_id and lh.List_id =@bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select ld.Stud_id, l.User_name stud_name from List_header lh,List_details ld, login l where lh.List_id = ld.List_id and ld.Stud_id = l.User_id and lh.List_id =@bh_id order by l.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@bh_id", id);
@@ -2532,7 +2532,7 @@ namespace WebApplication1.DB
             List<Att_Report> DBase = new List<Att_Report>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%') order by ad.Att_status desc", conn))
+                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%') order by l.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@Fromdate", fromdate);
@@ -2703,7 +2703,7 @@ namespace WebApplication1.DB
             List<Helper_dtl> DBase = new List<Helper_dtl>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select hd.stud_id,  (select l.User_Name from login l where l.User_id = hd.stud_id) stud_name,  (select l.User_contact from login l where l.User_id = hd.stud_id) stud_contact,  hd.hlp_stud_id, (select l.User_Name from login l where l.User_id = hd.hlp_stud_id) Helper_name, (select l.User_contact from login l where l.User_id = hd.hlp_stud_id) Helper_contact from hlp_header hh, hlp_details hd where hh.hlp_id = hd.hpl_id  and hh.hlp_id like ISNULL(@hlp_id,'%') and hh.bh_id like ISNULL(@bh_id,'%')", conn))
+                using (SqlCommand cmd = new SqlCommand("select hd.stud_id,  (select l.User_Name from login l where l.User_id = hd.stud_id) stud_name,  (select l.User_contact from login l where l.User_id = hd.stud_id) stud_contact,  hd.hlp_stud_id, (select l.User_Name from login l where l.User_id = hd.hlp_stud_id) Helper_name, (select l.User_contact from login l where l.User_id = hd.hlp_stud_id) Helper_contact from hlp_header hh, hlp_details hd where hh.hlp_id = hd.hpl_id  and hh.hlp_id like ISNULL(@hlp_id,'%') and hh.bh_id like ISNULL(@bh_id,'%') order by stud_name", conn))
                 {
                     conn.Open();
 
@@ -2807,6 +2807,232 @@ namespace WebApplication1.DB
         }
 
 
+        public List<Helper_mst> Helpers_list()
+        {
+            List<Helper_mst> DBase = new List<Helper_mst>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select hh.hlp_id, hh.Helper_name, (select count(*) from Hlp_details hd where hd.hpl_id = hh.hlp_id) students from Hlp_header hh", conn))
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_mst teach = new Helper_mst();
+                        if (reader["hlp_id"] != DBNull.Value)
+                        {
+                            teach.Hpl_id = Convert.ToInt32(reader["hlp_id"]);
+                        }
+                        if (reader["Helper_name"] != DBNull.Value)
+                        {
+                            teach.Helper_name = reader["Helper_name"].ToString();
+                        }
+
+                        if (reader["students"] != DBNull.Value)
+                        {
+                            teach.no_of_students = Convert.ToInt32( reader["students"]);
+                        }
+
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public Helper_mst Hlp_mst_data(int id)
+        {
+            Helper_mst employee = new Helper_mst();
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("select * from Hlp_header hh where hh.hlp_id = @hl_id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@hl_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Read();
+
+                    if (reader["hlp_id"] != DBNull.Value)
+                    {
+                        employee.Hpl_id = Convert.ToInt32(reader["hlp_id"]);
+                    }
+                    if (reader["bh_id"] != DBNull.Value)
+                    {
+                        employee.bh_id = Convert.ToInt32(reader["bh_id"]);
+                    }
+                    if (reader["List_id"] != DBNull.Value)
+                    {
+                        employee.list_id = Convert.ToInt32(reader["List_id"]);
+                    }
+
+                    if (reader["Helper_name"] != DBNull.Value)
+                    {
+                        employee.Helper_name = Convert.ToString(reader["Helper_name"]);
+                    }
+                   
+                }
+            }
+            return employee;
+        }
+
+        public List<Helper_dtl> Helpers_Details_list(int id)
+        {
+            List<Helper_dtl> DBase = new List<Helper_dtl>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("get_Hlp_details", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@hlp_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_dtl teach = new Helper_dtl();
+                        if (reader["id"] != DBNull.Value)
+                        {
+                            teach.id = Convert.ToInt32(reader["id"]);
+                        }
+                        if (reader["hpl_id"] != DBNull.Value)
+                        {
+                            teach.Hpl_id = Convert.ToInt32(reader["hpl_id"]);
+                        }
+                        if (reader["stud_id"] != DBNull.Value)
+                        {
+                            teach.stud_id = Convert.ToInt32(reader["stud_id"]);
+                        }
+
+                        if (reader["Student_name"] != DBNull.Value)
+                        {
+                            teach.stud_name = Convert.ToString(reader["Student_name"]);
+                        }
+
+                        if (reader["hlp_stud_id"] != DBNull.Value)
+                        {
+                            teach.hlp_stud_id = Convert.ToInt32(reader["hlp_stud_id"]);
+                        }
+
+                        if (reader["Helper_name"] != DBNull.Value)
+                        {
+                            teach.Hlper_name = Convert.ToString(reader["Helper_name"]);
+                        }
+
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public List<Helper_dtl> List_dropdown(int id)
+        {
+            List<Helper_dtl> DBase = new List<Helper_dtl>();
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("list_dropdown", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@list_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Helper_dtl teach = new Helper_dtl();
+                        if (reader["Stud_id"] != DBNull.Value)
+                        {
+                            teach.stud_id = Convert.ToInt32(reader["Stud_id"]);
+                        }
+                        if (reader["Student_name"] != DBNull.Value)
+                        {
+                            teach.stud_name = Convert.ToString(reader["Student_name"]);
+                        }
+
+                        DBase.Add(teach);
+
+                    }
+                }
+            }
+            return DBase;
+        }
+
+
+        public void Update_hlp_dtl(Helper_dtl hd)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update Hlp_details set hlp_stud_id = @hlp_stud_id where hpl_id = @hpl_id and stud_id = @stud_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_stud_id", hd.hlp_stud_id);
+                    cmd.Parameters.AddWithValue("@hpl_id", hd.Hpl_id);
+                    cmd.Parameters.AddWithValue("@stud_id", hd.stud_id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public void Update_hlp_header(string Helper_name, int Hpl_id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("update Hlp_header set Helper_name = @Helper_name where hlp_id = @hlp_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@Helper_name", Helper_name);
+                    cmd.Parameters.AddWithValue("@hlp_id", Hpl_id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public void DelteHelper(int id)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from Hlp_header where hlp_id = @hlp_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+        }
+
+
+        public void DelteHelperdtl(int id)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectString))
+            {
+                using (SqlCommand cmd = new SqlCommand("delete from Hlp_details where hpl_id = @hlp_id", conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@hlp_id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+        }
 
     }
 

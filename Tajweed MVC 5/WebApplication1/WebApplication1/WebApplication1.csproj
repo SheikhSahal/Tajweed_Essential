@@ -171,6 +171,8 @@
     <Compile Include="Controllers\New_AttendanceController.cs" />
     <Compile Include="Controllers\New_CourseController.cs" />
     <Compile Include="Controllers\New_HelperController.cs" />
+    <Compile Include="Controllers\New_Helper_ListController.cs" />
+    <Compile Include="Controllers\New_Helper_UpdateController.cs" />
     <Compile Include="Controllers\OldstudentAddController.cs" />
     <Compile Include="Controllers\RegistorController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -255,6 +257,8 @@
     <Content Include="Views\MonthReport_Param\Index.cshtml" />
     <Content Include="Views\MonthReport_Report\Index.cshtml" />
     <Content Include="Views\Shared\_Main_Page.cshtml" />
+    <Content Include="Views\New_Helper_List\Index.cshtml" />
+    <Content Include="Views\New_Helper_Update\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -14,6 +14,7 @@ namespace WebApplication1.Models
         public string created_by{ get; set; }
         public DateTime created_date{ get; set; }
         public string Helper_name { get; set; }
+        public int no_of_students { get; set; }
 
         public virtual ICollection<Helper_dtl> Helper_dtl { get; set; }
     }

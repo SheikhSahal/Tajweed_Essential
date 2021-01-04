@@ -8,11 +8,11 @@ using WebApplication1.DB;
 
 namespace WebApplication1.Controllers
 {
-    public class New_HelperController : Controller
+    public class New_Helper_UpdateController : Controller
     {
         Database db = new Database();
-        // GET: New_Helper
-        public ActionResult Index()
+        // GET: New_Helper_Update
+        public ActionResult Index(int id)
         {
             if (Session["User_id"] == null)
             {
@@ -25,20 +25,44 @@ namespace WebApplication1.Controllers
                 var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
                 List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
+                Helper_mst hm = db.Hlp_mst_data(id);
+                ViewBag.hlphd = hm;
+
+
+                List<Helper_dtl> hd = db.Helpers_Details_list(id);
+                ViewBag.hlpdt = hd;
+
+
+                List<Helper_dtl> stud_list = db.List_dropdown(hm.list_id);
+                ViewBag.hlpdt_list = stud_list;
+
+
                 List<Batch_header> Course_dropdown = db.get_Course_dropdown();
                 ViewBag.course = Course_dropdown;
 
                 List<List_Header> List_dropdown = db.get_list_dropdown();
                 ViewBag.list = List_dropdown;
 
-
                 return View(menudisplay);
             }
         }
 
+
         [HttpPost]
-        public ActionResult Index(Helper_mst hm)
+        public ActionResult Index(Helper_mst hmst)
         {
+            Helper_mst hm = db.Hlp_mst_data(hmst.Hpl_id);
+            ViewBag.hlphd = hm;
+
+
+            List<Helper_dtl> hd = db.Helpers_Details_list(hmst.Hpl_id);
+            ViewBag.hlpdt = hd;
+
+
+            List<Helper_dtl> stud_list = db.List_dropdown(hm.list_id);
+            ViewBag.hlpdt_list = stud_list;
+
+
             List<Batch_header> Course_dropdown = db.get_Course_dropdown();
             ViewBag.course = Course_dropdown;
 
@@ -46,41 +70,18 @@ namespace WebApplication1.Controllers
             ViewBag.list = List_dropdown;
 
             bool status = false;
-            var hlper_id = db.AutoGenerate_Helperid();
 
-            hm.Hpl_id = hlper_id.Hpl_id;
-            db.InsertHelpermst(hm);
 
-            foreach (var s in hm.Helper_dtl)
+            db.Update_hlp_header(hmst.Helper_name, hmst.Hpl_id);
+
+            foreach (var s in hmst.Helper_dtl)
             {
-                s.Hpl_id = hm.Hpl_id;
-                db.InsertHelperdtl(s);
+                s.Hpl_id = hmst.Hpl_id;
+                db.Update_hlp_dtl(s);
             }
 
             status = true;
             return new JsonResult { Data = new { status = status } };
         }
-
-        public ActionResult Cas_stud_id(int id)
-        {
-            List<Student> casc_std_list = db.get_Cascade_list_student(id);
-            return Json(new SelectList(casc_std_list, "Stud_id", "Stud_name"));
-        }
-
-        public ActionResult Cascade_stud(int id, string flag)
-        {
-            List<Student> casc_std = db.get_Cascade_student(id);
-            return Json(new SelectList(casc_std, "Stud_id", "Stud_name"));
-        }
-
-
-        public ActionResult Delete_List_stud(int id)
-        {
-            db.DelteHelper(id);
-            db.DelteHelperdtl(id);
-
-            return RedirectToAction("Index","New_Helper_list");
-        }
-
     }
 }

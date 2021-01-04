@@ -7,6 +7,7 @@ namespace WebApplication1.Models
 {
     public class Helper_dtl
     {
+        public int id { get; set; }
         public int Hpl_id { get; set; }
 
         public int stud_id { get; set; }

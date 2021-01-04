@@ -1,7 +1,8 @@
-﻿
+﻿@model List<WebApplication1.Models.AP_Menu>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Dashboard.cshtml";
+    var data = ViewBag.hlphd as WebApplication1.Models.Helper_mst;
 }
 <div class="main-content">
     <div class="section__content section__content--p30">
@@ -26,7 +27,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group Helper_name">
                                             <label for="Helper_name" class="control-label mb-1">Helper Name:</label>
-                                            <input type="text" class="form-control" id="Helper_name" />
+                                            <input type="text" class="form-control" id="Helper_name" value="@data.Helper_name" />
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Helper Name</span>
                                         </div>
                                     </div>
@@ -39,7 +40,10 @@
                                                 <option value="0">--Select--</option>
                                                 @foreach (var s in ViewBag.course as List<WebApplication1.Models.Batch_header>)
                                                 {
-                                                    <option value="@s.Bh_id">@s.Batch_Name</option>
+                                                    if (@s.Bh_id == @data.bh_id)
+                                                    {
+                                                        <option value="@s.Bh_id" selected>@s.Batch_Name</option>
+                                                    }
                                                 }
                                             </select>
 
@@ -53,7 +57,11 @@
                                                 <option value="0">--Select--</option>
                                                 @foreach (var s in ViewBag.list as List<WebApplication1.Models.List_Header>)
                                                 {
-                                                    <option value="@s.List_id">@s.List_name</option>
+                                                    if (@s.List_id == data.list_id)
+                                                    {
+                                                        <option value="@s.List_id" selected>@s.List_name</option>
+                                                    }
+
                                                 }
                                             </select>
                                             <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a List Name</span>
@@ -88,7 +96,33 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-borderless table-responsive">
-                                            <tbody id="details"></tbody>
+                                            <tbody id="details">
+                                                @foreach (var s in ViewBag.hlpdt as List<WebApplication1.Models.Helper_dtl>)
+                                                {
+                                                    <tr class="tr-row">
+                                                        <td class="collapse std_val">@s.stud_id</td>
+                                                        <td>@s.stud_name</td>
+                                                        <td>
+
+                                                            <select class="form-control Helper">
+                                                                <option value="0" selected>--Select--</option>
+                                                                @foreach (var j in ViewBag.hlpdt_list as List<WebApplication1.Models.Helper_dtl>)
+                                                                {
+                                                                    if (s.hlp_stud_id == j.stud_id)
+                                                                    {
+                                                                        <option value="@j.stud_id" selected>@j.stud_name</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@j.stud_id">@j.stud_name</option>
+                                                                    }
+                                                                }
+                                                            </select>
+
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
                                         </table>
                                         <div id="orderItems">
                                             <table id="orderdetailsItems"></table>
@@ -126,7 +160,8 @@
         z-index: 1;
         left: 40%;
     }
-    .lt-error{
+
+    .lt-error {
         display: block;
         color: #d93025;
         font-size: 80%;
@@ -152,62 +187,62 @@
 
         });
 
-        $('#List_name').change(function () {
-            $('.Helper').empty();
-            $('.Helper').append($('<option>', {
-                value: 0,
-                text: '--Select--'
-            }));
-            $.ajax({
-                type: 'POST',
-                url: '/New_Helper/Cas_stud_id',
-                data: {
-                    'id': $('#List_name').val(),
-                }
-                ,
-                success: function (resp) {
-                    console.log(resp);
-                    $.each(resp, function (i, item) {
-                        $('.Helper').append($('<option>', {
-                            value: item.Value,
-                            text: item.Text
-                        }));
-                    });
-                },
-                error: function (ex) {
-                    alert('error')
-                }
-            });
-        })
+        //$('#List_name').change(function () {
+        //    $('.Helper').empty();
+        //    $('.Helper').append($('<option>', {
+        //        value: 0,
+        //        text: '--Select--'
+        //    }));
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: '/New_Helper/Cas_stud_id',
+        //        data: {
+        //            'id': $('#List_name').val(),
+        //        }
+        //        ,
+        //        success: function (resp) {
+        //            console.log(resp);
+        //            $.each(resp, function (i, item) {
+        //                $('.Helper').append($('<option>', {
+        //                    value: item.Value,
+        //                    text: item.Text
+        //                }));
+        //            });
+        //        },
+        //        error: function (ex) {
+        //            alert('error')
+        //        }
+        //    });
+        //})
 
-        $('#batch_name').change(function () {
-            $('#student').empty();
-            $('#details').empty();
-            $.ajax({
-                type: 'POST',
-                url: '/New_Helper/Cascade_stud',
-                data: {
-                    'id': $('#batch_name').val(),
-                }
-                ,
-                success: function (resp) {
-                    $.each(resp, function (i, item) {
-                        //$('#student').append($('<option>', {
-                        //    value: item.Value,
-                        //    text: item.Text
-                        //}));
-                        var std_value = '<td class="collapse std_val">' + item.Value + '</td>';
-                        var std_txt = '<td>' + item.Text + '</td>';
-                        var drop_listname = '<td><select class="form-control Helper"><option>--Select--</option></select></td>';
-                        var detail_values = '<tr class="tr-row">' + std_value + std_txt + drop_listname + '</tr>';
-                        $('#details').prepend(detail_values);
-                    });
-                },
-                error: function (ex) {
-                    alert('error')
-                }
-            });
-        })
+        //$('#batch_name').change(function () {
+        //    $('#student').empty();
+        //    $('#details').empty();
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: '/New_Helper/Cascade_stud',
+        //        data: {
+        //            'id': $('#batch_name').val(),
+        //        }
+        //        ,
+        //        success: function (resp) {
+        //            $.each(resp, function (i, item) {
+        //                //$('#student').append($('<option>', {
+        //                //    value: item.Value,
+        //                //    text: item.Text
+        //                //}));
+        //                var std_value = '<td class="collapse std_val">' + item.Value + '</td>';
+        //                var std_txt = '<td>' + item.Text + '</td>';
+        //                var drop_listname = '<td><select class="form-control Helper"><option>--Select--</option></select></td>';
+        //                var detail_values = '<tr class="tr-row">' + std_value + std_txt + drop_listname + '</tr>';
+        //                $('#details').prepend(detail_values);
+        //            });
+        //        },
+        //        error: function (ex) {
+        //            alert('error')
+        //        }
+        //    });
+        //})
 
 
         $('#add').click(function (e) {
@@ -287,12 +322,11 @@
 
 
 
-            //$('#details tr').each(function (index,ele) {
+            //$('#details tr').each(function (index, ele) {
             //    var get_helper = $('.Helper', this).val();
 
             //    index = index + 1;
-            //    if (get_helper == 0)
-            //    {
+            //    if (get_helper == 0) {
             //        isAllValid = false;
             //        alert("Please Enter Helper Name at line " + index);
             //    }
@@ -322,19 +356,22 @@
 
             if (isAllValid) {
                 var data = {
-
+                    Hpl_id: @data.Hpl_id,
                     Helper_name: $('#Helper_name').val(),
                     bh_id: $('#batch_name').val(),
                     list_id: $('#List_name').val(),
                     Helper_dtl: list
 
                 }
+
+                console.log(data);
                 debugger
 
                 $.ajax({
                     type: 'POST',
-                    url: '/New_Helper/Index',
+                    url: '/New_Helper_Update/Index',
                     data: {
+                        'Hpl_id': data.Hpl_id,
                         'Helper_name': data.Helper_name,
                         'bh_id': data.bh_id,
                         'list_id': data.list_id,
@@ -345,11 +382,14 @@
                         if (resp.status) {
                             $('.message').delay(300).fadeIn();
                             $('.message').delay(200).fadeOut();
-                            $('#Helper_name').val('');
-                            $('#batch_name,#List_name').val(0);
-                            $('#Teacher_1,#Teacher_2').val();
-                            $('#Helper,#student').empty();
-                            $("#details").empty();
+                            //$('#Helper_name').val('');
+                            //$('#batch_name,#List_name').val(0);
+                            //$('#Teacher_1,#Teacher_2').val();
+                            //$('#Helper,#student').empty();
+                            //$("#details").empty();
+                            setTimeout(function(){
+                                window.location.href = '@Url.Action("Index", "New_Helper_list")';
+                            }, 2000);
 
                         }
                         else {
@@ -362,3 +402,4 @@
     });
 
 </script>
+

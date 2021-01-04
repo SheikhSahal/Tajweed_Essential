@@ -1,0 +1,76 @@
+﻿@model List<WebApplication1.Models.AP_Menu>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- DATA TABLE -->
+                <div class="col-md-4">
+                    <h3 class="title-5 m-b-35">All Assign Helpers</h3>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    <a href="@Url.Action("Index","New_Helper")" style="float:right;" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                        <i class="zmdi zmdi-plus"></i>Add Helper List
+                    </a>
+                </div>
+
+                @*<div class="table-data__tool">
+                        <div class="table-data__tool-right">
+
+                        </div>
+                    </div>*@
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2">
+                        <thead>
+                            <tr>
+                                <th class="courses-content">S/No.</th>
+                                <th>Helper list name</th>
+                                <th>Students</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int index = 1;}
+                            @foreach (var s in ViewBag.hlp_list as List<WebApplication1.Models.Helper_mst>)
+                            {
+                                <tr class="tr-shadow">
+                                    <td class="courses-content">@index</td>
+                                    <td>@s.Helper_name</td>
+                                    <td>@s.no_of_students</td>
+                                    <td>
+                                        <div class="table-data-feature">
+                                            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("Index", "New_Helper_Update", new { id =s.Hpl_id})'">
+                                                Edit
+                                            </button>
+                                            &nbsp;
+                                            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("Delete_List_stud", "New_Helper", new { id =s.Hpl_id})'">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@media screen and (max-width: 987px) {
+        .courses-content {
+            display: none;
+        }
+    }
+</style>
