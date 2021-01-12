@@ -35,8 +35,13 @@ namespace WebApplication1.Controllers
 
         public ActionResult Edit(int id)
         {
-
-            AP_Menu menu = new AP_Menu();
+            if (Session["Role_id"].ToString() == "2")
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            else
+            {
+                AP_Menu menu = new AP_Menu();
             var Menulist = db.user_rights(Convert.ToInt32(Session["User_id"]));
             List<AP_Menu> menudisplay = menu.Menutree(Menulist, null);
 
@@ -51,6 +56,8 @@ namespace WebApplication1.Controllers
 
             ViewBag.id = id;
             return View(menudisplay);
+            }
+
         }
 
         [HttpPost]
@@ -80,11 +87,18 @@ namespace WebApplication1.Controllers
 
         public ActionResult Delete_bulk(int id)
         {
-            db.listMstdelete(id);
-            db.listDtlmstdelete(id);
+            if (Session["Role_id"].ToString() == "1")
+            {
+                db.listMstdelete(id);
+                db.listDtlmstdelete(id);
 
 
-            return RedirectToAction("Index", "List_Header_list");
+                return RedirectToAction("Index", "List_Header_list");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
         }
 
     }

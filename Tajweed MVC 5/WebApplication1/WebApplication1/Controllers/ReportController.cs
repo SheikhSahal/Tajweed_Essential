@@ -13,7 +13,7 @@ namespace WebApplication1.Controllers
     {
         // GET: Report
         Database db = new Database();
-        public ActionResult Index(DateTime? From_Date, DateTime? To_Date, string Batch_Name, string stud_id)
+        public ActionResult Index(DateTime? From_Date, DateTime? To_Date, string Batch_Name, string stud_id, string status)
         {
 
             if (Batch_Name == "0")
@@ -51,16 +51,17 @@ namespace WebApplication1.Controllers
             ViewBag.to_date = To_Date;
             ViewBag.Batch_Name = Batch_Name;
             ViewBag.stud_id = stud_id;
+            ViewBag.status = status;
 
-            List<Att_Report> Att_report = db.report_att_present(Batch_Name, From_Date, To_Date, stud_id);
+            List<Att_Report> Att_report = db.report_att_present(Batch_Name, From_Date, To_Date, stud_id, status);
             ViewBag.att_report = Att_report;
             return View();
         }
 
 
-        public void ExportToExcel(DateTime? From_Date, DateTime? To_Date, string Batch_Name, string stud_id, string batch)
+        public void ExportToExcel(DateTime? From_Date, DateTime? To_Date, string Batch_Name, string stud_id, string batch, string status)
         {
-            List<Att_Report> Att_report = db.report_att_present(Batch_Name, From_Date, To_Date, stud_id);
+            List<Att_Report> Att_report = db.report_att_present(Batch_Name, From_Date, To_Date, stud_id, status);
 
 
             ExcelPackage pck = new ExcelPackage();

@@ -80,9 +80,17 @@ namespace WebApplication1.Controllers
 
         public ActionResult DeleteUser(int id, int bh_id, string bh_name)
         {
-            db.DeleteUser(id);
+            if (Session["Role_id"].ToString() == "2")
+            {
+                return RedirectToAction("Index","Dashboard");
+            }
+            else
+            {
+                db.DeleteUser(id);
+                return RedirectToAction("Index", "User_status", new { id = bh_id, bh_name = bh_name });
 
-            return RedirectToAction("Index", "User_status", new { id = bh_id, bh_name = bh_name });
+            }
+            
         }
 
         public ActionResult Interview(int Userid,string Interview)

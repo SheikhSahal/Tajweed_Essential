@@ -2527,18 +2527,20 @@ namespace WebApplication1.DB
         }
 
 
-        public List<Att_Report> report_att_present(string id, DateTime? fromdate, DateTime? todate, string stud_id)
+        public List<Att_Report> report_att_present(string id, DateTime? fromdate, DateTime? todate, string stud_id, string status)
         {
             List<Att_Report> DBase = new List<Att_Report>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%') order by l.User_name", conn))
+                using (SqlCommand cmd = new SqlCommand("select a.created_date,ad.Att_id,ad.Stud_id,l.User_name ,ad.Att_status,ad.bh_id  from Attendance a , Attendance_details ad, login l  where a.created_date between ISNULL(@Fromdate,CONVERT (date, GETDATE())) and ISNULL(@todate,CONVERT (date, GETDATE()))  and l.User_id = ad.Stud_id  and a.Att_id = ad.Att_id  and ad.Stud_id like ISNULL(@Stud_id,'%') and ad.bh_id like ISNULL(@bh_id,'%') and ad.Att_status like ISNULL(@status,'%') order by l.User_name", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@Fromdate", fromdate);
                     cmd.Parameters.AddWithValue("@todate", todate);
                     cmd.Parameters.AddWithValue("@Stud_id", stud_id);
                     cmd.Parameters.AddWithValue("@bh_id", id);
+                    cmd.Parameters.AddWithValue("@status", status);
+                    
 
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -2605,7 +2607,7 @@ namespace WebApplication1.DB
             List<Registor> DBase = new List<Registor>();
             using (SqlConnection conn = new SqlConnection(connectString))
             {
-                using (SqlCommand cmd = new SqlCommand("select * from login l where ISNULL(l.Usr_stat_intview,'N') like @Usr_stat_intview and ISNULL(l.Usr_stat_pur_books,'N') like @Usr_stat_pur_books and ISNULL(l.Usr_stat_Group,'N') like @Usr_stat_Group and l.User_flag = 'S' and l.Bh_id like @Bh_id", conn))
+                using (SqlCommand cmd = new SqlCommand("select * from login l where ISNULL(l.Usr_stat_intview,'N') like @Usr_stat_intview and ISNULL(l.Usr_stat_pur_books,'N') like @Usr_stat_pur_books and ISNULL(l.Usr_stat_Group,'N') like @Usr_stat_Group and l.User_flag = 'S' and l.Bh_id like @Bh_id order by l.User_name", conn))
                 {
                     conn.Open();
 
@@ -2660,6 +2662,10 @@ namespace WebApplication1.DB
                         if (reader["Country"] != DBNull.Value)
                         {
                             teach.Country = Convert.ToString(reader["Country"]);
+                        }
+                        if (reader["City"] != DBNull.Value)
+                        {
+                            teach.City = Convert.ToString(reader["City"]);
                         }
                         DBase.Add(teach);
 

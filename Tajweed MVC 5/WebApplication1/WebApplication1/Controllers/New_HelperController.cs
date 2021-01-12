@@ -18,6 +18,10 @@ namespace WebApplication1.Controllers
             {
                 return RedirectToAction("Index", "login");
             }
+            else if (Session["Role_id"].ToString() == "2")
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
             else
             {
                 AP_Menu menu = new AP_Menu();
@@ -76,10 +80,18 @@ namespace WebApplication1.Controllers
 
         public ActionResult Delete_List_stud(int id)
         {
-            db.DelteHelper(id);
-            db.DelteHelperdtl(id);
+            if (Session["Role_id"].ToString() == "2")
+            {
+                return RedirectToAction("Index","Dashboard");
+            }
+            else
+            {
+                db.DelteHelper(id);
+                db.DelteHelperdtl(id);
+                return RedirectToAction("Index", "New_Helper_list");
+            }
 
-            return RedirectToAction("Index","New_Helper_list");
+            
         }
 
     }

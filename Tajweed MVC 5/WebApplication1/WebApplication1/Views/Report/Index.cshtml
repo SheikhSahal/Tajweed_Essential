@@ -9,10 +9,15 @@
     <div class="card-header text-center">
         <strong class="card-title">
             From Date : @ViewBag.From_date.ToString("dd-MM-yyyy") &nbsp;&nbsp; To Date: @ViewBag.to_date.ToString("dd-MM-yyyy") <br />
-            &nbsp;&nbsp;  Attendance Report
+            
         </strong>
+        <div style="margin-left:30px;">
+            <strong>
+                Attendance Report
+            </strong>
+        </div> 
         @*<button id="exclbtn" class="btn btn-success" style="float:right;">Excel</button>*@
-        <a href="@Url.Action("ExportToExcel", "Report", new { From_Date = ViewBag.From_date, To_Date= ViewBag.to_date, Batch_Name = ViewBag.Batch_Name, stud_id = ViewBag.stud_id ,batch =ViewBag.att_report_batch_name})" class="btn btn-success" style="float:right;">Excel</a>
+        <a href="@Url.Action("ExportToExcel", "Report", new { From_Date = ViewBag.From_date, To_Date= ViewBag.to_date, Batch_Name = ViewBag.Batch_Name, stud_id = ViewBag.stud_id ,batch =ViewBag.att_report_batch_name, status = ViewBag.status})" class="btn btn-success" style="float:right;">Excel</a>
         <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
     </div>
 

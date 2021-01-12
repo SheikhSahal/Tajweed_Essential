@@ -13,7 +13,7 @@ namespace WebApplication1.Controllers
     {
         Database db = new Database();
         // GET: Student_Report
-        public ActionResult Index(string Courses, string Student, string Coursesname)
+        public ActionResult Index(string Courses, string Student, string Coursesname, string BatchName)
         {
 
             List<Registor> reg = new List<Registor>();
@@ -21,6 +21,7 @@ namespace WebApplication1.Controllers
             ViewBag.courses = Courses;
             ViewBag.Student = Student;
             ViewBag.Coursesname = Coursesname;
+            ViewBag.BatchName = BatchName;
 
             if (Student == "0" && Courses == "0")
             {
@@ -67,8 +68,17 @@ namespace WebApplication1.Controllers
                 ViewBag.course = Coursesname;
             }
 
-            
-           
+            if (BatchName == "-Course-")
+            {
+                ViewBag.BatchName = "ALL";
+            }
+            else
+            {
+                ViewBag.BatchName = BatchName;
+            }
+
+
+
 
             ViewBag.reg = reg;
 
@@ -76,7 +86,7 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        public void ExportToExcel(string Courses, string Student, string Coursesname)
+        public void ExportToExcel(string Courses, string Student, string Coursesname, string batch_name)
         {
 
             List<Registor> reg = new List<Registor>();
@@ -84,6 +94,7 @@ namespace WebApplication1.Controllers
             ViewBag.courses = Courses;
             ViewBag.Student = Student;
             ViewBag.Coursesname = Coursesname;
+            ViewBag.batch_name = batch_name;
 
             if (Student == "0" && Courses == "0")
             {
@@ -140,7 +151,10 @@ namespace WebApplication1.Controllers
             //ws.Cells["D2"].Value = To_Date;
 
             ws.Cells["A3"].Value = "Course Name:";
-            ws.Cells["B3"].Value = Coursesname;
+            ws.Cells["B3"].Value = batch_name;
+
+            ws.Cells["C3"].Value = "Status:";
+            ws.Cells["D3"].Value = Coursesname;
 
             ws.Cells["A6"].Value = "S/No.";
             ws.Cells["B6"].Value = "Student Name";
@@ -149,7 +163,7 @@ namespace WebApplication1.Controllers
             ws.Cells["E6"].Value = "Date of Birth";
             ws.Cells["F6"].Value = "ID Card";
             ws.Cells["G6"].Value = "Recommended";
-            ws.Cells["H6"].Value = "Country";
+            ws.Cells["H6"].Value = "City / Country";
 
 
             int rowStart = 7;
@@ -163,7 +177,7 @@ namespace WebApplication1.Controllers
                 ws.Cells[string.Format("E{0}", rowStart)].Value = item.DOB;
                 ws.Cells[string.Format("F{0}", rowStart)].Value = item.IDCardNo;
                 ws.Cells[string.Format("G{0}", rowStart)].Value = item.recommended;
-                ws.Cells[string.Format("H{0}", rowStart)].Value = item.Country;
+                ws.Cells[string.Format("H{0}", rowStart)].Value = item.Country + " "+ item.City;
                 rowStart++;
                 sno++;
             }

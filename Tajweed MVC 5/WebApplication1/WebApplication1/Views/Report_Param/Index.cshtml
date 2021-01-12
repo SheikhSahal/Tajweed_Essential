@@ -50,7 +50,19 @@
                                     {
                                         <option value="@std.Bh_id">@std.Batch_Name</option>
                                     }
-                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Batch Name</span>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="form-group student">
+                                <label for="Batch_Name" class="form-control-label">Status:</label>
+                                <select class="form-control" id="status">
+                                    <option value="%">-Status-</option>
+                                    <option value="P">Present</option>
+                                    <option value="A">Abcent</option>
+                                    <option value="L">Leave</option>
                                 </select>
                             </div>
                         </div>
@@ -65,7 +77,6 @@
                                     {
                                         <option value="@std.Stud_id">@std.Stud_name</option>
                                     }
-                                    <span class="error"><i class="fas fa-exclamation-circle"></i>&nbsp; Enter a Batch Name</span>
                                 </select>
                             </div>
                         </div>
@@ -122,13 +133,15 @@
             //    $('.Batch_Name .error').css('display', 'none');
             //}
 
-            if(isAllValid)
-            {
+            if (isAllValid) {
                 var from_date = $('#From_Date').val();
                 var to_date = $('#To_Date').val();
                 var Batch_Name = $('#Batch_Name').val();
                 var Stud = $('#student').val();
-                window.open('/Report/Index?From_Date=' + from_date + '&To_Date=' + to_date + '&Batch_Name=' + Batch_Name + '&stud_id=' + Stud + '', '_blank')
+                var Course_name = $('#Batch_Name').text();
+                var status = $('#status').val();
+                
+                window.open('/Report/Index?From_Date=' + from_date + '&To_Date=' + to_date + '&Batch_Name=' + Batch_Name + '&stud_id=' + Stud + '&Course_name=' + Course_name + '&status=' + status + '', '_blank')
             }
 
 

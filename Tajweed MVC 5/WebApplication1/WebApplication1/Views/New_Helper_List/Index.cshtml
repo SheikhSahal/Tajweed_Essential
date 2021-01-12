@@ -14,11 +14,14 @@
                 <div class="col-md-4">
 
                 </div>
-                <div class="col-md-4">
-                    <a href="@Url.Action("Index","New_Helper")" style="float:right;" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                        <i class="zmdi zmdi-plus"></i>Add Helper List
-                    </a>
-                </div>
+                @if (Session["Role_id"].ToString() == "1")
+                {
+                    <div class="col-md-4">
+                        <a href="@Url.Action("Index","New_Helper")" style="float:right;" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            <i class="zmdi zmdi-plus"></i>Add Assign Helper
+                        </a>
+                    </div>
+                }
 
                 @*<div class="table-data__tool">
                         <div class="table-data__tool-right">
@@ -32,7 +35,10 @@
                                 <th class="courses-content">S/No.</th>
                                 <th>Helper list name</th>
                                 <th>Students</th>
-                                <th></th>
+                                @if (Session["Role_id"].ToString() == "1")
+                                {
+                                    <th></th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -43,17 +49,20 @@
                                     <td class="courses-content">@index</td>
                                     <td>@s.Helper_name</td>
                                     <td>@s.no_of_students</td>
-                                    <td>
-                                        <div class="table-data-feature">
-                                            <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("Index", "New_Helper_Update", new { id =s.Hpl_id})'">
-                                                Edit
-                                            </button>
-                                            &nbsp;
-                                            <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("Delete_List_stud", "New_Helper", new { id =s.Hpl_id})'">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
+                                    @if (Session["Role_id"].ToString() == "1")
+                                    {
+                                        <td>
+                                            <div class="table-data-feature">
+                                                <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Edit" onclick="location.href='@Url.Action("Index", "New_Helper_Update", new { id = s.Hpl_id })'">
+                                                    Edit
+                                                </button>
+                                                &nbsp;
+                                                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="location.href='@Url.Action("Delete_List_stud", "New_Helper", new { id = s.Hpl_id })'">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    }
                                 </tr>
                                 index++;
                             }

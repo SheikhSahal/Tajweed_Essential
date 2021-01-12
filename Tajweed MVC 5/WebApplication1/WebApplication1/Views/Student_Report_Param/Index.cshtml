@@ -77,8 +77,9 @@
                 var Course = $('#Courses').val();
                 var Student = $('#Students').val();
                 var CourseName = $('#Students option:selected').text();
+                var BatchName = $('#Courses option:selected').text();
 
-                window.open('/Student_Report/Index?Courses=' + Course + '&Student=' + Student + '&Coursesname=' + CourseName + '', '_blank')
+                window.open('/Student_Report/Index?Courses=' + Course + '&Student=' + Student + '&Coursesname=' + CourseName + '&BatchName=' + BatchName + '', '_blank')
             }
         })
     });

@@ -18,6 +18,10 @@ namespace WebApplication1.Controllers
             {
                 return RedirectToAction("Index", "login");
             }
+            else if (Session["Role_id"].ToString() == "2")
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
             else
             {
                 AP_Menu menu = new AP_Menu();

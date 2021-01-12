@@ -22,13 +22,18 @@
                 <div class="col-md-4">
 
                 </div>
-                <div class="col-md-4">
-                    <div class="table-data__tool-right" style="float:right;">
-                        <a href="@Url.Action("Index","New_Course")" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            <i class="zmdi zmdi-plus"></i>Add course
-                        </a>
+
+                @if (Session["Role_id"].ToString() == "1")
+                {
+                    <div class="col-md-4">
+                        <div class="table-data__tool-right" style="float:right;">
+                            <a href="@Url.Action("Index","New_Course")" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                <i class="zmdi zmdi-plus"></i>Add course
+                            </a>
+                        </div>
                     </div>
-                </div>
+                }
+
                 <div class="table-responsive table-responsive-data2">
                     <table class="table table-data2">
                         <thead>
@@ -102,12 +107,14 @@
                                             Student list
                                         </button>
                                     </td>
-                                    <td>
-                                        <button id="save" class="btn btn-sm btn-info btn-block save">
-                                            <i class="fas fa-save"></i>&nbsp;
-                                        </button>
-                                    </td>
-
+                                    @if (Session["Role_id"].ToString() == "1")
+                                    {
+                                        <td>
+                                            <button id="save" class="btn btn-sm btn-info btn-block save">
+                                                <i class="fas fa-save"></i>&nbsp;
+                                            </button>
+                                        </td>
+                                    }
                                     @*<td>
                                             @{ var current_date = DateTime.Now.Date;}
                                             @if (s.bh_end_date.Date >= current_date)
@@ -142,11 +149,12 @@
         z-index: 1;
         left: 40%;
     }
-     @@media screen and (max-width: 987px) {
-         .courses-content{
-             display:none;
-         }
+
+    @@media screen and (max-width: 987px) {
+        .courses-content {
+            display: none;
         }
+    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>

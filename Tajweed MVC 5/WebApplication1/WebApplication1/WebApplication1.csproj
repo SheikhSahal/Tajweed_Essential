@@ -131,6 +131,7 @@
     <Content Include="Content\Images\defeault.jpg" />
     <Content Include="Content\Logo\logo.jpeg" />
     <Content Include="Content\Logo\main-bg.jpg" />
+    <Content Include="Content\Logo\Tajweed.ico" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

@@ -8,16 +8,21 @@
     <div class="card-header text-center">
         <strong class="card-title">
             @*From Date : @ViewBag.From_date.ToString("dd-MM-yyyy") &nbsp;&nbsp; To Date: @ViewBag.to_date.ToString("dd-MM-yyyy") <br />*@
-            Student Report
+            
         </strong>
-        <a href="@Url.Action("ExportToExcel", "Student_Report", new { Courses = ViewBag.courses, Student= ViewBag.Student , Coursesname = ViewBag.Coursesname })" class="btn btn-success" style="float:right;">Excel</a>
-        <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
-    </div>
+        <div style="margin-left:30px;">
+            <strong>
+                Student Report
+            </strong>
+            </div>
+            <a href="@Url.Action("ExportToExcel", "Student_Report", new { Courses = ViewBag.courses, Student= ViewBag.Student , Coursesname = ViewBag.Coursesname, batch_name = ViewBag.BatchName })" class="btn btn-success" style="float:right;">Excel</a>
+            <button id="Printbtn" class="btn btn-primary" style="float:right;" onclick="window.print()">Print</button>
+        </div>
 
     <div class="card-body">
         <div class="typo-headers">
             <h4 class="pb-2 display-5">
-                Course Name : @ViewBag.course 
+                Course Name : @ViewBag.BatchName     Status: @ViewBag.course  
             </h4>
         </div>
         <div class="">
@@ -31,7 +36,7 @@
                         <td><b>Date of Birth</b></td>
                         <td><b>ID Card</b></td>
                         <td><b>Recommended</b></td>
-                        <td><b>Country</b></td>
+                        <td><b>City / Country</b></td>
 
                     </tr>
                 </thead>
@@ -44,10 +49,10 @@
                             <td>@s.Full_Name</td>
                             <td>@s.email</td>
                             <td>@s.contact</td>
-                            <td>@s.DOB</td>
+                            <td>@s.DOB.ToString("dd-MM-yyyy")</td>
                             <td>@s.IDCardNo</td>
                             <td>@s.recommended</td>
-                            <td>@s.Country</td>
+                            <td>@s.Country &nbsp;&nbsp;@s.City</td>
                         </tr>
                         indx++;
                     }

@@ -43,7 +43,10 @@
                                     <th>Student Name</th>
                                     <th>Reference</th>
                                     <th>Contact No.</th>
-                                    <th></th>
+                                    @if (Session["Role_id"].ToString() == "1")
+                                    {
+                                        <th></th>
+                                    }
                                     @*<th>ID No.</th>*@
                                     @*<th>User Status</th>*@
                                 </tr>
@@ -53,71 +56,94 @@
                                 @foreach (var userdata in ViewBag.userdata as List<WebApplication1.Models.Registor>)
                                 {
                                     <tr>
-                                        <td>
-                                            @if (userdata.Usr_stat_intview == "Y")
-                                            {
-                                                <label>
-                                                    <input type="checkbox" name="Usr_stat_intview" class="Usr_stat_intview" checked />Interv.
-                                                </label>
-                                            }
-                                            else
-                                            {<label>
+                                        @if (Session["Role_id"].ToString() == "1")
+                                        {
+                                            <td>
+                                                @if (userdata.Usr_stat_intview == "Y")
+                                                {
+                                                    <label>
+                                                        <input type="checkbox" name="Usr_stat_intview" class="Usr_stat_intview" checked />Interv.
+                                                    </label>
+                                                }
+                                                else
+                                                {<label>
                                                 <input type="checkbox" name="Usr_stat_intview" class="Usr_stat_intview" />Interv.
                                             </label>
 
-                                            }
+                                                }
 
-                                            @if (userdata.Usr_stat_pur_books == "Y")
-                                            {
-                                                <label>
-                                                    <input type="checkbox" name="Usr_stat_pur_books" class="Usr_stat_pur_books" checked />Books<br />
-                                                </label>
-                                            }
-                                            else
-                                            {
-                                                <label>
-                                                    <input type="checkbox" name="Usr_stat_pur_books" class="Usr_stat_pur_books" />Books<br />
-                                                </label>
-                                            }
+                                                @if (userdata.Usr_stat_pur_books == "Y")
+                                                {
+                                                    <label>
+                                                        <input type="checkbox" name="Usr_stat_pur_books" class="Usr_stat_pur_books" checked />Books<br />
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <label>
+                                                        <input type="checkbox" name="Usr_stat_pur_books" class="Usr_stat_pur_books" />Books<br />
+                                                    </label>
+                                                }
 
-                                            @if (userdata.Usr_stat_Group == "Y")
-                                            {<label>
+                                                @if (userdata.Usr_stat_Group == "Y")
+                                                {<label>
                                                 <input type="checkbox" name="Usr_stat_Group" class="Usr_stat_Group" checked />Group<br />
                                             </label>
 
-                                            }
-                                            else
-                                            {
-                                                <label>
-                                                    <input type="checkbox" name="Usr_stat_Group" class="Usr_stat_Group" />Group<br />
-                                                </label>
-                                            }
+                                                }
+                                                else
+                                                {
+                                                    <label>
+                                                        <input type="checkbox" name="Usr_stat_Group" class="Usr_stat_Group" />Group<br />
+                                                    </label>
+                                                }
 
-                                            
-                                        </td>
+
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (userdata.Usr_stat_intview == "Y" && userdata.Usr_stat_pur_books == "Y" && userdata.Usr_stat_Group == "Y")
+                                                {
+                                                    <label>
+                                                        Approved
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <label>
+                                                        UnApproved
+                                                    </label>
+                                                }
+                                            </td>
+                                        }
                                         <td class="userid collapse">@userdata.User_id</td>
                                         <td class="status-sn">@inde</td>
                                         <td>@userdata.Full_Name</td>
                                         <td>@userdata.email</td>
                                         <td>@userdata.M_W_no</td>
-                                        <td>
-                                            <div class="table-data-feature">
-                                                <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Update" onclick="location.href='@Url.Action("Index", "UsersData_Update", new { id =userdata.User_id, bh_name = ViewBag.Batch_name})'">
-                                                    Edit
-                                                </button>
-                                                &nbsp;
-                                                @*@if (userdata.User_status == "W")
-                                                    {
-                                                        <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'">
-                                                            Approve
-                                                        </button>
-                                                    }*@
-                                                &nbsp;
-                                                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="var r=confirm('Do you Really want to Delete this record?'); if(r == true){ location.href='@Url.Action("DeleteUser", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'}">
-                                                    Reject
-                                                </button>
-                                            </div>
-                                        </td>
+                                        @if (Session["Role_id"].ToString() == "1")
+                                        {
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <button class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Update" onclick="location.href='@Url.Action("Index", "UsersData_Update", new { id = userdata.User_id, bh_name = ViewBag.Batch_name })'">
+                                                        Edit
+                                                    </button>
+                                                    &nbsp;
+                                                    @*@if (userdata.User_status == "W")
+                                                        {
+                                                            <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Approve" onclick="location.href='@Url.Action("Approved", "User_Status", new { id =userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name})'">
+                                                                Approve
+                                                            </button>
+                                                        }*@
+                                                    &nbsp;
+                                                    <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" onclick="var r=confirm('Do you Really want to Delete this record?'); if(r == true){ location.href='@Url.Action("DeleteUser", "User_Status", new { id = userdata.User_id, bh_id = userdata.bh_id, bh_name = ViewBag.Batch_name })'}">
+                                                        Reject
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        }
                                         @*<td>@userdata.IDCardNo</td>*@
                                         @*@if(userdata.User_status == "W")
                                             {
